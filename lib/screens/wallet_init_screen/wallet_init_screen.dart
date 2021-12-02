@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../core/utils/utils.dart';
+import '../../core/widgets/activity_tile/activity_tile.dart';
 import '../../core/widgets/collection_list_tile/collection_list_tile.dart';
 import '../../core/widgets/custom_widgets.dart';
 import '../../core/widgets/data_info_chip/data_info_chip.dart';
+import '../../core/widgets/data_tile/data_tile.dart';
 import '../../core/widgets/nft_card/nft_card.dart';
+import '../../core/widgets/properties_chip/properties_chip.dart';
 
 class WalletInitScreen extends StatefulWidget {
   const WalletInitScreen({Key? key}) : super(key: key);
@@ -56,6 +59,45 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
                       label: 'Owned by',
                       value: 'Roger Belson',
                     ),
+                  ),
+                ],
+              ),
+              SizedBox(height: rh(30)),
+              Buttons.expanded(
+                context: context,
+                text: 'Place bid',
+                onPressed: () {},
+              ),
+              SizedBox(height: rh(30)),
+              const ActivityTile(
+                action: 'Transfered',
+                from: 'Hrushikesh Kuklare',
+                to: 'Sumit Mahajan',
+                amount: '1.8 ETH',
+              ),
+              SizedBox(height: rh(30)),
+              const DataTile(
+                label: 'Contract Address',
+                value: '0xdB12fcd1849d409476729EaA454e8D599A4b5aE7',
+              ),
+              SizedBox(height: rh(30)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  PropertiesChip(
+                    label: 'Accessory',
+                    value: 'Headband',
+                    percent: '56%',
+                  ),
+                  PropertiesChip(
+                    label: 'Accessory',
+                    value: 'Chai',
+                    percent: '40%',
+                  ),
+                  PropertiesChip(
+                    label: 'Style',
+                    value: 'Coolish',
+                    percent: '16%',
                   ),
                 ],
               ),
