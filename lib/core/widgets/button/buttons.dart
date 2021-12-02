@@ -45,54 +45,6 @@ class Buttons {
     );
   }
 
-  ///Expanded Full Width Button
-  ///
-  ///Customizable with custom width
-  ///
-  ///[Default isLoading is false]
-  static Widget expandedWithIcon({
-    required BuildContext context,
-    required String text,
-    required IconData icon,
-    required VoidCallback onPressed,
-    double? width,
-    Color? backgroundColor,
-    bool isLoading = false,
-    bool isDisabled = false,
-    double hPadding = 10,
-    double vPadding = 0,
-    double borderRadius = 8,
-  }) {
-    return PlatformButton(
-      width: width ?? double.infinity,
-      height: rh(40),
-      isDisabled: isDisabled,
-      backgroundColor: backgroundColor ?? Theme.of(context).primaryColorDark,
-      borderRadius: BorderRadius.circular(rf(borderRadius)),
-      padding: EdgeInsets.symmetric(
-        horizontal: rw(hPadding),
-        vertical: rh(vPadding),
-      ),
-      onPressed: isDisabled || isLoading ? () {} : onPressed,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            text.toUpperCase(),
-            style: Theme.of(context).textTheme.button,
-          ),
-          if (isLoading)
-            const FittedBox(child: CircularProgressIndicator())
-          else
-            Icon(
-              icon,
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-        ],
-      ),
-    );
-  }
-
   ///Flexible button
   ///
   ///[Default isLoading is false]
@@ -166,7 +118,7 @@ class Buttons {
           ? const FittedBox(child: CircularProgressIndicator())
           : Container(
               decoration: const BoxDecoration(
-                border: Border(bottom: BorderSide(width: 2)),
+                border: Border(bottom: BorderSide(width: 1.4)),
               ),
               child: Column(
                 children: [
@@ -174,6 +126,7 @@ class Buttons {
                     text,
                     style: Theme.of(context).textTheme.button!.copyWith(
                           color: Colors.black,
+                          fontWeight: FontWeight.w500,
                         ),
                   ),
                   SizedBox(height: rh(2)),
@@ -209,7 +162,6 @@ class Buttons {
     return PlatformButton(
       isDisabled: isDisabled,
       borderRadius: BorderRadius.circular(rf(borderRadius)),
-      backgroundColor: Colors.red,
       padding: EdgeInsets.only(
         top: top,
         right: right,

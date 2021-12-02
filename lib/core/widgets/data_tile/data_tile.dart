@@ -27,12 +27,14 @@ class DataTile extends StatelessWidget {
             children: <Widget>[
               UpperCaseText(
                 label,
-                style: Theme.of(context).textTheme.overline,
+                // style: Theme.of(context).textTheme.overline,
+                style: Theme.of(context).textTheme.subtitle2,
               ),
               SizedBox(height: rh(6)),
               UpperCaseText(
                 value,
-                style: Theme.of(context).textTheme.bodyText2,
+                // style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.headline4,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),

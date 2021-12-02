@@ -44,7 +44,7 @@ class CustomAppBar extends StatelessWidget {
         height: Scaffold.of(context).appBarMaxHeight,
         padding: EdgeInsets.only(
           top: rh(50),
-          bottom: rh(15),
+          bottom: rh(16),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

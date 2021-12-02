@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_widgets.dart';
-import '../wallet_init_screen/wallet_init_screen.dart';
+import '../tabs_screen/tabs_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -22,7 +22,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _next() {
-    Navigation.push(context, screen: const WalletInitScreen());
+    // Navigation.pushReplacement(context, screen: const WalletInitScreen());
+    Navigation.pushReplacement(context, screen: const TabsScreen());
   }
 
   @override

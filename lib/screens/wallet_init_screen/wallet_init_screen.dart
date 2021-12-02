@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../core/utils/utils.dart';
-import '../../core/widgets/activity_tile/activity_tile.dart';
-import '../../core/widgets/button/custom_outlined_button.dart';
-import '../../core/widgets/collection_list_tile/collection_list_tile.dart';
 import '../../core/widgets/custom_widgets.dart';
-import '../../core/widgets/data_info_chip/data_info_chip.dart';
-import '../../core/widgets/data_tile/data_tile.dart';
-import '../../core/widgets/nft_card/nft_card.dart';
-import '../../core/widgets/properties_chip/properties_chip.dart';
+import '../edit_user_info_screen/edit_user_info_screen.dart';
 
 class WalletInitScreen extends StatefulWidget {
   const WalletInitScreen({Key? key}) : super(key: key);
@@ -18,6 +12,25 @@ class WalletInitScreen extends StatefulWidget {
 }
 
 class _WalletInitScreenState extends State<WalletInitScreen> {
+  final TextEditingController _keyController = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  //Github source code
+  _navigateToGithub() {}
+
+  _next() {
+    if (_formKey.currentState!.validate()) {
+      Navigation.push(context, screen: const EditUserInfoScreen());
+    }
+  }
+
+  @override
+  void dispose() {
+    _keyController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,110 +38,68 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: space2x),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: rh(100)),
-              const CollectionListTile(
-                image: 'assets/images/collection-2.png',
-                title: 'Way into the woods',
-                subtitle: 'By Nature',
+              Center(
+                child: UpperCaseText(
+                  'Welcome to Builders of world',
+                  style: Theme.of(context).textTheme.headline2,
+                ),
               ),
-              SizedBox(height: rh(60)),
-              const BidTile(
-                text: 'Hrushikesh Kuklare',
-                isSelected: true,
-                value: '11.5 ETH',
+
+              SizedBox(height: rh(space4x)),
+
+              //HELPER TEXT
+              Text(
+                'We need your wallet access in order to sign Transactions and interact with Blockchain.',
+                style: Theme.of(context).textTheme.caption,
+                textAlign: TextAlign.center,
               ),
-              SizedBox(height: rh(16)),
-              const BidTile(
-                text: 'Hrushikesh Kuklare',
-                value: '11.5 ETH',
+
+              SizedBox(height: rh(space4x)),
+
+              Form(
+                key: _formKey,
+                child: CustomTextFormField(
+                  controller: _keyController,
+                  labelText: 'PRIVATE KEY',
+                  validator: validator,
+                ),
               ),
-              SizedBox(height: rh(60)),
-              Row(
-                children: const [
-                  Expanded(
-                    child: DataInfoChip(
-                      image: 'assets/images/collection-2.png',
-                      label: 'From collection',
-                      value: 'The minimalist',
-                    ),
-                  ),
-                  Expanded(
-                    child: DataInfoChip(
-                      image: 'assets/images/collection-3.png',
-                      label: 'Owned by',
-                      value: 'Roger Belson',
-                    ),
-                  ),
-                ],
+
+              SizedBox(height: rh(space3x)),
+
+              Buttons.flexible(
+                width: double.infinity,
+                context: context,
+                text: 'Next',
+                onPressed: _next,
               ),
-              SizedBox(height: rh(30)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: CustomOutlinedButton(
-                      text: 'Create Collection',
-                      onPressed: () {},
-                    ),
-                  ),
-                  SizedBox(width: rw(space2x)),
-                  Expanded(
-                    child: Buttons.flexible(
-                      // width: double.infinity,
-                      context: context,
-                      // isLoading: true,
-                      text: 'Place bid',
-                      onPressed: () {},
-                    ),
-                  ),
-                ],
+
+              SizedBox(height: rh(space5x)),
+
+              UpperCaseText(
+                "** Don't Worry **",
+                style: Theme.of(context).textTheme.headline2,
               ),
-              SizedBox(height: rh(30)),
+
+              SizedBox(height: rh(space3x)),
+
+              //PRIVACY
+              Text(
+                'We Don’t share your private key anywhere. it is stored locally on your device. Our code is publically available on github.',
+                style: Theme.of(context).textTheme.caption,
+                textAlign: TextAlign.center,
+              ),
+
+              SizedBox(height: rh(space3x)),
+
+              //GITHUB LINK
               Buttons.text(
                 context: context,
-                text: 'Create NFT',
-                onPressed: () {},
-              ),
-              SizedBox(height: rh(30)),
-              const ActivityTile(
-                action: 'Transfered',
-                from: 'Hrushikesh Kuklare',
-                to: 'Sumit Mahajan',
-                amount: '1.8 ETH',
-              ),
-              SizedBox(height: rh(30)),
-              const DataTile(
-                label: 'Contract Address',
-                value: '0xdB12fcd1849d409476729EaA454e8D599A4b5aE7',
-              ),
-              SizedBox(height: rh(30)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  PropertiesChip(
-                    label: 'Accessory',
-                    value: 'Headband',
-                    percent: '56%',
-                  ),
-                  PropertiesChip(
-                    label: 'Accessory',
-                    value: 'Chai',
-                    percent: '40%',
-                  ),
-                  PropertiesChip(
-                    label: 'Style',
-                    value: 'Coolish',
-                    percent: '16%',
-                  ),
-                ],
-              ),
-              SizedBox(height: rh(60)),
-              const NFTCard(
-                image: 'assets/images/nft-1.png',
-                title: 'Woven into fabric',
-                subtitle: 'Fabric Cloths',
+                text: 'Have a look at our code',
+                onPressed: _navigateToGithub,
               ),
             ],
           ),

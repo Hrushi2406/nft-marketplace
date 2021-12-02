@@ -22,9 +22,13 @@ class AppTheme {
       primaryColorLight: _primaryColor,
       errorColor: _errorColorLight,
       scaffoldBackgroundColor: _scaffoldColor,
+      brightness: Brightness.light,
       disabledColor: Colors.grey.withOpacity(0.50),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.black,
+      ),
+      tabBarTheme: const TabBarTheme(
+        labelColor: Colors.black,
       ),
       colorScheme: const ColorScheme.light().copyWith(
         primary: _primaryColor,
@@ -34,6 +38,7 @@ class AppTheme {
         error: _errorColorLight,
         surface: _surfaceColor,
         background: _scaffoldColor,
+        brightness: Brightness.light,
       ),
       textTheme: TextTheme(
         headline1: TextStyle(
@@ -109,6 +114,7 @@ class AppTheme {
         caption: GoogleFonts.inter(
           fontSize: rf(12),
           fontWeight: FontWeight.w400,
+          height: 1.6,
           letterSpacing: 0,
           color: Colors.black,
         ),
