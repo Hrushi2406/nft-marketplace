@@ -10,12 +10,14 @@ class VerifiedText extends StatelessWidget {
     required this.text,
     this.isVerified = false,
     this.isUpperCase = true,
+    this.style,
   }) : super(key: key);
 
   final String text;
 
   final bool isUpperCase;
   final bool isVerified;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class VerifiedText extends StatelessWidget {
           Flexible(
             child: UpperCaseText(
               text,
-              style: Theme.of(context).textTheme.headline3,
+              style: style ?? Theme.of(context).textTheme.headline3,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               // softWrap: false,

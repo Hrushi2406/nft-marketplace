@@ -119,6 +119,13 @@ class AppTheme {
           fontWeight: FontWeight.w600,
           color: Colors.white,
         ),
+        overline: TextStyle(
+          fontFamily: 'Outfit',
+          fontSize: rf(8),
+          fontWeight: FontWeight.w300,
+          letterSpacing: 0.96,
+          color: Colors.black,
+        ),
       ),
     );
   }
