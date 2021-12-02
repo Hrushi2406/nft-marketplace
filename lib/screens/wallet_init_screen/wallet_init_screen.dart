@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/utils/utils.dart';
 import '../../core/widgets/activity_tile/activity_tile.dart';
+import '../../core/widgets/button/custom_outlined_button.dart';
 import '../../core/widgets/collection_list_tile/collection_list_tile.dart';
 import '../../core/widgets/custom_widgets.dart';
 import '../../core/widgets/data_info_chip/data_info_chip.dart';
@@ -63,9 +64,31 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
                 ],
               ),
               SizedBox(height: rh(30)),
-              Buttons.expanded(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: CustomOutlinedButton(
+                      text: 'Create Collection',
+                      onPressed: () {},
+                    ),
+                  ),
+                  SizedBox(width: rw(space2x)),
+                  Expanded(
+                    child: Buttons.flexible(
+                      // width: double.infinity,
+                      context: context,
+                      // isLoading: true,
+                      text: 'Place bid',
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: rh(30)),
+              Buttons.text(
                 context: context,
-                text: 'Place bid',
+                text: 'Create NFT',
                 onPressed: () {},
               ),
               SizedBox(height: rh(30)),

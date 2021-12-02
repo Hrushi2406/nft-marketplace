@@ -104,12 +104,13 @@ class Buttons {
     Color? backgroundColor,
     bool isLoading = false,
     bool isDisabled = false,
-    double hPadding = 15,
-    double vPadding = 11,
+    double hPadding = 16,
+    double vPadding = 0,
     double borderRadius = 8,
   }) {
     return PlatformButton(
       width: width,
+      height: rh(40),
       isDisabled: isDisabled,
       backgroundColor: backgroundColor ?? Theme.of(context).primaryColorDark,
       borderRadius: BorderRadius.circular(rf(borderRadius)),
@@ -119,10 +120,19 @@ class Buttons {
       ),
       onPressed: isLoading || isDisabled ? () {} : onPressed,
       child: isLoading
-          ? const FittedBox(child: CircularProgressIndicator())
+          ? const FittedBox(
+              child: Padding(
+                padding: EdgeInsets.all(12.0),
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              ),
+            )
           : Text(
               text.toUpperCase(),
-              style: Theme.of(context).textTheme.button,
+              style: Theme.of(context).textTheme.button!.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
             ),
     );
   }
@@ -136,25 +146,39 @@ class Buttons {
     required VoidCallback onPressed,
     bool isLoading = false,
     bool isDisabled = false,
-    double hPadding = 15,
-    double vPadding = 11,
+    double left = 16,
+    double right = 16,
+    double top = 0,
+    double bottom = 0,
     double borderRadius = 8,
   }) {
     return PlatformButton(
       isDisabled: isDisabled,
       borderRadius: BorderRadius.circular(rf(borderRadius)),
-      padding: EdgeInsets.symmetric(
-        horizontal: rw(hPadding),
-        vertical: rh(vPadding),
+      padding: EdgeInsets.only(
+        left: rw(left),
+        right: rw(right),
+        top: rh(top),
+        bottom: rh(bottom),
       ),
       onPressed: isLoading || isDisabled ? () {} : onPressed,
       child: isLoading
           ? const FittedBox(child: CircularProgressIndicator())
-          : Text(
-              text.toUpperCase(),
-              style: Theme.of(context).textTheme.button!.copyWith(
-                    color: Colors.black,
+          : Container(
+              decoration: const BoxDecoration(
+                border: Border(bottom: BorderSide(width: 2)),
+              ),
+              child: Column(
+                children: [
+                  UpperCaseText(
+                    text,
+                    style: Theme.of(context).textTheme.button!.copyWith(
+                          color: Colors.black,
+                        ),
                   ),
+                  SizedBox(height: rh(2)),
+                ],
+              ),
             ),
     );
   }
@@ -185,6 +209,7 @@ class Buttons {
     return PlatformButton(
       isDisabled: isDisabled,
       borderRadius: BorderRadius.circular(rf(borderRadius)),
+      backgroundColor: Colors.red,
       padding: EdgeInsets.only(
         top: top,
         right: right,
