@@ -1,200 +1,123 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 
 import 'package:flutter/material.dart';
-
-import '/core/utils/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:nfts/core/utils/utils.dart';
 
 class AppTheme {
   ///LIGHT MODE
   ///
+  static const Color _scaffoldColor = Color(0xfff9f9f9);
+  static const Color _surfaceColor = Color(0xffF0F0F0);
 
-  static const Color _scaffoldColorLight = Color(0xffffffff);
-
-  static const Color _primaryColorLight = Color(0xff6b705c);
-  static const Color _secondaryColorLight = Color(0xffcb997e);
+  static const Color _primaryColor = Color(0xff000000);
+  static const Color _secondaryColorLight = Color(0xff000000);
 
   static const Color _errorColorLight = Color(0xffb00020);
 
-  ///DARK MODE
-  ///
-  static const Color _scaffoldColorDark = Color(0xff121212);
-
-  static const Color _primaryColorDark = Color(0xffb7b7a4);
-  static const Color _secondaryColorDark = Color(0xffffe8d6);
-
-  static const Color _errorColorDark = Color(0xffcf6679);
-
   static ThemeData light() {
     return ThemeData.light().copyWith(
-      primaryColor: _primaryColorLight,
-      primaryColorDark: _primaryColorLight,
-      primaryColorLight: _primaryColorLight,
+      primaryColor: _primaryColor,
+      primaryColorDark: _primaryColor,
+      primaryColorLight: _primaryColor,
       errorColor: _errorColorLight,
-      scaffoldBackgroundColor: _scaffoldColorLight,
+      scaffoldBackgroundColor: _scaffoldColor,
       disabledColor: Colors.grey.withOpacity(0.50),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: Colors.white,
+        color: Colors.black,
       ),
       colorScheme: const ColorScheme.light().copyWith(
-        primary: _primaryColorLight,
-        primaryVariant: _primaryColorLight,
+        primary: _primaryColor,
+        primaryVariant: _primaryColor,
         secondary: _secondaryColorLight,
-        secondaryVariant: _scaffoldColorLight,
+        secondaryVariant: _scaffoldColor,
         error: _errorColorLight,
+        surface: _surfaceColor,
+        background: _scaffoldColor,
       ),
       textTheme: TextTheme(
         headline1: TextStyle(
-          fontSize: rf(32),
-          fontWeight: FontWeight.w900,
-          letterSpacing: -1.5,
+          fontFamily: 'Outfit',
+          fontSize: rf(14),
+          fontWeight: FontWeight.w800,
+          letterSpacing: 2,
           color: Colors.black,
         ),
         headline2: TextStyle(
-          fontSize: rf(28),
-          fontWeight: FontWeight.w800,
-          letterSpacing: -1.0,
+          fontFamily: 'Outfit',
+          fontSize: rf(14),
+          fontWeight: FontWeight.w600,
+          letterSpacing: 2,
           color: Colors.black,
         ),
         headline3: TextStyle(
-          fontSize: rf(24),
-          fontWeight: FontWeight.w800,
-          letterSpacing: -0.75,
+          fontFamily: 'Outfit',
+          fontSize: rf(12),
+          fontWeight: FontWeight.w600,
+          letterSpacing: 3.2,
           color: Colors.black,
         ),
         headline4: TextStyle(
-          fontSize: rf(20),
-          fontWeight: FontWeight.w800,
-          letterSpacing: -0.50,
+          fontFamily: 'Outfit',
+          fontSize: rf(12),
+          fontWeight: FontWeight.w500,
+          letterSpacing: 3.2,
           color: Colors.black,
         ),
         headline5: TextStyle(
-          fontSize: rf(18),
-          fontWeight: FontWeight.w800,
-          letterSpacing: -0.5,
-          color: Colors.black,
-        ),
-
-        headline6: TextStyle(
-          fontSize: rf(16),
-          fontWeight: FontWeight.w700,
-          letterSpacing: -0.25,
-          color: Colors.black,
-        ),
-        subtitle1: TextStyle(
-          fontSize: rf(16),
-          letterSpacing: 0.15,
-          color: Colors.black,
-        ),
-        subtitle2: TextStyle(
-          fontSize: rf(14),
-          letterSpacing: 0.1,
-          fontWeight: FontWeight.w600,
-          color: Colors.black,
-        ),
-        caption: TextStyle(
+          fontFamily: 'Outfit',
           fontSize: rf(12),
+          fontWeight: FontWeight.w400,
+          letterSpacing: 3.2,
+          color: Colors.black,
+        ),
+        headline6: TextStyle(
+          fontFamily: 'Outfit',
+          fontSize: rf(12),
+          fontWeight: FontWeight.w300,
+          letterSpacing: 3.2,
           color: Colors.black,
         ),
         bodyText1: TextStyle(
-          fontSize: rf(16),
-          letterSpacing: 0,
+          fontFamily: 'Outfit',
+          fontSize: rf(12),
+          fontWeight: FontWeight.w300,
+          letterSpacing: 3.2,
           color: Colors.black,
         ),
         bodyText2: TextStyle(
-          fontSize: rf(14),
-          letterSpacing: 0.25,
+          fontFamily: 'Outfit',
+          fontSize: rf(10),
+          fontWeight: FontWeight.w500,
+          letterSpacing: 3.2,
           color: Colors.black,
         ),
-
-        //BUTTON
+        subtitle1: TextStyle(
+          fontFamily: 'Outfit',
+          fontSize: rf(10),
+          fontWeight: FontWeight.w400,
+          letterSpacing: 3.2,
+          color: Colors.black,
+        ),
+        subtitle2: TextStyle(
+          fontFamily: 'Outfit',
+          fontSize: rf(10),
+          fontWeight: FontWeight.w300,
+          letterSpacing: 3.2,
+          color: Colors.black,
+        ),
+        caption: GoogleFonts.inter(
+          fontSize: rf(12),
+          fontWeight: FontWeight.w400,
+          letterSpacing: 0,
+          color: Colors.black,
+        ),
         button: TextStyle(
-          fontSize: rf(11),
-          letterSpacing: 1.25,
-          fontWeight: FontWeight.w700,
+          fontFamily: 'Outfit',
+          fontSize: rf(12),
+          letterSpacing: 2,
+          fontWeight: FontWeight.w600,
           color: Colors.white,
-        ),
-      ),
-    );
-  }
-
-  static ThemeData dark() {
-    return ThemeData.dark().copyWith(
-      primaryColor: _primaryColorDark,
-      primaryColorDark: _primaryColorDark,
-      primaryColorLight: _secondaryColorDark,
-      errorColor: _errorColorDark,
-      scaffoldBackgroundColor: _scaffoldColorDark,
-      disabledColor: Colors.grey.withOpacity(0.50),
-      splashColor: Colors.white.withOpacity(0.50),
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: Colors.white,
-      ),
-      colorScheme: const ColorScheme.dark().copyWith(
-        primary: _primaryColorDark,
-        primaryVariant: _primaryColorDark,
-        secondary: _secondaryColorDark,
-        secondaryVariant: _secondaryColorDark,
-        error: _errorColorDark,
-      ),
-      textTheme: TextTheme(
-        headline1: TextStyle(
-          fontSize: rf(32),
-          fontWeight: FontWeight.w900,
-          letterSpacing: -1.5,
-        ),
-        headline2: TextStyle(
-          fontSize: rf(28),
-          fontWeight: FontWeight.w800,
-          letterSpacing: -1.0,
-        ),
-        headline3: TextStyle(
-          fontSize: rf(24),
-          fontWeight: FontWeight.w800,
-          letterSpacing: -0.75,
-        ),
-        headline4: TextStyle(
-          fontSize: rf(20),
-          fontWeight: FontWeight.w800,
-          letterSpacing: -0.50,
-        ),
-        headline5: TextStyle(
-          fontSize: rf(18),
-          fontWeight: FontWeight.w800,
-          letterSpacing: -0.5,
-        ),
-
-        headline6: TextStyle(
-          fontSize: rf(16),
-          fontWeight: FontWeight.w700,
-          letterSpacing: -0.25,
-        ),
-        subtitle1: TextStyle(
-          fontSize: rf(16),
-          letterSpacing: 0.15,
-        ),
-        subtitle2: TextStyle(
-          fontSize: rf(14),
-          letterSpacing: 0.1,
-          fontWeight: FontWeight.w600,
-        ),
-        caption: TextStyle(
-          fontSize: rf(12),
-        ),
-        bodyText1: TextStyle(
-          fontSize: rf(16),
-          letterSpacing: 0,
-        ),
-        bodyText2: TextStyle(
-          fontSize: rf(14),
-          letterSpacing: 0.25,
-        ),
-
-        //BUTTON
-        button: TextStyle(
-          fontSize: rf(11),
-          letterSpacing: 1.25,
-          fontWeight: FontWeight.w700,
-          color: Colors.black,
         ),
       ),
     );

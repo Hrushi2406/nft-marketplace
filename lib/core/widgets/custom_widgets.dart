@@ -6,3 +6,4 @@ export 'loader/loading_indicator.dart';
 export 'open_sheet/open_bottom_sheet.dart';
 export 'open_sheet/open_date_picker.dart';
 export 'text_field/custom_text_form_field.dart';
+export 'uppercase_text/uppercase_text.dart';

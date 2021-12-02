@@ -7,8 +7,6 @@ import '../../utils/utils.dart';
 import '../custom_widgets.dart';
 import 'platform_button.dart';
 
-//TODO: Config according to designs
-
 class Buttons {
   ///Expanded Full Width Button
   ///
@@ -155,7 +153,7 @@ class Buttons {
           : Text(
               text.toUpperCase(),
               style: Theme.of(context).textTheme.button!.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
+                    color: Colors.black,
                   ),
             ),
     );
