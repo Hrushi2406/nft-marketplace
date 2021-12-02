@@ -175,7 +175,7 @@ class Buttons {
     String? svgPath,
     bool isLoading = false,
     bool isDisabled = false,
-    double size = 20,
+    double size = 24,
     double top = 0,
     double bottom = 0,
     double left = 0,

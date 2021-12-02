@@ -18,11 +18,11 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Timer(const Duration(milliseconds: 450), _next);
+    Timer(const Duration(milliseconds: 750), _next);
   }
 
   _next() {
-    Navigation.push(context, screen: const WalleInitScreen());
+    Navigation.push(context, screen: const WalletInitScreen());
   }
 
   @override
@@ -32,9 +32,11 @@ class _SplashScreenState extends State<SplashScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          UpperCaseText(
-            'NFT - Marketplace',
-            style: Theme.of(context).textTheme.headline2,
+          Center(
+            child: UpperCaseText(
+              'NFT - Marketplace',
+              style: Theme.of(context).textTheme.headline2,
+            ),
           ),
         ],
       ),

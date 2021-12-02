@@ -33,6 +33,7 @@ dependencies:
   flutter_svg: ^0.23.0+1
   get_it: ^7.2.0
   google_fonts: ^2.1.0
+  iconsax: ^0.0.8
   provider: ^6.0.1
   shared_preferences: ^2.0.9
 
@@ -50,8 +51,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/images/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
