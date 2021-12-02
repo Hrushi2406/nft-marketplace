@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../core/utils/utils.dart';
 import 'tabs/fav_tab.dart';
 import 'tabs/home_tab.dart';
 import 'tabs/user_tab.dart';
@@ -21,8 +20,8 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: space2x),
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 150),
         child: _tabs[_currentIndex],
       ),
       bottomNavigationBar: BottomNavBar(

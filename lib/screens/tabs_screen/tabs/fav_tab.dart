@@ -11,38 +11,48 @@ class FavTab extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: rh(70)),
+        SizedBox(height: rh(60)),
         Expanded(
           child: CustomTabBar(
             titles: const ['Collections', 'NFTS'],
             tabs: [
               //COLLECTION VIEW
               ListView.separated(
-                itemCount: 10,
+                itemCount: 3,
+                padding: const EdgeInsets.only(
+                  left: space2x,
+                  right: space2x,
+                  bottom: space3x,
+                ),
                 separatorBuilder: (BuildContext context, int index) {
                   return SizedBox(height: rh(space2x));
                 },
                 itemBuilder: (BuildContext context, int index) {
                   return CollectionListTile(
-                    image: 'assets/images/collection-2.png',
+                    image: 'assets/images/collection-${index + 1}.png',
                     title: 'Less is more',
                     subtitle: 'By The Minimalist',
                   );
                 },
               ),
 
-//NFT VIEW
-
+              //NFT VIEW
               ListView.separated(
-                itemCount: 10,
+                itemCount: 3,
+                padding: const EdgeInsets.only(
+                  left: space2x,
+                  right: space2x,
+                  bottom: space3x,
+                ),
                 separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(height: rh(space2x));
+                  return SizedBox(height: rh(space3x));
                 },
                 itemBuilder: (BuildContext context, int index) {
-                  return CollectionListTile(
-                    image: 'assets/images/collection-2.png',
+                  return NFTCard(
+                    image: 'assets/images/nft-${index + 1}.png',
                     title: 'Less is more',
                     subtitle: 'By The Minimalist',
+                    isFav: true,
                   );
                 },
               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../core/utils/utils.dart';
@@ -24,20 +25,23 @@ class BottomNavBar extends StatelessWidget {
       showUnselectedLabels: false,
       currentIndex: currentIndex,
       onTap: onTap,
-      items: const [
-        BottomNavigationBarItem(
+      items: [
+        const BottomNavigationBarItem(
           icon: Icon(Iconsax.home),
-          activeIcon: Icon(Iconsax.home5),
+          activeIcon: Icon(Iconsax.home_15),
           label: 'Home',
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           icon: Icon(Iconsax.heart),
           activeIcon: Icon(Iconsax.heart5),
           label: 'Favourite',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Iconsax.user),
-          activeIcon: Icon(Iconsax.user5),
+          icon: const Icon(Iconsax.user),
+          activeIcon: SvgPicture.asset(
+            "assets/images/user-active.svg",
+            width: rf(24),
+          ),
           label: 'Account',
         ),
       ],
