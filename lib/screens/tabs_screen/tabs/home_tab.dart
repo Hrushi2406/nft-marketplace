@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../core/utils/utils.dart';
 import '../../../core/widgets/custom_widgets.dart';
+import '../../collection_screen/collection_screen.dart';
+import '../../nft_screen/nft_screen.dart';
 import '../widgets/home_app_bar.dart';
 
 class HomeTab extends StatelessWidget {
@@ -37,10 +39,16 @@ class HomeTab extends StatelessWidget {
                 return SizedBox(height: rh(space2x));
               },
               itemBuilder: (BuildContext context, int index) {
-                return CollectionListTile(
-                  image: 'assets/images/collection-${index + 1}.png',
-                  title: 'Splash of happiness',
-                  subtitle: 'By Art Of Life',
+                return GestureDetector(
+                  onTap: () => Navigation.push(
+                    context,
+                    screen: const CollectionScreen(),
+                  ),
+                  child: CollectionListTile(
+                    image: 'assets/images/collection-${index + 1}.png',
+                    title: 'Less is More',
+                    subtitle: 'By The Minimalist',
+                  ),
                 );
               },
             ),
@@ -66,10 +74,15 @@ class HomeTab extends StatelessWidget {
                 return SizedBox(height: rh(space3x));
               },
               itemBuilder: (BuildContext context, int index) {
-                return NFTCard(
-                  image: 'assets/images/nft-${index + 1}.png',
-                  title: 'Woven Into Fabric',
-                  subtitle: 'Fabric Cloths',
+                return GestureDetector(
+                  onTap: () =>
+                      Navigation.push(context, screen: const NFTScreen()),
+                  child: NFTCard(
+                    heroTag: '$index',
+                    image: 'assets/images/nft-${index + 1}.png',
+                    title: 'Woven Into Fabric',
+                    subtitle: 'Fabric Cloths',
+                  ),
                 );
               },
             ),

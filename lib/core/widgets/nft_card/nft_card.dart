@@ -10,6 +10,7 @@ class NFTCard extends StatelessWidget {
     required this.image,
     required this.title,
     required this.subtitle,
+    this.heroTag = 'no-hero',
     this.isVerified = true,
     this.isFav = false,
   }) : super(key: key);
@@ -17,6 +18,7 @@ class NFTCard extends StatelessWidget {
   final String image;
   final String title;
   final String subtitle;
+  final String heroTag;
 
   final bool isVerified;
   final bool isFav;
@@ -27,13 +29,16 @@ class NFTCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         //NFT IMAGE
-        AspectRatio(
-          aspectRatio: 1,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(space1x),
-            child: Image.asset(
-              image,
-              fit: BoxFit.cover,
+        Hero(
+          tag: heroTag,
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(space1x),
+              child: Image.asset(
+                image,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
