@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nfts/screens/collection_screen/collection_screen.dart';
 
 import '../../../core/utils/utils.dart';
 import '../../../core/widgets/custom_widgets.dart';
@@ -23,15 +24,22 @@ class FavTab extends StatelessWidget {
                   left: space2x,
                   right: space2x,
                   bottom: space3x,
+                  top: space3x,
                 ),
                 separatorBuilder: (BuildContext context, int index) {
                   return SizedBox(height: rh(space2x));
                 },
                 itemBuilder: (BuildContext context, int index) {
-                  return CollectionListTile(
-                    image: 'assets/images/collection-${index + 1}.png',
-                    title: 'Less is more',
-                    subtitle: 'By The Minimalist',
+                  return GestureDetector(
+                    onTap: () => Navigation.push(
+                      context,
+                      screen: const CollectionScreen(),
+                    ),
+                    child: CollectionListTile(
+                      image: 'assets/images/collection-${index + 1}.png',
+                      title: 'Less is more',
+                      subtitle: 'By The Minimalist',
+                    ),
                   );
                 },
               ),
@@ -43,12 +51,14 @@ class FavTab extends StatelessWidget {
                   left: space2x,
                   right: space2x,
                   bottom: space3x,
+                  top: space3x,
                 ),
                 separatorBuilder: (BuildContext context, int index) {
                   return SizedBox(height: rh(space3x));
                 },
                 itemBuilder: (BuildContext context, int index) {
                   return NFTCard(
+                    onTap: () {},
                     image: 'assets/images/nft-${index + 1}.png',
                     title: 'Less is more',
                     subtitle: 'By The Minimalist',

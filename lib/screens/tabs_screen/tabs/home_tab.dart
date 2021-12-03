@@ -74,15 +74,13 @@ class HomeTab extends StatelessWidget {
                 return SizedBox(height: rh(space3x));
               },
               itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
+                return NFTCard(
                   onTap: () =>
                       Navigation.push(context, screen: const NFTScreen()),
-                  child: NFTCard(
-                    heroTag: '$index',
-                    image: 'assets/images/nft-${index + 1}.png',
-                    title: 'Woven Into Fabric',
-                    subtitle: 'Fabric Cloths',
-                  ),
+                  heroTag: '$index',
+                  image: 'assets/images/nft-${index + 1}.png',
+                  title: 'Woven Into Fabric',
+                  subtitle: 'Fabric Cloths',
                 );
               },
             ),

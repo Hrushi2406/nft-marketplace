@@ -126,7 +126,8 @@ class Scratch extends StatelessWidget {
                 ],
               ),
               SizedBox(height: rh(60)),
-              const NFTCard(
+              NFTCard(
+                onTap: () {},
                 image: 'assets/images/nft-2.png',
                 title: 'Woven into fabric',
                 subtitle: 'Fabric Cloths',

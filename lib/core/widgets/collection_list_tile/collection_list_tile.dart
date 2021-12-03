@@ -29,54 +29,68 @@ class CollectionListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      // child: Image.asset(name)
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          //Image Leading
-          ClipRRect(
-            borderRadius: BorderRadius.circular(space1x),
-            child: Image.asset(
-              image,
-              width: rw(56),
-              fit: BoxFit.cover,
+    return Hero(
+      tag: image,
+      flightShuttleBuilder: (
+        BuildContext flightContext,
+        Animation<double> animation,
+        HeroFlightDirection flightDirection,
+        BuildContext fromHeroContext,
+        BuildContext toHeroContext,
+      ) {
+        return SingleChildScrollView(
+          child: fromHeroContext.widget,
+        );
+      },
+      child: Container(
+        color: Colors.transparent,
+        // child: Image.asset(name)
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            //Image Leading
+            ClipRRect(
+              borderRadius: BorderRadius.circular(space1x),
+              child: Image.asset(
+                image,
+                width: rw(56),
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
 
-          SizedBox(width: rw(space2x)),
+            SizedBox(width: rw(space2x)),
 
-          //Text
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                VerifiedText(
-                  text: title,
-                  isVerified: isTitleVerified,
-                ),
-                SizedBox(height: rh(4)),
-                VerifiedText(
-                  text: subtitle,
-                  isUpperCase: false,
-                  isVerified: isSubtitleVerified,
-                ),
-              ],
+            //Text
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  VerifiedText(
+                    text: title,
+                    isVerified: isTitleVerified,
+                  ),
+                  SizedBox(height: rh(4)),
+                  VerifiedText(
+                    text: subtitle,
+                    isUpperCase: false,
+                    isVerified: isSubtitleVerified,
+                  ),
+                ],
+              ),
             ),
-          ),
 
-          SizedBox(width: rw(space1x)),
+            SizedBox(width: rw(space1x)),
 
-          // Trailing Icon
-          if (showFav)
-            Buttons.icon(
-              context: context,
-              icon: isFav ? Iconsax.heart5 : Iconsax.heart,
-              semanticLabel: 'Heart',
-              onPressed: () {},
-            ),
-        ],
+            // Trailing Icon
+            if (showFav)
+              Buttons.icon(
+                context: context,
+                icon: isFav ? Iconsax.heart5 : Iconsax.heart,
+                semanticLabel: 'Heart',
+                onPressed: () {},
+              ),
+          ],
+        ),
       ),
     );
   }

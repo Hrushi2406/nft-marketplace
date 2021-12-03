@@ -28,6 +28,12 @@ class _CustomTabBarState extends State<CustomTabBar>
   }
 
   @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +57,7 @@ class _CustomTabBarState extends State<CustomTabBar>
           ),
         ),
 
-        SizedBox(height: rh(space3x)),
+        // SizedBox(height: rh(space3x)),
         //TAB BAR VIEW
         Expanded(
           child: TabBarView(
