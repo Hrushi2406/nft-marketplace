@@ -31,11 +31,14 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^0.23.0+1
+  fluttertoast: ^8.0.8
   get_it: ^7.2.0
   google_fonts: ^2.1.0
   iconsax: ^0.0.8
+  image_picker: ^0.8.4+4
   provider: ^6.0.1
   shared_preferences: ^2.0.9
+  web3dart: ^2.3.3
 
 dev_dependencies:
   flutter_lints: ^1.0.0

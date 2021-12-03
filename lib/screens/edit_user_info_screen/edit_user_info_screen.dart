@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nfts/core/services/image_picker_service.dart';
 
 import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_widgets.dart';
@@ -20,7 +21,18 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
 
   final TextEditingController _twitterController = TextEditingController();
 
-  _pickImage() {}
+  String? _pickedImagePath;
+
+  _pickImage() async {
+    //Pick Image
+    final image = await ImagePickerService.pickImage();
+
+    if (image != null) {
+      _pickedImagePath = image;
+
+      setState(() {});
+    }
+  }
 
   _submit() {
     if (_formKey.currentState!.validate()) {
@@ -67,11 +79,19 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(space1x),
                       color: Theme.of(context).colorScheme.surface,
+                      image: _pickedImagePath == null
+                          ? null
+                          : DecorationImage(
+                              image: AssetImage(_pickedImagePath!),
+                              fit: BoxFit.cover,
+                            ),
                     ),
-                    child: UpperCaseText(
-                      '+ Add image',
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
+                    child: _pickedImagePath == null
+                        ? UpperCaseText(
+                            '+ Add image',
+                            style: Theme.of(context).textTheme.headline4,
+                          )
+                        : null,
                   ),
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:nfts/screens/edit_user_info_screen/edit_user_info_screen.dart';
 
 import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_widgets.dart';
@@ -23,7 +24,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _next() {
     // Navigation.pushReplacement(context, screen: const WalletInitScreen());
-    Navigation.pushReplacement(context, screen: const TabsScreen());
+    Navigation.pushReplacement(context, screen: const EditUserInfoScreen());
+    // Navigation.pushReplacement(context, screen: const TabsScreen());
   }
 
   @override
