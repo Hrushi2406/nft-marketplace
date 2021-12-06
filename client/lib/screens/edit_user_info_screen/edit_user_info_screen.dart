@@ -1,8 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:nfts/core/services/image_picker_service.dart';
-import 'package:nfts/core/services/wallet_service.dart';
 
 import '../../config.dart';
+import '../../core/services/image_picker_service.dart';
+import '../../core/services/ipfs_service.dart';
+import '../../core/services/wallet_service.dart';
 import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_widgets.dart';
 import '../tabs_screen/tabs_screen.dart';
@@ -28,9 +31,17 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
   _pickImage() async {
     //Pick Image
     final image = await ImagePickerService.pickImage();
+    // Image.
 
     if (image != null) {
-      _pickedImagePath = image;
+      _pickedImagePath = image.path;
+
+      final cid = await IPFSService().uploadImage(image.path);
+      IPFSService().uploadMetaData({
+        'name': 'NFT MARKET',
+        'description': 'Description',
+        'image': cid,
+      });
 
       setState(() {});
     }
@@ -52,6 +63,8 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
     );
   }
 
+  Uint8List? bytes;
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -59,6 +72,24 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
     _twitterController.dispose();
     super.dispose();
   }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    // ''
+    final response = await IPFSService()
+        .getJson('bafkreibkjkoeuo5a7zxaqkj6eev25c6yxo65urovphvgozds54dhh36wda');
+
+    final result = await IPFSService()
+        // .getImage('QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR');
+
+        .getImage(response['image']);
+
+    bytes = result.bodyBytes;
+    setState(() {});
+  }
+
+  _uploadImage() {}
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +105,13 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CustomAppBar(),
+              if (bytes != null)
+                Image.memory(
+                  bytes!,
+                  // width: 100,
+                  // height: 100,
+                ),
+
               SizedBox(height: rh(space1x)),
               Center(
                 child: GestureDetector(

@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 
 class ImagePickerService {
 //PICKER
-  static Future<String?> pickImage() async {
+  static Future<XFile?> pickImage() async {
     final ImagePicker _picker = ImagePicker();
 
     try {
@@ -21,7 +21,7 @@ class ImagePickerService {
         return null;
       } else {
         //Return Path
-        return image.path;
+        return image;
       }
     } catch (e) {
       debugPrint('Error at image picker: $e');
