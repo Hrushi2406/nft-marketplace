@@ -14,8 +14,7 @@ import 'package:http/http.dart' as http;
 const NFTSTORAGEAPIKEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEVDY0FBMGRGYkI4QmQ5Nzc3MDYxNTdmZTMyQUUyYTU2MGNFMzkwZjgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzODcwODg0ODYxOSwibmFtZSI6Ik5GVCBNYXJrZXRwbGFjZSJ9.wtt_vDthKSl9FTLgLGSqMQhutD2hZ90Njijvfz0kHc4";
 
-const GRPAHQL =
-    'https://api.thegraph.com/subgraphs/name/sumit-mahajan/nft-marketplace/graphql';
+const GRPAHQL = 'https://api.thegraph.com/subgraphs/name/sumit-mahajan/nft-marketplace/graphql';
 
 init() async {
   final client = Web3Client(
@@ -28,18 +27,15 @@ init() async {
       EthereumAddress.fromHex('0xEFFEf039cDDbc7d218Ddda702206a1bDd3E655e7');
 
   //ACTUAL DEPLOYER
-  final deployerAddress = EthPrivateKey.fromHex(
-      '0c098d1a7dcac1f0c1800eed5955efa3b3b343713608c5227b83b8551b6e597d');
-  final testAddress = EthPrivateKey.fromHex(
-      '65f09c28414604a2dc3c78df732db52d4a4fe96007e05db407a729963ab3eb9e');
+  final deployerAddress = EthPrivateKey.fromHex('0c098d1a7dcac1f0c1800eed5955efa3b3b343713608c5227b83b8551b6e597d');
+  final testAddress = EthPrivateKey.fromHex('65f09c28414604a2dc3c78df732db52d4a4fe96007e05db407a729963ab3eb9e');
 
   final owner = Owner(address: contractAddress, client: client);
 
   print(await owner.getOwner());
 
   // owner.ownerSetEvents();
-  final c =
-      DeployedContract(ContractAbi.fromJson(abi, 'Owner'), contractAddress);
+  final c = DeployedContract(ContractAbi.fromJson(abi, 'Owner'), contractAddress);
   // print(c.);
 
   try {
@@ -47,7 +43,7 @@ init() async {
 
     final service = GraphqlService();
 
-    print(await service.get(qCollection));
+    print(await service.get(qHome));
 
     print(await owner.getOwner());
     // http.post('https://ipfs.io/');
