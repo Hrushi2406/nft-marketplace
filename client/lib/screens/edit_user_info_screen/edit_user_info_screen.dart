@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nfts/core/services/image_picker_service.dart';
+import 'package:nfts/core/services/wallet_service.dart';
 
+import '../../config.dart';
 import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_widgets.dart';
 import '../tabs_screen/tabs_screen.dart';
@@ -60,6 +62,10 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    WalletService.generateRandomAccount();
+    WalletService.getPublicAddressFromKey();
+
+    init();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: space2x),

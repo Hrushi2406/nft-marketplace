@@ -1,0 +1,117 @@
+import 'dart:convert';
+import 'dart:math';
+import 'dart:typed_data';
+
+import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
+import 'config/gql_query.dart';
+import 'core/services/graphql_service.dart';
+import 'owner.dart';
+import 'owner.g.dart';
+import 'package:web3dart/web3dart.dart';
+import 'package:http/http.dart' as http;
+
+const NFTSTORAGEAPIKEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEVDY0FBMGRGYkI4QmQ5Nzc3MDYxNTdmZTMyQUUyYTU2MGNFMzkwZjgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzODcwODg0ODYxOSwibmFtZSI6Ik5GVCBNYXJrZXRwbGFjZSJ9.wtt_vDthKSl9FTLgLGSqMQhutD2hZ90Njijvfz0kHc4";
+
+const GRPAHQL =
+    'https://api.thegraph.com/subgraphs/name/sumit-mahajan/nft-marketplace/graphql';
+
+init() async {
+  final client = Web3Client(
+    'https://rpc-mumbai.maticvigil.com',
+    Client(),
+  );
+
+  final contractAddress =
+      // EthereumAddress.fromHex('0xb715C63EB20a32654BF7776bf270bd8eC443138a');
+      EthereumAddress.fromHex('0xEFFEf039cDDbc7d218Ddda702206a1bDd3E655e7');
+
+  //ACTUAL DEPLOYER
+  final deployerAddress = EthPrivateKey.fromHex(
+      '0c098d1a7dcac1f0c1800eed5955efa3b3b343713608c5227b83b8551b6e597d');
+  final testAddress = EthPrivateKey.fromHex(
+      '65f09c28414604a2dc3c78df732db52d4a4fe96007e05db407a729963ab3eb9e');
+
+  final owner = Owner(address: contractAddress, client: client);
+
+  print(await owner.getOwner());
+
+  // owner.ownerSetEvents();
+  final c =
+      DeployedContract(ContractAbi.fromJson(abi, 'Owner'), contractAddress);
+  // print(c.);
+
+  try {
+    final d = await deployerAddress.extractAddress();
+
+    final service = GraphqlService();
+
+    print(await service.get(qCollection));
+
+    print(await owner.getOwner());
+    // http.post('https://ipfs.io/');
+    // final a = await http.get('https://ipfs.io/');
+    // utf8.encode('Hello World!');
+
+    // final web3 =
+    // client.call(contract: c, function: c.function('owner'), params: []);
+
+    // final e = await client.sendTransaction(
+    //   deployerAddress,
+    //   Transaction.callContract(
+    //     contract: c,
+    //     function: c.function('changeOwner'),
+    //     parameters: [d],
+    //   ),
+    //   chainId: null,
+    //   fetchChainIdFromNetworkId: true,
+    // );
+    // uint8
+
+    final t = Transaction.callContract(
+      contract: c,
+      function: c.function('set'),
+      parameters: ['aadfadfafcsdfaafadfafafdafafaa', true],
+    );
+
+    // final a = FunctionType();
+
+    final a = await client.estimateGas(
+      sender: await testAddress.extractAddress(),
+      to: t.to,
+      // data: Uint8List.fromList([d].cast<int>()),
+      data: t.data,
+
+      // data: t.data,
+      // t.data,
+    );
+    print(a);
+    // print(
+    //   await client.estimateGas(
+    //     sender: await deployerAddress.extractAddress(),
+    //     to: contractAddress,
+    //     // data: Uint8List(1),
+    //     // data:
+    //     // amountOfGas: BigInt.from(10),
+    //   ),
+    // );
+    // client.e
+    // final a = await owner.changeOwner(
+    //   // await deployerAddress.extractAddress(),
+    //   // credentials: testAddress,
+    //   await testAddress.extractAddress(),
+    //   credentials: deployerAddress,
+    //   // transaction: Transaction(
+    //   //   maxGas: 1000,
+    //   //   gasPrice: EtherAmount.inWei(BigInt.from(100)),
+    //   //   // :
+    //   // ),
+    // );
+
+    // client.get
+    // print(a);
+  } catch (e) {
+    debugPrint('Error: $e');
+  }
+}
