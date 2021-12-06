@@ -18,7 +18,7 @@ class GraphqlService {
   }
 
   ///GET METHOD FOR GRAPHQL TO FETCH DATA
-  Future<Map<String, dynamic>?> get(
+  Future<Map<String, dynamic>> get(
     String query, [
     Map<String, dynamic>? variables,
   ]) async {
@@ -41,6 +41,6 @@ class GraphqlService {
     }
 
     //RETURN DATA
-    return result.data;
+    return result.data!;
   }
 }

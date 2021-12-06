@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/utils/utils.dart';
 import '../../../core/widgets/custom_widgets.dart';
+import '../../../provider/app_provider.dart';
 import '../../edit_user_info_screen/edit_user_info_screen.dart';
 
 class UserTab extends StatefulWidget {
@@ -21,15 +23,19 @@ class _UserTabState extends State<UserTab> with SingleTickerProviderStateMixin {
     _tabController = TabController(length: 2, vsync: this);
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
+  _logOut() {
+    Provider.of<AppProvider>(context, listen: false).logOut(context);
   }
 
   _createNFT() {}
 
   _createCollection() {}
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +108,14 @@ class _UserTabState extends State<UserTab> with SingleTickerProviderStateMixin {
                             context,
                             screen: const EditUserInfoScreen(),
                           ),
+                        ),
+                        Buttons.icon(
+                          context: context,
+                          // icon: Icons.exit_to_app_rounded,
+                          icon: Iconsax.logout,
+                          right: rw(space2x),
+                          semanticLabel: 'Share',
+                          onPressed: _logOut,
                         ),
                       ],
                     ),

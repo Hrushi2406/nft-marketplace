@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/utils/utils.dart';
 import '../../../core/widgets/custom_widgets.dart';
+import '../../../provider/wallet_provider.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({Key? key}) : super(key: key);
@@ -23,13 +25,17 @@ class HomeAppBar extends StatelessWidget {
               style: Theme.of(context).textTheme.overline,
             ),
             SizedBox(height: rh(2)),
-            UpperCaseText(
-              '6.8 MAT',
-              style: Theme.of(context).textTheme.headline2,
-            ),
+            Consumer<WalletProvider>(builder: (context, provider, child) {
+              return UpperCaseText(
+                formatBalance(provider.balance, 2) + ' MAT',
+                key: ValueKey(provider.balance),
+                style: Theme.of(context).textTheme.headline2,
+              );
+            }),
           ],
         ),
         SizedBox(width: rw(8)),
+
         SvgPicture.asset(
           'assets/images/wallet.svg',
           width: rf(32),

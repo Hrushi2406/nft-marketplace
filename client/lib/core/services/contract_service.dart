@@ -1,36 +1,50 @@
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:web3dart/web3dart.dart';
 
+import '../../config/config.dart';
+
 class ContractService {
-  final Web3Client client;
+  late final DeployedContract collection;
+  late final DeployedContract marketPlace;
 
-  ContractService(this.client);
-
-  get() async {
-    final c = DeployedContract(
-      ContractAbi.fromJson(jsonEncode({'as': 'asdf'}), 'asdf'),
-      EthereumAddress.fromHex('as'),
-    );
-
-    // c.event(name);
-    // client.sendTransaction(cred, transaction);
-    final transaction = Transaction.callContract(
-      contract: c,
-      function: c.function('a'),
-      parameters: [],
-    );
-    await client.call(contract: c, function: c.function(''), params: []);
-    // cli
+  ContractService() {
+    _init();
   }
 
-  // final owne
+  Future<void> _init() async {
+    //collection
+    collection = await _loadABI(
+      'assets/abi/Marketplace.json',
+      'Marketplace',
+      marketPlaceAddress,
+    );
 
-  // final
+    //Marketplace
+    marketPlace = await _loadABI(
+      'assets/abi/Marketplace.json',
+      'Marketplace',
+      marketPlaceAddress,
+    );
+  }
 
-  // send() {}
+  Future<DeployedContract> _loadABI(
+    String path,
+    String name,
+    String contractAddress,
+  ) async {
+    String abiString = await rootBundle.loadString(path);
 
-  // get(String name, List<dynamic> args) {
-  // client.call(contract: c, function: c.fun, params: params)
-  // }
+    final abiJson = jsonDecode(abiString);
+
+    final abi = jsonEncode(abiJson['abi']);
+
+    final contract = DeployedContract(
+      ContractAbi.fromJson(abi, name),
+      EthereumAddress.fromHex(contractAddress),
+    );
+
+    return contract;
+  }
 }

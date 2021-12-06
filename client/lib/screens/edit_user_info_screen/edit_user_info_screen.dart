@@ -1,13 +1,14 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:web3dart/web3dart.dart';
 
 import '../../config.dart';
 import '../../core/services/image_picker_service.dart';
-import '../../core/services/ipfs_service.dart';
-import '../../core/services/wallet_service.dart';
 import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_widgets.dart';
+import '../../provider/wallet_provider.dart';
 import '../tabs_screen/tabs_screen.dart';
 
 class EditUserInfoScreen extends StatefulWidget {
@@ -35,13 +36,6 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
 
     if (image != null) {
       _pickedImagePath = image.path;
-
-      final cid = await IPFSService().uploadImage(image.path);
-      IPFSService().uploadMetaData({
-        'name': 'NFT MARKET',
-        'description': 'Description',
-        'image': cid,
-      });
 
       setState(() {});
     }
@@ -76,26 +70,11 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    // ''
-    final response = await IPFSService()
-        .getJson('bafkreibkjkoeuo5a7zxaqkj6eev25c6yxo65urovphvgozds54dhh36wda');
-
-    final result = await IPFSService()
-        // .getImage('QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR');
-
-        .getImage(response['image']);
-
-    bytes = result.bodyBytes;
-    setState(() {});
+    // await Provider.of<WalletProvider>(context, listen: false).balance;
   }
-
-  _uploadImage() {}
 
   @override
   Widget build(BuildContext context) {
-    WalletService.generateRandomAccount();
-    WalletService.getPublicAddressFromKey();
-
     init();
     return Scaffold(
       body: Padding(
@@ -105,14 +84,9 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CustomAppBar(),
-              if (bytes != null)
-                Image.memory(
-                  bytes!,
-                  // width: 100,
-                  // height: 100,
-                ),
 
               SizedBox(height: rh(space1x)),
+
               Center(
                 child: GestureDetector(
                   onTap: _pickImage,
@@ -141,18 +115,27 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
               ),
 
               //USER ADDRESS INFO
-              SizedBox(height: rh(space4x)),
-              const DataTile(
-                label: 'Public Address',
-                value: '0x7E104F0dcB499eBcC8b680C2B83f3f35250445dE',
+              Consumer<WalletProvider>(
+                builder: (context, provider, child) {
+                  return Column(
+                    children: [
+                      SizedBox(height: rh(space4x)),
+                      DataTile(
+                        label: 'Public Address',
+                        value: provider.address.hex,
+                        // '0x7E104F0dcB499eBcC8b680C2B83f3f35250445dE',
+                      ),
+                      SizedBox(height: rh(space3x)),
+                      DataTile(
+                        label: 'Wallet Balance',
+                        value: formatBalance(provider.balance) + ' MAT',
+                        // '10 MAT - \$38 ',
+                      ),
+                      SizedBox(height: rh(space2x)),
+                    ],
+                  );
+                },
               ),
-              SizedBox(height: rh(space3x)),
-              const DataTile(
-                label: 'Wallet Balance',
-                value: '10 MAT - \$38 ',
-              ),
-              SizedBox(height: rh(space2x)),
-
               //INPUT
               Form(
                 key: _formKey,

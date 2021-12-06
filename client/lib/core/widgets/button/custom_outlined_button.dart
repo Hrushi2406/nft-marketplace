@@ -4,16 +4,22 @@ import '../../utils/utils.dart';
 import '../custom_widgets.dart';
 
 class CustomOutlinedButton extends StatelessWidget {
-  const CustomOutlinedButton(
-      {Key? key, required this.text, required this.onPressed})
-      : super(key: key);
+  const CustomOutlinedButton({
+    Key? key,
+    required this.text,
+    required this.onPressed,
+    this.width,
+  }) : super(key: key);
 
   final String text;
   final VoidCallback onPressed;
 
+  final double? width;
+
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
+      minWidth: width,
       height: rh(40),
       onPressed: onPressed,
       shape: RoundedRectangleBorder(

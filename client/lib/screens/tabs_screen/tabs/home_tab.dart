@@ -30,6 +30,38 @@ class HomeTab extends StatelessWidget {
 
             SizedBox(height: rh(space3x)),
 
+            // Consumer<AppProvider>(
+            //   builder: (context, provider, child) {
+            //     if (provider.state == AppState.loading) {
+            //       return const LoadingIndicator();
+            //     }
+
+            //     return ListView.separated(
+            //       itemCount: provider.topCollections.length,
+            //       padding: EdgeInsets.zero,
+            //       physics: const NeverScrollableScrollPhysics(),
+            //       shrinkWrap: true,
+            //       separatorBuilder: (BuildContext context, int index) {
+            //         return SizedBox(height: rh(space2x));
+            //       },
+            //       itemBuilder: (BuildContext context, int index) {
+            //         final collection = provider.topCollections[index];
+            //         print(collection.creator);
+            //         return GestureDetector(
+            //           onTap: () => Navigation.push(
+            //             context,
+            //             screen: const CollectionScreen(),
+            //           ),
+            //           child: CollectionListTile(
+            //             image: 'assets/images/collection-${index + 1}.png',
+            //             title: collection.name,
+            //             subtitle: 'By ${formatAddress(collection.creator)}',
+            //           ),
+            //         );
+            //       },
+            //     );
+            //   },
+            // ),
             ListView.separated(
               itemCount: 3,
               padding: EdgeInsets.zero,

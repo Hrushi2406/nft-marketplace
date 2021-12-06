@@ -9,6 +9,8 @@ const qHome = r'''
         name
         image
         creator
+        metadata
+        volumeOfEth
       }
       nfts(first: $first) {
         cAddress
@@ -17,6 +19,8 @@ const qHome = r'''
         image
         collectionName
         creator
+        metadata
+        owner
       }
     }
 ''';
@@ -88,14 +92,18 @@ const qCreator = r'''
         cAddress
         name
         image
+        metadata
+        volumeOfEth
       }
-      nfts(where: {owner: $uAddress}) {
+      nfts(where: {owner: $uAddress,creator_not:$uAddress}) {
         cAddress
         tokenId
         name
         image
         collectionName
         creator
+        metadata
+        owner
       }
     }
 ''';

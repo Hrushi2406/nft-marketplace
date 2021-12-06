@@ -2,11 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
-import 'core/services/gasprice_service.dart';
 import 'core/services/graphql_service.dart';
 import 'core/services/ipfs_service.dart';
-import 'owner.dart';
-import 'owner.g.dart';
 
 const NFTSTORAGEAPIKEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEVDY0FBMGRGYkI4QmQ5Nzc3MDYxNTdmZTMyQUUyYTU2MGNFMzkwZjgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzODcwODg0ODYxOSwibmFtZSI6Ik5GVCBNYXJrZXRwbGFjZSJ9.wtt_vDthKSl9FTLgLGSqMQhutD2hZ90Njijvfz0kHc4";
@@ -31,18 +28,32 @@ init() async {
     '65f09c28414604a2dc3c78df732db52d4a4fe96007e05db407a729963ab3eb9e',
   );
 
-  final owner = Owner(address: contractAddress, client: client);
+  // final owner = Owner(address: contractAddress, client: client);
+
+  // print(locator<ContractService>().collection.address);
 
 //
   // print(await owner.getOwner());
   // client.call(contract: contract, function: function, params: params)
 
   // owner.ownerSetEvents();
-  final c =
-      DeployedContract(ContractAbi.fromJson(abi, 'Owner'), contractAddress);
+  // final c =
+  // DeployedContract(ContractAbi.fromJson(abi, 'Owner'), contractAddress);
   // print(c.);
 
   try {
+    // final c = await loadCollectionContract();
+
+    // final result = await client.call(
+    //   contract: c,
+    //   function: c.function(fgetCollectionOverview),
+    //   params: [],
+    // );
+
+    // print(result);
+
+    // print('ADDRESS ' + c.address.toString());
+
     final d = await deployerAddress.extractAddress();
 
     final service = GraphqlService();
@@ -65,39 +76,39 @@ init() async {
     // final web3 =
     // client.call(contract: c, function: c.function('owner'), params: []);
 
-    final e = await client.sendTransaction(
-      deployerAddress,
-      Transaction.callContract(
-        contract: c,
-        function: c.function('changeOwner'),
-        parameters: [d],
-      ),
-      chainId: null,
-      fetchChainIdFromNetworkId: true,
-    );
+    // final e = await client.sendTransaction(
+    //   deployerAddress,
+    //   // Transaction.callContract(
+    //   //   contract: c,
+    //   //   function: c.function('changeOwner'),
+    //   //   parameters: [d],
+    //   // ),
+    //   chainId: null,
+    //   fetchChainIdFromNetworkId: true,
+    // );
     // uint8
 
-    final t = Transaction.callContract(
-      from: await testAddress.extractAddress(),
-      contract: c,
-      function: c.function('set'),
-      parameters: ['aadfadfafcsdfaafadfafafdafafaa', true],
-    );
+    // final t = Transaction.callContract(
+    //   from: await testAddress.extractAddress(),
+    //   contract: c,
+    //   function: c.function('set'),
+    //   parameters: ['aadfadfafcsdfaafadfafafdafafaa', true],
+    // );
 
-    final gasInfo = await GasPriceService(client, Client()).getGasInfo(t);
-    print(gasInfo);
+    // final gasInfo = await GasPriceService(client, Client()).getGasInfo(t);
+    // print(gasInfo);
     // final a = FunctionType();
 
-    final a = await client.estimateGas(
-      sender: await testAddress.extractAddress(),
-      to: t.to,
-      // data: Uint8List.fromList([d].cast<int>()),
-      data: t.data,
+    // final a = await client.estimateGas(
+    //   sender: await testAddress.extractAddress(),
+    //   to: t.to,
+    //   // data: Uint8List.fromList([d].cast<int>()),
+    //   data: t.data,
 
-      // data: t.data,
-      // t.data,
-    );
-    print(a);
+    //   // data: t.data,
+    //   // t.data,
+    // );
+    // print(a);
     // print(
     //   await client.estimateGas(
     //     sender: await deployerAddress.extractAddress(),
