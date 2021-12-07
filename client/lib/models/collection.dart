@@ -6,6 +6,7 @@ class Collection {
   final String image;
   final String creator;
   final String metadata;
+  final int nItems;
   final int volumeOfEth;
 
   const Collection({
@@ -14,6 +15,7 @@ class Collection {
     required this.image,
     required this.creator,
     required this.metadata,
+    required this.nItems,
     required this.volumeOfEth,
   });
 
@@ -23,6 +25,7 @@ class Collection {
     String? image,
     String? creator,
     String? metadata,
+    int? nItems,
     int? volumeOfEth,
   }) {
     return Collection(
@@ -31,6 +34,7 @@ class Collection {
       image: image ?? this.image,
       creator: creator ?? this.creator,
       metadata: metadata ?? this.metadata,
+      nItems: nItems ?? this.nItems,
       volumeOfEth: volumeOfEth ?? this.volumeOfEth,
     );
   }
@@ -42,6 +46,7 @@ class Collection {
       'image': image,
       'creator': creator,
       'metadata': metadata,
+      'nItems': nItems,
       'volumeOfEth': volumeOfEth,
     };
   }
@@ -53,6 +58,7 @@ class Collection {
       image: map['image'],
       creator: map['creator'],
       metadata: map['metadata'],
+      nItems: map['nItems'],
       volumeOfEth: map['volumeOfEth'],
     );
   }
@@ -64,7 +70,7 @@ class Collection {
 
   @override
   String toString() {
-    return 'Collection(cAddress: $cAddress, name: $name, image: $image, creator: $creator, metadata: $metadata, volumeOfEth: $volumeOfEth)';
+    return 'Collection(cAddress: $cAddress, name: $name, image: $image, creator: $creator, metadata: $metadata, nItems: $nItems, volumeOfEth: $volumeOfEth)';
   }
 
   @override
@@ -77,6 +83,7 @@ class Collection {
         other.image == image &&
         other.creator == creator &&
         other.metadata == metadata &&
+        other.nItems == nItems &&
         other.volumeOfEth == volumeOfEth;
   }
 
@@ -87,6 +94,7 @@ class Collection {
         image.hashCode ^
         creator.hashCode ^
         metadata.hashCode ^
+        nItems.hashCode ^
         volumeOfEth.hashCode;
   }
 }

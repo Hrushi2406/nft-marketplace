@@ -11,7 +11,7 @@ class SlideAnimation extends StatelessWidget {
     this.end = const Offset(0, 0),
     this.intervalStart = 0,
     this.intervalEnd = 1,
-    this.duration = const Duration(milliseconds: 750),
+    this.duration = const Duration(milliseconds: 250),
     this.curve = Curves.fastOutSlowIn,
   }) : super(key: key);
 

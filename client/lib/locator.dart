@@ -6,8 +6,11 @@ import 'package:web3dart/web3dart.dart';
 import 'config/config.dart';
 import 'core/services/contract_service.dart';
 import 'core/services/graphql_service.dart';
+import 'core/services/ipfs_service.dart';
 import 'core/services/wallet_service.dart';
 import 'provider/app_provider.dart';
+import 'provider/collection_provider.dart';
+import 'provider/creator_provider.dart';
 import 'provider/wallet_provider.dart';
 
 final locator = GetIt.instance;
@@ -15,13 +18,16 @@ final locator = GetIt.instance;
 Future<void> init() async {
   //PROVIDER
   locator.registerLazySingleton(
-      () => AppProvider(locator(), locator(), locator()));
+      () => AppProvider(locator(), locator(), locator(), locator()));
   locator.registerLazySingleton(() => WalletProvider(locator(), locator()));
+  locator.registerLazySingleton(() => CreatorProvider(locator(), locator()));
+  locator.registerLazySingleton(() => CollectionProvider(locator(), locator()));
 
   //SERVICES
   locator.registerSingleton<ContractService>(ContractService());
   locator.registerLazySingleton(() => WalletService(locator()));
   locator.registerLazySingleton(() => GraphqlService());
+  locator.registerLazySingleton(() => IPFSService(locator()));
 
   //CONFIG
   locator.registerLazySingleton(() => http.Client());

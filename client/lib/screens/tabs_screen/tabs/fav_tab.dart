@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/screens/collection_screen/collection_screen.dart';
 
 import '../../../core/utils/utils.dart';
 import '../../../core/widgets/custom_widgets.dart';
@@ -33,7 +32,7 @@ class FavTab extends StatelessWidget {
                   return GestureDetector(
                     onTap: () => Navigation.push(
                       context,
-                      screen: const CollectionScreen(),
+                      // screen: const CollectionScreen(),
                     ),
                     child: CollectionListTile(
                       image: 'assets/images/collection-${index + 1}.png',

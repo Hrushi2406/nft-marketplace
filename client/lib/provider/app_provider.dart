@@ -10,6 +10,7 @@ import '../core/utils/utils.dart';
 import '../models/collection.dart';
 import '../models/nft.dart';
 import '../screens/create_wallet_screen/create_wallet_screen.dart';
+import 'creator_provider.dart';
 import 'wallet_provider.dart';
 
 enum AppState { empty, loading, loaded, success, error, unauthenticated }
@@ -17,12 +18,14 @@ enum AppState { empty, loading, loaded, success, error, unauthenticated }
 class AppProvider with ChangeNotifier {
   final WalletService _walletService;
   final WalletProvider _walletProvider;
+  final CreatorProvider _creatorProvider;
   final GraphqlService _graphql;
 
   AppProvider(
     this._walletService,
     this._walletProvider,
     this._graphql,
+    this._creatorProvider,
   );
 
   //APP PROVIDER VAR
@@ -31,7 +34,7 @@ class AppProvider with ChangeNotifier {
 
   //HOME PAGE
   List<Collection> topCollections = [];
-  List<NFT> featuredNFT = [];
+  List<NFT> featuredNFTs = [];
 
   //CREATOR PAGE
   List<Collection> userCreatedCollections = [];
@@ -49,8 +52,11 @@ class AppProvider with ChangeNotifier {
     } else {
       //FIRST - INITIALIZE WALLET
       await _walletProvider.initializeWallet();
-      //
-      fetchInitialData();
+      //HOME SCREEN DATA
+      await fetchInitialData();
+
+      //FETCH USER PAGES DATA
+      _creatorProvider.fetchCreatorInfo(_walletProvider.address);
 
       _handleLoaded();
     }
@@ -71,7 +77,7 @@ class AppProvider with ChangeNotifier {
         .toList();
 
     //Model NFTS
-    featuredNFT =
+    featuredNFTs =
         data['nfts'].map<NFT>((collection) => NFT.fromMap(collection)).toList();
 
     _handleLoaded();

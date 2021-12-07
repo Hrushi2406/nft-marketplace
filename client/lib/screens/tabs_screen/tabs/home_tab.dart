@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/utils/utils.dart';
 import '../../../core/widgets/custom_widgets.dart';
+import '../../../provider/app_provider.dart';
 import '../../collection_screen/collection_screen.dart';
 import '../../nft_screen/nft_screen.dart';
 import '../widgets/home_app_bar.dart';
@@ -30,60 +32,59 @@ class HomeTab extends StatelessWidget {
 
             SizedBox(height: rh(space3x)),
 
-            // Consumer<AppProvider>(
-            //   builder: (context, provider, child) {
-            //     if (provider.state == AppState.loading) {
-            //       return const LoadingIndicator();
-            //     }
+            Consumer<AppProvider>(
+              builder: (context, provider, child) {
+                if (provider.state == AppState.loading) {
+                  return const LoadingIndicator();
+                }
 
-            //     return ListView.separated(
-            //       itemCount: provider.topCollections.length,
-            //       padding: EdgeInsets.zero,
-            //       physics: const NeverScrollableScrollPhysics(),
-            //       shrinkWrap: true,
-            //       separatorBuilder: (BuildContext context, int index) {
-            //         return SizedBox(height: rh(space2x));
-            //       },
-            //       itemBuilder: (BuildContext context, int index) {
-            //         final collection = provider.topCollections[index];
-            //         print(collection.creator);
-            //         return GestureDetector(
-            //           onTap: () => Navigation.push(
-            //             context,
-            //             screen: const CollectionScreen(),
-            //           ),
-            //           child: CollectionListTile(
-            //             image: 'assets/images/collection-${index + 1}.png',
-            //             title: collection.name,
-            //             subtitle: 'By ${formatAddress(collection.creator)}',
-            //           ),
-            //         );
-            //       },
-            //     );
-            //   },
-            // ),
-            ListView.separated(
-              itemCount: 3,
-              padding: EdgeInsets.zero,
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(height: rh(space2x));
-              },
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () => Navigation.push(
-                    context,
-                    screen: const CollectionScreen(),
-                  ),
-                  child: CollectionListTile(
-                    image: 'assets/images/collection-${index + 1}.png',
-                    title: 'Less is More',
-                    subtitle: 'By The Minimalist',
-                  ),
+                return ListView.separated(
+                  itemCount: provider.topCollections.length,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(height: rh(space2x));
+                  },
+                  itemBuilder: (BuildContext context, int index) {
+                    final collection = provider.topCollections[index];
+                    return GestureDetector(
+                      onTap: () => Navigation.push(
+                        context,
+                        screen: CollectionScreen(collection: collection),
+                      ),
+                      child: CollectionListTile(
+                        image: collection.image,
+                        title: collection.name,
+                        subtitle: 'By ${formatAddress(collection.creator)}',
+                      ),
+                    );
+                  },
                 );
               },
             ),
+            // ListView.separated(
+            //   itemCount: 3,
+            //   padding: EdgeInsets.zero,
+            //   physics: const NeverScrollableScrollPhysics(),
+            //   shrinkWrap: true,
+            //   separatorBuilder: (BuildContext context, int index) {
+            //     return SizedBox(height: rh(space2x));
+            //   },
+            //   itemBuilder: (BuildContext context, int index) {
+            //     return GestureDetector(
+            //       onTap: () => Navigation.push(
+            //         context,
+            //         screen: const CollectionScreen(),
+            //       ),
+            //       child: CollectionListTile(
+            //         image: 'assets/images/collection-${index + 1}.png',
+            //         title: 'Less is More',
+            //         subtitle: 'By The Minimalist',
+            //       ),
+            //     );
+            //   },
+            // ),
 
             SizedBox(height: rh(space3x)),
             const Divider(),
@@ -97,25 +98,52 @@ class HomeTab extends StatelessWidget {
 
             SizedBox(height: rh(space3x)),
 
-            ListView.separated(
-              itemCount: 3,
-              padding: EdgeInsets.zero,
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(height: rh(space3x));
-              },
-              itemBuilder: (BuildContext context, int index) {
-                return NFTCard(
-                  onTap: () =>
-                      Navigation.push(context, screen: const NFTScreen()),
-                  heroTag: '$index',
-                  image: 'assets/images/nft-${index + 1}.png',
-                  title: 'Woven Into Fabric',
-                  subtitle: 'Fabric Cloths',
+            Consumer<AppProvider>(
+              builder: (context, provider, child) {
+                return ListView.separated(
+                  itemCount: provider.featuredNFTs.length,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(height: rh(space3x));
+                  },
+                  itemBuilder: (BuildContext context, int index) {
+                    final nft = provider.featuredNFTs[index];
+
+                    return NFTCard(
+                      onTap: () =>
+                          Navigation.push(context, screen: NFTScreen(nft: nft)),
+                      heroTag: nft.image,
+                      // image: 'assets/images/nft-${index + 1}.png',
+                      image: nft.image,
+                      title: nft.name,
+                      subtitle: nft.collectionName,
+                    );
+                  },
                 );
               },
             ),
+
+            // ListView.separated(
+            //   itemCount: 3,
+            //   padding: EdgeInsets.zero,
+            //   physics: const NeverScrollableScrollPhysics(),
+            //   shrinkWrap: true,
+            //   separatorBuilder: (BuildContext context, int index) {
+            //     return SizedBox(height: rh(space3x));
+            //   },
+            //   itemBuilder: (BuildContext context, int index) {
+            //     return NFTCard(
+            //       onTap: () =>
+            //           Navigation.push(context, screen: const NFTScreen()),
+            //       heroTag: '$index',
+            //       image: 'assets/images/nft-${index + 1}.png',
+            //       title: 'Woven Into Fabric',
+            //       subtitle: 'Fabric Cloths',
+            //     );
+            //   },
+            // ),
 
             SizedBox(height: rh(space3x)),
           ],

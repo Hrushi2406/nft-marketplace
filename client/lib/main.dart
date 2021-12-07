@@ -6,6 +6,8 @@ import 'core/utils/size_config.dart';
 import 'locator.dart';
 import 'locator.dart' as di;
 import 'provider/app_provider.dart';
+import 'provider/collection_provider.dart';
+import 'provider/creator_provider.dart';
 import 'provider/wallet_provider.dart';
 import 'screens/splash_screen/splash_screen.dart';
 
@@ -28,6 +30,8 @@ class MyApp extends StatelessWidget {
           create: (_) => locator<AppProvider>()..initialize(),
         ),
         ChangeNotifierProvider(create: (_) => locator<WalletProvider>()),
+        ChangeNotifierProvider(create: (_) => locator<CreatorProvider>()),
+        ChangeNotifierProvider(create: (_) => locator<CollectionProvider>()),
       ],
       child: SizeConfiguration(
         designSize: const Size(375, 812),

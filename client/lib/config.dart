@@ -3,7 +3,6 @@ import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
 import 'core/services/graphql_service.dart';
-import 'core/services/ipfs_service.dart';
 
 const NFTSTORAGEAPIKEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEVDY0FBMGRGYkI4QmQ5Nzc3MDYxNTdmZTMyQUUyYTU2MGNFMzkwZjgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzODcwODg0ODYxOSwibmFtZSI6Ik5GVCBNYXJrZXRwbGFjZSJ9.wtt_vDthKSl9FTLgLGSqMQhutD2hZ90Njijvfz0kHc4";
@@ -58,10 +57,10 @@ init() async {
 
     final service = GraphqlService();
 
-    final ipfs = IPFSService();
+    // final ipfs = IPFSService();
 
-    await ipfs
-        .getJson('bafkreigydklifqcmhdfbnuyaejcbjc46346wc7b6dqiz3a5d2n6dnbr2am');
+    // await ipfs
+    // .getJson('bafkreigydklifqcmhdfbnuyaejcbjc46346wc7b6dqiz3a5d2n6dnbr2am');
 
     // await ipfs
     // .get('bafybeihxyzvryabv2uwvyfn6p4d6qrxegpgkszyynylmgmlnlfl4kkuugq');

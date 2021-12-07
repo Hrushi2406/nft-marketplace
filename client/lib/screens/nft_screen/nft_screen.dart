@@ -3,10 +3,13 @@ import 'package:iconsax/iconsax.dart';
 
 import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_widgets.dart';
+import '../../models/nft.dart';
 import 'widgets/bottom_bar.dart';
 
 class NFTScreen extends StatefulWidget {
-  const NFTScreen({Key? key}) : super(key: key);
+  const NFTScreen({Key? key, required this.nft}) : super(key: key);
+
+  final NFT nft;
 
   @override
   _NFTScreenState createState() => _NFTScreenState();
@@ -121,7 +124,8 @@ class _NFTScreenState extends State<NFTScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         UpperCaseText(
-                          'The Art Of Racing In Rain',
+                          widget.nft.name,
+                          // 'The Art Of Racing In Rain',
                           style: Theme.of(context).textTheme.headline4,
                         ),
                         Buttons.icon(

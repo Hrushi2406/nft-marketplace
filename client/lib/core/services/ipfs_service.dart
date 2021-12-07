@@ -5,17 +5,18 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../config/config.dart';
 
 class IPFSService {
-  //Base Url
-  final String url = 'https://ipfs.io/ipfs/';
+  final SharedPreferences _prefs;
 
-  final nftStorageKey =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEVDY0FBMGRGYkI4QmQ5Nzc3MDYxNTdmZTMyQUUyYTU2MGNFMzkwZjgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzODcwODg0ODYxOSwibmFtZSI6Ik5GVCBNYXJrZXRwbGFjZSJ9.wtt_vDthKSl9FTLgLGSqMQhutD2hZ90Njijvfz0kHc4";
+  const IPFSService(this._prefs);
 
   Future<http.Response> getImage(String cid) async {
     try {
-      final response = await http.get(Uri.parse(url + cid));
+      final response = await http.get(Uri.parse(ipfsURL + cid));
 
       return response;
     } catch (e) {
@@ -27,9 +28,19 @@ class IPFSService {
 
   Future<Map<String, dynamic>> getJson(String cid) async {
     try {
-      final response = await http.get(Uri.parse(url + cid));
+      //CHECK FOR CACHE FIRST
+      final cache = _checkCache(cid);
+
+      if (cache != null) {
+        return jsonDecode(cache);
+      }
+
+      final response = await http.get(Uri.parse(ipfsURL + cid));
 
       final data = jsonDecode(response.body);
+
+      //CACHE RESPONSE
+      _cacheResponse(cid, response.body);
 
       return data;
     } catch (e) {
@@ -37,6 +48,19 @@ class IPFSService {
 
       rethrow;
     }
+  }
+
+  _checkCache(String cid) {
+    return _prefs.getString('getJson-$cid');
+  }
+
+  _cacheResponse(String cid, String body) async {
+    await _prefs.setString('getJson-$cid', body);
+
+    Timer(const Duration(seconds: 12), () async {
+      await _prefs.remove('getJson-$cid');
+      debugPrint('Removed cache');
+    });
   }
 
   Future<String> uploadMetaData(Map<String, dynamic> body) async {

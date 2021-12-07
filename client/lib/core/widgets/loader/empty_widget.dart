@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../custom_widgets.dart';
+
 class EmptyWidget extends StatelessWidget {
   const EmptyWidget({
     this.text = "Not found",
@@ -13,7 +15,7 @@ class EmptyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(
+      child: UpperCaseText(
         text,
         style: style,
       ),
