@@ -1,27 +1,26 @@
 import 'dart:math';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web3dart/web3dart.dart';
 
 class WalletService {
-  static generateRandomAccount() async {
-    //Random Genereated
-    final rng = Random.secure();
+  final SharedPreferences _prefs;
 
-    Credentials credentials = EthPrivateKey.createRandom(rng);
+  WalletService(this._prefs);
 
-    final address = await credentials.extractAddress();
+  //GENERATE RANDOM WALLET
+  Credentials generateRandomAccount() =>
+      EthPrivateKey.createRandom(Random.secure());
 
-    return address;
-  }
+  ///Retrieve cred from private key
+  Credentials initalizeWallet([String? key]) =>
+      EthPrivateKey.fromHex(key ?? getPrivateKey());
 
-  static Future<EthereumAddress> getPublicAddressFromKey(
-      [String? privateKey]) async {
-    Credentials credentials = EthPrivateKey.fromHex(
-      "65f09c28414604a2dc3c78df732db52d4a4fe96007e05db407a729963ab3eb9e",
-    );
+  ///Retrieve Private key from prefs
+  ///If not present send empty
+  String getPrivateKey() => _prefs.getString('user_private_key') ?? '';
 
-    final address = await credentials.extractAddress();
-
-    return address;
-  }
+  ///set private key
+  Future<void> setPrivateKey(String value) async =>
+      await _prefs.setString('user_private_key', value);
 }

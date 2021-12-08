@@ -9,6 +9,9 @@ const qHome = r'''
         name
         image
         creator
+        metadata
+        nItems
+        volumeOfEth
       }
       nfts(first: $first) {
         cAddress
@@ -17,6 +20,8 @@ const qHome = r'''
         image
         collectionName
         creator
+        metadata
+        owner
       }
     }
 ''';
@@ -27,18 +32,22 @@ const qCollection = r'''
     query collectionQuery($cAddress: String, $creator: String) {
       users(where: {uAddress: $creator}) {
         name
-      }
-      collections(where: {cAddress: $cAddress}) {
-        name
+        uAddress
         image
         metadata
         nItems
         volumeOfEth
       }
+
       nfts(where: {cAddress: $cAddress}) {
+        cAddress
         tokenId
         name
         image
+        collectionName
+        creator
+        metadata
+        owner
       }
     }
 ''';
@@ -50,6 +59,7 @@ const qNFT = r'''
       users(where: {uAddress: $creator}) {
         name
         image
+        uAddress
         metadata
       }
       nfts(where: {cAddress: $cAddress, tokenId: $tokenId}) {
@@ -82,6 +92,7 @@ const qCreator = r'''
     query creatorQuery($uAddress: String) {
       users(where: {uAddress: $uAddress}) {
         name
+        uAddress
         image
         metadata
       }
@@ -91,13 +102,15 @@ const qCreator = r'''
         image
         nItems
       }
-      nfts(where: {owner: $uAddress}) {
+      nfts(where: {owner: $uAddress,creator_not:$uAddress}) {
         cAddress
         tokenId
         name
         image
         collectionName
         creator
+        metadata
+        owner
       }
     }
 ''';

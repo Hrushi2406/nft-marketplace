@@ -1,10 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:nfts/core/services/image_picker_service.dart';
-import 'package:nfts/core/services/wallet_service.dart';
+import 'package:provider/provider.dart';
+import 'package:web3dart/web3dart.dart';
 
 import '../../config.dart';
+import '../../core/services/image_picker_service.dart';
 import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_widgets.dart';
+import '../../provider/wallet_provider.dart';
 import '../tabs_screen/tabs_screen.dart';
 
 class EditUserInfoScreen extends StatefulWidget {
@@ -28,9 +32,10 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
   _pickImage() async {
     //Pick Image
     final image = await ImagePickerService.pickImage();
+    // Image.
 
     if (image != null) {
-      _pickedImagePath = image;
+      _pickedImagePath = image.path;
 
       setState(() {});
     }
@@ -52,6 +57,8 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
     );
   }
 
+  Uint8List? bytes;
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -61,10 +68,13 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    WalletService.generateRandomAccount();
-    WalletService.getPublicAddressFromKey();
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    // await Provider.of<WalletProvider>(context, listen: false).balance;
+  }
 
+  @override
+  Widget build(BuildContext context) {
     init();
     return Scaffold(
       body: Padding(
@@ -74,7 +84,9 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CustomAppBar(),
+
               SizedBox(height: rh(space1x)),
+
               Center(
                 child: GestureDetector(
                   onTap: _pickImage,
@@ -103,18 +115,27 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
               ),
 
               //USER ADDRESS INFO
-              SizedBox(height: rh(space4x)),
-              const DataTile(
-                label: 'Public Address',
-                value: '0x7E104F0dcB499eBcC8b680C2B83f3f35250445dE',
+              Consumer<WalletProvider>(
+                builder: (context, provider, child) {
+                  return Column(
+                    children: [
+                      SizedBox(height: rh(space4x)),
+                      DataTile(
+                        label: 'Public Address',
+                        value: provider.address.hex,
+                        // '0x7E104F0dcB499eBcC8b680C2B83f3f35250445dE',
+                      ),
+                      SizedBox(height: rh(space3x)),
+                      DataTile(
+                        label: 'Wallet Balance',
+                        value: formatBalance(provider.balance) + ' MAT',
+                        // '10 MAT - \$38 ',
+                      ),
+                      SizedBox(height: rh(space2x)),
+                    ],
+                  );
+                },
               ),
-              SizedBox(height: rh(space3x)),
-              const DataTile(
-                label: 'Wallet Balance',
-                value: '10 MAT - \$38 ',
-              ),
-              SizedBox(height: rh(space2x)),
-
               //INPUT
               Form(
                 key: _formKey,

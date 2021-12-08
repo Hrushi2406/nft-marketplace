@@ -1,18 +1,40 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/animations/animations.dart';
 import '../../core/utils/utils.dart';
+import '../../core/widgets/custom_placeholder/custom_placeholder.dart';
 import '../../core/widgets/custom_widgets.dart';
+import '../../models/collection.dart';
+import '../../provider/collection_provider.dart';
 import '../nft_screen/nft_screen.dart';
 
 class CollectionScreen extends StatefulWidget {
-  const CollectionScreen({Key? key}) : super(key: key);
+  const CollectionScreen({Key? key, required this.collection})
+      : super(key: key);
+
+  final Collection collection;
 
   @override
   _CollectionScreenState createState() => _CollectionScreenState();
 }
 
 class _CollectionScreenState extends State<CollectionScreen> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    Provider.of<CollectionProvider>(context, listen: false)
+        .fetchCollectionMeta(widget.collection);
+  }
+
+  _openUrl(String url) async {
+    if (!await launch(url)) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,20 +44,26 @@ class _CollectionScreenState extends State<CollectionScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const CustomAppBar(),
+
             SizedBox(height: rh(space2x)),
 
             //LIST TILE
-            const CollectionListTile(
-              image: 'assets/images/collection-2.png',
-              title: 'Less is More',
-              subtitle: 'By The Minimalist',
+            CollectionListTile(
+              image: widget.collection.image,
+              title: widget.collection.name,
+              subtitle: 'By ' + formatAddress(widget.collection.creator),
             ),
             SizedBox(height: rh(space3x)),
 
             //DESCRIPTION
-            Text(
-              'UnknownCulturz is a unique limited series of 25 artworks which tells a story in the metaverse.',
-              style: Theme.of(context).textTheme.caption,
+            Consumer<CollectionProvider>(
+              builder: (context, provider, child) {
+                return Text(
+                  provider.metaData.description,
+                  // 'UnknownCulturz is a unique limited series of 25 artworks which tells a story in the metaverse.',
+                  style: Theme.of(context).textTheme.caption,
+                );
+              },
             ),
             SizedBox(height: rh(space3x)),
 
@@ -44,7 +72,8 @@ class _CollectionScreenState extends State<CollectionScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 UpperCaseText(
-                  '25 Items',
+                  // '25 Items',
+                  ' ${widget.collection.nItems} Items',
                   style: Theme.of(context).textTheme.headline4,
                 ),
                 UpperCaseText(
@@ -60,7 +89,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                   style: Theme.of(context).textTheme.headline4,
                 ),
                 UpperCaseText(
-                  '2 ETH Vol',
+                  '${widget.collection.volumeOfEth} ETH Vol',
                   style: Theme.of(context).textTheme.headline4,
                 ),
               ],
@@ -68,39 +97,52 @@ class _CollectionScreenState extends State<CollectionScreen> {
             SizedBox(height: rh(space3x)),
 
             //LINKS
-            Row(
-              children: <Widget>[
-                Buttons.icon(
-                  context: context,
-                  svgPath: 'assets/images/twitter.svg',
-                  right: rw(space2x),
-                  semanticLabel: 'twitter',
-                  onPressed: () {},
-                ),
-                Buttons.icon(
-                  context: context,
-                  icon: Iconsax.global5,
-                  right: rw(space2x),
-                  semanticLabel: 'Website',
-                  onPressed: () {},
-                ),
-                Buttons.icon(
-                  context: context,
-                  icon: Iconsax.share,
-                  right: rw(space2x),
-                  top: 0,
-                  bottom: 0,
-                  semanticLabel: 'Share',
-                  onPressed: () {},
-                ),
-                const Spacer(),
-                Buttons.text(
-                  context: context,
-                  right: 0,
-                  text: 'Create NFT',
-                  onPressed: () {},
-                ),
-              ],
+            Consumer<CollectionProvider>(
+              builder: (context, provider, child) {
+                final metaData = provider.metaData;
+                return Row(
+                  children: <Widget>[
+                    if (metaData.twitterUrl.isNotEmpty)
+                      SlideAnimation(
+                        begin: const Offset(-60, 0),
+                        child: Buttons.icon(
+                          context: context,
+                          svgPath: 'assets/images/twitter.svg',
+                          right: rw(space2x),
+                          semanticLabel: 'twitter',
+                          onPressed: () => _openUrl(metaData.twitterUrl),
+                        ),
+                      ),
+                    if (metaData.websiteUrl.isNotEmpty)
+                      SlideAnimation(
+                        begin: const Offset(-40, 0),
+                        child: Buttons.icon(
+                          context: context,
+                          icon: Iconsax.global5,
+                          right: rw(space2x),
+                          semanticLabel: 'Website',
+                          onPressed: () => _openUrl(metaData.websiteUrl),
+                        ),
+                      ),
+                    Buttons.icon(
+                      context: context,
+                      icon: Iconsax.share,
+                      right: rw(space2x),
+                      top: 0,
+                      bottom: 0,
+                      semanticLabel: 'Share',
+                      onPressed: () {},
+                    ),
+                    const Spacer(),
+                    Buttons.text(
+                      context: context,
+                      right: 0,
+                      text: 'Create NFT',
+                      onPressed: () {},
+                    ),
+                  ],
+                );
+              },
             ),
 
             SizedBox(height: rh(space3x)),
@@ -115,29 +157,40 @@ class _CollectionScreenState extends State<CollectionScreen> {
             SizedBox(height: rh(space3x)),
 
             Expanded(
-              child: GridView.builder(
-                padding: EdgeInsets.zero,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1,
-                  mainAxisSpacing: rh(space2x),
-                  crossAxisSpacing: rw(space2x),
-                ),
-                itemCount: 3,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () =>
-                        Navigation.push(context, screen: const NFTScreen()),
-                    child: Hero(
-                      tag: '$index',
-                      child: _ItemsTile(
-                        index: index,
-                        title: 'Stuck in time',
+              child: Consumer<CollectionProvider>(
+                  builder: (context, provider, child) {
+                print(provider.state);
+                if (provider.state == CollectionState.loading) {
+                  return const LoadingIndicator();
+                } else if (provider.state == CollectionState.empty) {
+                  return const EmptyWidget(text: 'No Items ');
+                }
+                return GridView.builder(
+                  padding: EdgeInsets.zero,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 1,
+                    mainAxisSpacing: rh(space2x),
+                    crossAxisSpacing: rw(space2x),
+                  ),
+                  itemCount: provider.collectionItems.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final nft = provider.collectionItems[index];
+                    return GestureDetector(
+                      onTap: () =>
+                          Navigation.push(context, screen: NFTScreen(nft: nft)),
+                      child: Hero(
+                        tag: nft.image,
+                        child: _ItemsTile(
+                          image: nft.image,
+                          title: nft.name,
+                          // 'Stuck in time',
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                );
+              }),
             ),
           ],
         ),
@@ -149,21 +202,26 @@ class _CollectionScreenState extends State<CollectionScreen> {
 class _ItemsTile extends StatelessWidget {
   const _ItemsTile({
     Key? key,
-    required this.index,
+    required this.image,
     required this.title,
   }) : super(key: key);
 
-  final int index;
+  final String image;
   final String title;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        //BACGROUND IMAGE
+        //BACKGROUND IMAGE
         ClipRRect(
           borderRadius: BorderRadius.circular(space1x),
-          child: Image.asset('assets/images/nft-${index + 1}.png'),
+          child: CachedNetworkImage(
+            imageUrl: 'https://ipfs.io/ipfs/$image',
+            fit: BoxFit.cover,
+            placeholder: (_, url) => CustomPlaceHolder(size: rw(56)),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          ),
         ),
         //OverLay
         Align(
@@ -191,6 +249,7 @@ class _ItemsTile extends StatelessWidget {
             child: UpperCaseText(
               title,
               maxLines: 2,
+              textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context)
                   .textTheme

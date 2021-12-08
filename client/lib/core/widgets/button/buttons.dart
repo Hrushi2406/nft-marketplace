@@ -83,7 +83,7 @@ class Buttons {
           : Text(
               text.toUpperCase(),
               style: Theme.of(context).textTheme.button!.copyWith(
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                   ),
             ),
     );

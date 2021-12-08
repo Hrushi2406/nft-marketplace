@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:nfts/core/widgets/custom_placeholder/custom_placeholder.dart';
 
 import '../../utils/utils.dart';
 import '../custom_widgets.dart';
@@ -40,10 +42,16 @@ class NFTCard extends StatelessWidget {
               aspectRatio: 1,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(space1x),
-                child: Image.asset(
-                  image,
-                  fit: BoxFit.cover,
-                ),
+                child: image.contains('assets')
+                    ? Image.asset(
+                        image,
+                        fit: BoxFit.cover,
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: 'https://ipfs.io/ipfs/$image',
+                        fit: BoxFit.cover,
+                        placeholder: (_, url) => const CustomPlaceHolder(),
+                      ),
               ),
             ),
           ),

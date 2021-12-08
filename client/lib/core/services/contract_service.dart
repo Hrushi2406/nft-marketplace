@@ -1,15 +1,60 @@
+import 'dart:convert';
+
+import 'package:flutter/services.dart';
 import 'package:web3dart/web3dart.dart';
 
+import '../../config/config.dart';
+
 class ContractService {
-  // final Web3Client client;
+  late final DeployedContract collection;
+  late final DeployedContract marketPlace;
 
-  // final owne
+  ContractService() {
+    _init();
+  }
 
-  // final
+  Future<void> _init() async {
+    //collection
+    collection = await _loadABI(
+      'assets/abi/CustomERC721Collection.json',
+      'CustomERC721Collection',
+      marketPlaceAddress,
+    );
 
-  // send() {}
+    //Marketplace
+    marketPlace = await _loadABI(
+      'assets/abi/Marketplace.json',
+      'Marketplace',
+      marketPlaceAddress,
+    );
+  }
 
-  // get(String name, List<dynamic> args) {
-  //   client.call(contract: contract, function: function, params: params)
-  // }
+  Future<DeployedContract> _loadABI(
+    String path,
+    String name,
+    String contractAddress,
+  ) async {
+    String abiString = await rootBundle.loadString(path);
+
+    final abiJson = jsonDecode(abiString);
+
+    final abi = jsonEncode(abiJson['abi']);
+
+    final contract = DeployedContract(
+      ContractAbi.fromJson(abi, name),
+      EthereumAddress.fromHex(contractAddress),
+    );
+
+    return contract;
+  }
+
+//Load Collection Contract on the go
+  Future<DeployedContract> loadCollectionContract(
+    String contractAddress,
+  ) async =>
+      await _loadABI(
+        'assets/abi/CustomERC721Collection.json',
+        'CustomERC721Collection',
+        contractAddress,
+      );
 }

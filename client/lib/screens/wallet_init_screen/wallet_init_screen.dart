@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import '../edit_user_info_screen/edit_user_info_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_widgets.dart';
-import '../edit_user_info_screen/edit_user_info_screen.dart';
+import '../../provider/wallet_provider.dart';
 
 class WalletInitScreen extends StatefulWidget {
   const WalletInitScreen({Key? key}) : super(key: key);
@@ -21,7 +25,10 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
 
   _next() {
     if (_formKey.currentState!.validate()) {
-      Navigation.push(context, screen: const EditUserInfoScreen());
+      Provider.of<WalletProvider>(context, listen: false)
+          .initializeFromKey(_keyController.text);
+
+      // Navigation.push(context, screen: const EditUserInfoScreen());
     }
   }
 
@@ -61,10 +68,26 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
 
               Form(
                 key: _formKey,
-                child: CustomTextFormField(
-                  controller: _keyController,
-                  labelText: 'PRIVATE KEY',
-                  validator: validator,
+                child: Consumer<WalletProvider>(
+                  builder: (_, provider, child) {
+                    if (provider.state == WalletState.success) {
+                      scheduleMicrotask(() {
+                        Navigation.push(
+                          context,
+                          screen: const EditUserInfoScreen(),
+                        );
+                      });
+                    }
+
+                    return CustomTextFormField(
+                      controller: _keyController,
+                      labelText: 'PRIVATE KEY',
+                      validator: validator,
+                      errorText: provider.errMessage.isEmpty
+                          ? null
+                          : provider.errMessage.toUpperCase(),
+                    );
+                  },
                 ),
               ),
 

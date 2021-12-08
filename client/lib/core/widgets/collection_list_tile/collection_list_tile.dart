@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../utils/utils.dart';
+import '../custom_placeholder/custom_placeholder.dart';
 import '../custom_widgets.dart';
 import '../verified_text/verified_text.dart';
 
@@ -49,14 +51,28 @@ class CollectionListTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             //Image Leading
-            ClipRRect(
-              borderRadius: BorderRadius.circular(space1x),
-              child: Image.asset(
-                image,
-                width: rw(56),
-                fit: BoxFit.cover,
-              ),
-            ),
+
+            !image.contains('assets')
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(space1x),
+                    child: CachedNetworkImage(
+                      imageUrl: 'https://ipfs.io/ipfs/$image',
+                      width: rf(56),
+                      height: rf(56),
+                      fit: BoxFit.cover,
+                      placeholder: (_, url) => CustomPlaceHolder(size: rw(56)),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(space1x),
+                    child: Image.asset(
+                      image,
+                      width: rw(56),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
 
             SizedBox(width: rw(space2x)),
 
