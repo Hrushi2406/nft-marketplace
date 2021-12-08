@@ -1,10 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:nfts/core/widgets/custom_placeholder/custom_placeholder.dart';
+import 'package:nfts/provider/nft_provider.dart';
+import 'package:nfts/screens/nft_screen/widgets/contract_details_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_widgets.dart';
 import '../../models/nft.dart';
+import 'widgets/activity_widget.dart';
 import 'widgets/bottom_bar.dart';
+import 'widgets/properties_widget.dart';
 
 class NFTScreen extends StatefulWidget {
   const NFTScreen({Key? key, required this.nft}) : super(key: key);
@@ -16,6 +23,13 @@ class NFTScreen extends StatefulWidget {
 }
 
 class _NFTScreenState extends State<NFTScreen> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Provider.of<NFTProvider>(context, listen: false)
+        .fetchNFTMetadata(widget.nft);
+  }
+
   _openBids() {
     showModalBottomSheet(
       context: context,
@@ -108,12 +122,19 @@ class _NFTScreenState extends State<NFTScreen> {
 
                     //IMAGE
                     Hero(
-                      tag: '2',
+                      tag: widget.nft.image,
                       child: AspectRatio(
                         aspectRatio: 1,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(space1x),
-                          child: Image.asset('assets/images/nft-3.png'),
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                'https://ipfs.io/ipfs/${widget.nft.image}',
+                            fit: BoxFit.cover,
+                            placeholder: (_, url) => const CustomPlaceHolder(),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
                         ),
                       ),
                     ),
@@ -125,12 +146,12 @@ class _NFTScreenState extends State<NFTScreen> {
                       children: [
                         UpperCaseText(
                           widget.nft.name,
-                          // 'The Art Of Racing In Rain',
                           style: Theme.of(context).textTheme.headline4,
                         ),
                         Buttons.icon(
                           context: context,
                           icon: Iconsax.heart,
+                          size: rf(18),
                           semanticLabel: 'Heart',
                           onPressed: () {},
                         )
@@ -145,19 +166,22 @@ class _NFTScreenState extends State<NFTScreen> {
 
                     //OWNER INFO
                     Row(
-                      children: const [
+                      children: [
                         Expanded(
                           child: DataInfoChip(
                             image: 'assets/images/collection-2.png',
+                            // image: widget.nft
                             label: 'From collection',
-                            value: 'The minimalist',
+                            value: widget.nft.collectionName,
+                            // 'The minimalist',
                           ),
                         ),
                         Expanded(
                           child: DataInfoChip(
                             image: 'assets/images/collection-3.png',
                             label: 'Owned by',
-                            value: 'Roger Belson',
+                            value: formatAddress(widget.nft.owner),
+                            // 'The minimalist',
                           ),
                         ),
                       ],
@@ -168,98 +192,14 @@ class _NFTScreenState extends State<NFTScreen> {
                     SizedBox(height: rh(space2x)),
 
                     //PROPERTIES
-                    UpperCaseText(
-                      'PROPERTIES',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    SizedBox(height: rh(space2x)),
-
-                    Wrap(
-                      spacing: rw(12),
-                      runSpacing: rh(12),
-                      children: const [
-                        PropertiesChip(
-                          label: 'Accessory',
-                          value: 'Headband',
-                          percent: '56%',
-                        ),
-                        PropertiesChip(
-                          label: 'Accessory',
-                          value: 'Chai',
-                          percent: '40%',
-                        ),
-                        PropertiesChip(
-                          label: 'Style',
-                          value: 'Coolish',
-                          percent: '16%',
-                        ),
-                        PropertiesChip(
-                          label: 'Accessory',
-                          value: 'Something',
-                          percent: '12%',
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: rh(space2x)),
-                    const Divider(),
-                    SizedBox(height: rh(space2x)),
+                    const PropertiesWidget(),
 
                     //ACTIVITY
-                    UpperCaseText(
-                      'Activity',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    SizedBox(height: rh(space3x)),
-
-                    ListView.separated(
-                      itemCount: 4,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      separatorBuilder: (BuildContext context, int index) {
-                        return SizedBox(height: rh(space3x));
-                      },
-                      itemBuilder: (BuildContext context, int index) {
-                        return const ActivityTile(
-                          action: 'Transfered',
-                          from: 'Hrushikesh Kuklare',
-                          to: 'Sumit Mahajan',
-                          amount: '1.8 ETH',
-                        );
-                      },
-                    ),
-
-                    SizedBox(height: rh(space2x)),
-                    const Divider(),
-                    SizedBox(height: rh(space2x)),
+                    const ActivityWidget(),
 
                     //CONTRACT DETAILS
-                    UpperCaseText(
-                      'Contract Details',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    SizedBox(height: rh(space3x)),
+                    ContractDetailsWidget(nft: widget.nft),
 
-                    const DataTile(
-                      label: 'Contract Address',
-                      value: '0xdB12fcd1849d409476729EaA454e8D599A4b5aE7',
-                    ),
-                    SizedBox(height: rh(space2x)),
-                    const DataTile(
-                      label: 'Token id',
-                      value: '1028',
-                    ),
-                    SizedBox(height: rh(space2x)),
-                    const DataTile(
-                      label: 'Token Standard',
-                      value: 'ERC 721',
-                    ),
-                    SizedBox(height: rh(space2x)),
-                    const DataTile(
-                      label: 'Blockchain',
-                      value: 'Ethereum',
-                    ),
                     SizedBox(height: rh(space6x)),
                   ],
                 ),

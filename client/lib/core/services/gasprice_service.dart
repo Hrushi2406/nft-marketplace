@@ -24,10 +24,10 @@ class GasPriceService {
       );
 
       //Fetch current gas price
-      final currentGasPrice = await getCurrentGasPrice();
+      final currentGasPrice = await _web3client.getGasPrice();
 
       final totalGasRequired =
-          estimatedGas * currentGasPrice / BigInt.from(10).pow(18);
+          estimatedGas * currentGasPrice.getInWei / BigInt.from(10).pow(18);
 
       return GasInfo(
         gas: estimatedGas,
@@ -83,7 +83,7 @@ class GasInfo {
   ///Current Gas Price is in Wei
   ///
   ///For Matic - 10^-18
-  final BigInt currentGasPrice;
+  final EtherAmount currentGasPrice;
 
   ///Final Gas Required in MAT
   ///

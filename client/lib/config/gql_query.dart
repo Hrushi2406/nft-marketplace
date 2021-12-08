@@ -57,6 +57,7 @@ const qNFT = r'''
       users(where: {uAddress: $creator}) {
         name
         image
+        uAddress
         metadata
       }
       nfts(where: {cAddress: $cAddress, tokenId: $tokenId}) {

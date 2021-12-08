@@ -16,8 +16,8 @@ class ContractService {
   Future<void> _init() async {
     //collection
     collection = await _loadABI(
-      'assets/abi/Marketplace.json',
-      'Marketplace',
+      'assets/abi/CustomERC721Collection.json',
+      'CustomERC721Collection',
       marketPlaceAddress,
     );
 
@@ -47,4 +47,14 @@ class ContractService {
 
     return contract;
   }
+
+//Load Collection Contract on the go
+  Future<DeployedContract> loadCollectionContract(
+    String contractAddress,
+  ) async =>
+      await _loadABI(
+        'assets/abi/CustomERC721Collection.json',
+        'CustomERC721Collection',
+        contractAddress,
+      );
 }

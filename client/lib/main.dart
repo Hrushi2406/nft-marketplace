@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nfts/screens/create_collection_screen/create_collection_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'core/theme/app_theme.dart';
@@ -8,6 +9,7 @@ import 'locator.dart' as di;
 import 'provider/app_provider.dart';
 import 'provider/collection_provider.dart';
 import 'provider/creator_provider.dart';
+import 'provider/nft_provider.dart';
 import 'provider/wallet_provider.dart';
 import 'screens/splash_screen/splash_screen.dart';
 
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => locator<WalletProvider>()),
         ChangeNotifierProvider(create: (_) => locator<CreatorProvider>()),
         ChangeNotifierProvider(create: (_) => locator<CollectionProvider>()),
+        ChangeNotifierProvider(create: (_) => locator<NFTProvider>()),
       ],
       child: SizeConfiguration(
         designSize: const Size(375, 812),
@@ -42,6 +45,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             themeMode: ThemeMode.light,
             home: const SplashScreen(),
+            // home: const CreateCollectionScreen(),
           );
         },
       ),

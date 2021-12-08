@@ -15,6 +15,19 @@ String? validator(String? e) => e == null
         ? 'FIELD CAN\'T BE EMPTY'
         : null;
 
+String? urlValidator(String? e) {
+  if (validator(e) == null) {
+    final isUrl = e!.contains('https://') || e.contains('http://');
+
+    if (!isUrl) {
+      return 'URL SHOULD START WITH https:// or http://';
+    }
+    return null;
+  } else {
+    return validator(e);
+  }
+}
+
 String formatBalance(EtherAmount? balance, [int precision = 4]) =>
     balance == null
         ? '0'
