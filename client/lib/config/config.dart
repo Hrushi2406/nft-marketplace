@@ -1,6 +1,6 @@
 //CONTRACT ADDRESS
-const marketPlaceAddress = '0xc7709c00bC190ba3844cEa8aA658Cb6bC85AB518';
-const customERC721Address = '0x5Bd97270B582D0d6D84BB99b24C769219D30dcBB';
+const marketPlaceAddress = '0x50DA615718BF02C977992dF52a4c8895681e8886';
+const customERC721Address = '0x36B6D522A6c2d3118A1c308525687E50D38C3A55';
 
 //RPC URL
 const rpcURL = 'https://rpc-mumbai.maticvigil.com';

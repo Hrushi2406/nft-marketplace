@@ -5,21 +5,17 @@
 
 // calls
 
-const fusers = 'users';
-
 // sends
 
 const fcreateUser = 'createUser';
-const flistCollection = 'listCollection';
+const fcreateCollection = 'createCollection';
 
 // CustomERC721Collection functions
 
 // calls
 
 const fcreator = 'creator';
-const fgetCollectionOverview = 'getCollectionOverview';
 const fgetUnlockableContent = 'getUnlockableContent';
-const fgetNFTOverview = 'getNFTOverview';
 
 // sends
 

@@ -1,0 +1,55 @@
+specVersion: 0.0.2
+schema:
+  file: schema.graphql
+features:
+  - fullTextSearch
+dataSources:
+  - kind: ethereum
+    name: Marketplace
+    network: mumbai
+    source:
+      address: "0x50DA615718BF02C977992dF52a4c8895681e8886"
+      abi: Marketplace
+      startBlock: 22346301
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - User
+        - Collection
+      abis:
+        - name: Marketplace
+          file: Marketplace\abis\Marketplace.json
+      eventHandlers:
+        - event: UserCreated(address,string,string,string,string)
+          handler: handleUserCreated
+        - event: CollectionCreated(address,string,string,address,string)
+          handler: handleCollectionCreated
+      file: Marketplace\Marketplace.wasm
+templates:
+  - name: CustomCollection
+    kind: ethereum
+    network: mumbai
+    source:
+      abi: CustomCollection
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - NFT
+        - Bid
+      abis:
+        - name: CustomCollection
+          file: CustomCollection\abis\CustomCollection.json
+      eventHandlers:
+        - event: NFTCreated(address,uint256,string,string,string,string)
+          handler: handleNFTCreated
+        - event: NFTEvent(address,uint256,string,address,address,uint256)
+          handler: handleNFTEvent
+        - event: BidPlaced(address,uint256,address,uint256)
+          handler: handleBidPlaced
+        - event: BidCanceled(address,uint256,address)
+          handler: handleBidCanceled
+      file: Marketplace\Marketplace.wasm

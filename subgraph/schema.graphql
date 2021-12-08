@@ -1,0 +1,65 @@
+type User @entity {
+  id: ID!
+  uAddress: Bytes! # user address
+  name: String! 
+  image: String! 
+  twitterUrl: String!
+  websiteUrl: String!
+}
+
+type Collection @entity {
+  id: ID!
+  cAddress: Bytes! # contract address
+  name: String! 
+  image: String! 
+  creator: Bytes! # creator address
+  nItems: Int!
+  volumeOfEth: Int!
+  metadata: String! 
+}
+
+type NFT @entity {
+  id: ID!
+  cAddress: Bytes! # contract address
+  tokenId: Int! 
+  name: String! 
+  image: String! 
+  properties: String! 
+  cName: String! 
+  cImage: String!
+  creator: Bytes! # creator address
+  owner: Bytes! # owner address 
+  metadata: String! 
+}
+
+# Stores active bids
+type Bid @entity {
+  id: ID!
+  cAddress: Bytes! # contract address
+  tokenId: Int! 
+  from: Bytes! # bidder address
+  price: Int! 
+}
+
+# Stores NFT's trading history
+type NFTEvent @entity {
+  id: ID!
+  cAddress: Bytes! # contract address
+  tokenId: Int! 
+  eventType: String! # string
+  from: Bytes! # seller address
+  to: Bytes! # buyer address
+  price: Int! 
+  timestamp: BigInt!
+}
+
+# Full text search on properties of NFT for filtering and calculating rarity
+type _Schema_
+  @fulltext(
+    name: "propertySearch"
+    language: en
+    algorithm: rank
+    include: [{ entity: "NFT", fields: [{ name: "properties" }] }]
+  )
+
+
