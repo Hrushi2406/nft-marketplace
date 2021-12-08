@@ -11,7 +11,7 @@ enum SellType {
     Bidding
 }
 
-contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
+contract CustomCollection is ReentrancyGuard, ERC721URIStorage {
     // Maintaining a counter of no of nfts in collection
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
@@ -24,41 +24,18 @@ contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
 
     address payable marketPlaceAddress;
 
-    // struct for entire collection data
-    struct Collection {
-        address cAddress;
-        string name;
-        string symbol;
-        string metadataURI;
-        address creator;
-        uint256 nItems;
-    }
-
     // On Collection creation
     constructor(
         string memory name_,
         string memory symbol_,
         string memory collectionMetadata_,
-        address marketPlaceAddress_
+        address creator_
     ) ERC721(name_, symbol_) {
-        creator = payable(msg.sender);
+        creator = payable(creator_);
 
-        marketPlaceAddress = payable(marketPlaceAddress_);
+        marketPlaceAddress = payable(msg.sender);
 
         collectionMetadataURI = collectionMetadata_;
-    }
-
-    // Get collection overview
-    function getCollectionOverview() public view returns (Collection memory) {
-        return
-            Collection(
-                address(this),
-                name(),
-                symbol(),
-                collectionMetadataURI,
-                creator,
-                _tokenIds.current()
-            );
     }
 
     // ** NFT ** //
@@ -72,7 +49,7 @@ contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
     }
 
     // To store nfts (tokenId => NFT)
-    mapping(uint256 => NFT) nfts;
+    mapping(uint256 => NFT) public nfts;
 
     // To store bids (tokenId => (address => price))
     mapping(uint256 => mapping(address => uint256)) bids;
@@ -86,9 +63,7 @@ contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
         uint256 tokenId,
         string name,
         string image,
-        string collectionName,
         string properties,
-        address creator,
         string metadata
     );
 
@@ -113,6 +88,44 @@ contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
     // On bid canceled
     event BidCanceled(address cAddress, uint256 tokenId, address from);
 
+    // Checks if tokenId exists
+    modifier tokenExists(uint256 tokenId) {
+        require(
+            tokenId <= _tokenIds.current(),
+            "CustomCollection -> tokenId doesn't correspond to any NFT"
+        );
+        _;
+    }
+
+    // Checks if owner of tokenId is caller
+    modifier callerIsNftOwner(uint256 tokenId) {
+        // Only owner of token can access secret
+        require(
+            msg.sender == ownerOf(tokenId),
+            "CustomCollection -> Caller is not nft owner"
+        );
+        _;
+    }
+
+    // Checks if owner of tokenId is not caller
+    modifier callerIsNotNftOwner(uint256 tokenId) {
+        // Only owner of token can access secret
+        require(
+            msg.sender != ownerOf(tokenId),
+            "CustomCollection -> Caller is nft owner"
+        );
+        _;
+    }
+
+    // Checks if NFT is listed for bids
+    modifier isBiddable(uint256 tokenId) {
+        require(
+            nfts[tokenId].sellType == SellType.Bidding,
+            "CustomCollection -> NFT doesn't allow bidding"
+        );
+        _;
+    }
+
     // List NFT on Marketplace
     function mintNFT(
         string memory name_,
@@ -127,7 +140,7 @@ contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
     ) public {
         require(
             msg.sender == creator,
-            "CustomERC721Collection : mintToken -> Not collection owner"
+            "CustomCollection : mintToken -> Not collection owner"
         );
 
         _tokenIds.increment();
@@ -163,9 +176,7 @@ contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
             tokenId,
             name_,
             image_,
-            name(),
             properties_,
-            creator,
             metadata_
         );
 
@@ -179,49 +190,27 @@ contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
         );
     }
 
-    // Set forSale for Fixed price Nft
-    function setForSale(uint256 tokenId, bool forSale_) public {
-        require(
-            tokenId <= _tokenIds.current(),
-            "Marketplace : setForSale -> tokenId doesn't correspond to any NFT"
-        );
-        require(
-            msg.sender == ownerOf(tokenId),
-            "Marketplace : setForSale -> Not NFT owner"
-        );
-        require(
-            nfts[tokenId].sellType == SellType.FixedPrice,
-            "Marketplace : setForSale -> Can list/unlist fixed price nfts only"
-        );
-
-        nfts[tokenId].forSale = forSale_;
-    }
-
     // Buy Fixed Price NFT
-    function buyFixedPriceNFT(uint256 tokenId) public payable nonReentrant {
-        require(
-            tokenId <= _tokenIds.current(),
-            "Marketplace : buyFixedPriceNFT -> tokenId doesn't correspond to any NFT"
-        );
-
+    function buyFixedPriceNFT(uint256 tokenId)
+        public
+        payable
+        nonReentrant
+        tokenExists(tokenId)
+        callerIsNotNftOwner(tokenId)
+    {
         NFT memory nft = nfts[tokenId];
-        address nftOwner = ownerOf(tokenId);
 
         require(
             nft.sellType == SellType.FixedPrice,
-            "Marketplace : placeBid -> NFT is listed for bids only"
+            "CustomCollection : placeBid -> NFT is listed for bids only"
         );
         require(
             nft.forSale,
-            "Marketplace : buyFixedPriceNFT -> NFT is not for sale"
-        );
-        require(
-            msg.sender != nftOwner,
-            "Marketplace : buyFixedPriceNFT -> Owner can't buy"
+            "CustomCollection : buyFixedPriceNFT -> NFT is not for sale"
         );
         require(
             msg.value == nft.price,
-            "Marketplace : buyFixedPriceNFT -> Please send exact amount as price"
+            "CustomCollection : buyFixedPriceNFT -> Please send exact amount as price"
         );
 
         // Tranfer eth to creator as royalty
@@ -231,12 +220,14 @@ contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
         marketPlaceAddress.transfer(nft.price / 100);
 
         // Tranfer remaining eth to current owner
-        payable(nftOwner).transfer((nft.price * (100 - nft.royalty - 1)) / 100);
+        payable(ownerOf(tokenId)).transfer(
+            (nft.price * (100 - nft.royalty - 1)) / 100
+        );
 
         // Transfer nft to msg.sender
         Marketplace(marketPlaceAddress).marketPlaceTransferFrom(
             address(this),
-            nftOwner,
+            ownerOf(tokenId),
             msg.sender,
             tokenId
         );
@@ -245,43 +236,34 @@ contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
         approve(marketPlaceAddress, tokenId);
 
         // Unlist item
-        setForSale(tokenId, false);
+        nfts[tokenId].forSale = false;
 
         // Log event to subgraph
         emit NFTEvent(
             address(this),
             tokenId,
             "Sold",
-            nftOwner,
+            ownerOf(tokenId),
             msg.sender,
             nft.price / 1e12
         );
     }
 
     // Places bid. Recieves eth from user which are held by the contract
-    function placeBid(uint256 tokenId) public payable {
-        require(
-            tokenId <= _tokenIds.current(),
-            "Marketplace : placeBid -> tokenId doesn't correspond to any NFT"
-        );
-
-        NFT memory nft = nfts[tokenId];
-
-        require(
-            nft.sellType == SellType.Bidding,
-            "Marketplace : placeBid -> NFT doesn't allow bidding"
-        );
-        require(
-            msg.sender != ownerOf(tokenId),
-            "Marketplace : placeBid -> Seller can't buy"
-        );
+    function placeBid(uint256 tokenId)
+        public
+        payable
+        tokenExists(tokenId)
+        callerIsNotNftOwner(tokenId)
+        isBiddable(tokenId)
+    {
         require(
             bids[tokenId][msg.sender] == 0,
-            "Marketplace : placeBid -> Can't bid twice. Cancel Previous bid"
+            "CustomCollection : placeBid -> Can't bid twice. Cancel Previous bid"
         );
         require(
-            msg.value >= nft.price,
-            "Marketplace : placeBid -> Can't bid lower than nft's minimum price"
+            msg.value >= nfts[tokenId].price,
+            "CustomCollection : placeBid -> Can't bid lower than nft's minimum price"
         );
 
         // Add bid on chain
@@ -292,18 +274,14 @@ contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
     }
 
     // Cancels bid
-    function cancelBid(uint256 tokenId) public {
-        require(
-            tokenId <= _tokenIds.current(),
-            "Marketplace : cancelBid -> tokenId doesn't correspond to any NFT"
-        );
-        require(
-            nfts[tokenId].sellType == SellType.Bidding,
-            "Marketplace : cancelBid -> NFT doesn't allow bidding"
-        );
+    function cancelBid(uint256 tokenId)
+        public
+        tokenExists(tokenId)
+        isBiddable(tokenId)
+    {
         require(
             bids[tokenId][msg.sender] != 0,
-            "Marketplace : cancelBid -> No bid by user"
+            "CustomCollection -> No bid by caller"
         );
 
         uint256 bidAmount = bids[tokenId][msg.sender];
@@ -319,37 +297,27 @@ contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
     }
 
     // Sell NFT to a bidder
-    function sellBiddingNFT(uint256 tokenId, address to_) public nonReentrant {
-        require(
-            tokenId <= _tokenIds.current(),
-            "Marketplace : sellBiddingNFT -> tokenId doesn't correspond to any NFT"
-        );
-
-        NFT memory nft = nfts[tokenId];
-        address nftOwner = ownerOf(tokenId);
-
-        require(
-            msg.sender == nftOwner,
-            "Marketplace : sellBiddingNFT -> Only owner can sell"
-        );
-        require(
-            nfts[tokenId].sellType == SellType.Bidding,
-            "Marketplace : sellBiddingNFT -> NFT doesn't allow bidding"
-        );
+    function sellBiddingNFT(uint256 tokenId, address to_)
+        public
+        nonReentrant
+        tokenExists(tokenId)
+        callerIsNftOwner(tokenId)
+        isBiddable(tokenId)
+    {
         require(
             bids[tokenId][to_] != 0,
-            "Marketplace : sellBiddingNFT -> No bid by user"
+            "CustomCollection -> No bid by user 'to_'"
         );
 
         // Tranfer eth to creator as royalty
-        creator.transfer(((bids[tokenId][to_] * nft.royalty) / 100));
+        creator.transfer(((bids[tokenId][to_] * nfts[tokenId].royalty) / 100));
 
         // Marketplace gets 1% commission
         marketPlaceAddress.transfer(bids[tokenId][to_] / 100);
 
         // Tranfer remaining eth to current owner
-        payable(nftOwner).transfer(
-            (bids[tokenId][to_] * (100 - nft.royalty - 1)) / 100
+        payable(ownerOf(tokenId)).transfer(
+            (bids[tokenId][to_] * (100 - nfts[tokenId].royalty - 1)) / 100
         );
 
         // Transfer nft to msg.sender
@@ -360,7 +328,7 @@ contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
             address(this),
             tokenId,
             "Sold",
-            nftOwner,
+            ownerOf(tokenId),
             to_,
             bids[tokenId][to_] / 1e12
         );
@@ -369,42 +337,14 @@ contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
     }
 
     // Get unlockable content to owner of nft
-    function getUnlockableContent(uint256 tokenId_)
+    function getUnlockableContent(uint256 tokenId)
         public
         view
+        tokenExists(tokenId)
+        callerIsNftOwner(tokenId)
         returns (string memory)
     {
-        // require(tokenId_ <= _tokenIds.current(), "Marketplace : sellBiddingNFT -> tokenId doesn't correspond to any NFT");
-        // Only owner of token can access secret
-        require(
-            msg.sender == ownerOf(tokenId_),
-            "CustomERC721Collection : getUnlockableContent -> Not nft owner"
-        );
-
-        return unlockableContent[tokenId_];
-    }
-
-    // Get NFT Overview
-    function getNFTOverview(uint256 tokenId_)
-        public
-        view
-        returns (
-            address cAddress,
-            uint256 tokenId,
-            address owner,
-            string memory metadataURI,
-            NFT memory
-        )
-    {
-        // require(tokenId_ <= _tokenIds.current(), "Marketplace : sellBiddingNFT -> tokenId doesn't correspond to any NFT");
-
-        return (
-            address(this),
-            tokenId_,
-            ownerOf(tokenId_),
-            tokenURI(tokenId_),
-            nfts[tokenId_]
-        );
+        return unlockableContent[tokenId];
     }
 
     // Modify listing mechanism
@@ -413,17 +353,12 @@ contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
         bool setFixPrice,
         bool forSale,
         uint256 newPrice
-    ) public // address[] memory bidders
+    )
+        public
+        // address[] memory bidders
+        tokenExists(tokenId)
+        callerIsNftOwner(tokenId)
     {
-        require(
-            tokenId <= _tokenIds.current(),
-            "Marketplace : sellBiddingNFT -> tokenId doesn't correspond to any NFT"
-        );
-        require(
-            msg.sender == ownerOf(tokenId),
-            "Marketplace : modifyListingMechanism -> Only owner can modify"
-        );
-
         // For fixed price tokens
         if (nfts[tokenId].sellType == SellType.FixedPrice) {
             if (!setFixPrice) {
@@ -465,4 +400,51 @@ contract CustomERC721Collection is ReentrancyGuard, ERC721URIStorage {
         //     }
         // }
     }
+
+    // // struct for entire collection data
+    // struct Collection {
+    //     address cAddress;
+    //     string name;
+    //     string symbol;
+    //     string metadataURI;
+    //     address creator;
+    // }
+
+    // // Get collection overview
+    // function getCollectionOverview() public view returns (Collection memory) {
+    //     return
+    //         Collection(
+    //             address(this),
+    //             name(),
+    //             symbol(),
+    //             collectionMetadataURI,
+    //             creator
+    //         );
+    // }
+
+    // // Get NFT Overview
+    // function getNFTOverview(uint256 tokenId_)
+    //     public
+    //     view
+    //     returns (
+    //         address cAddress,
+    //         uint256 tokenId,
+    //         address owner,
+    //         string memory metadataURI,
+    //         NFT memory
+    //     )
+    // {
+    //     require(
+    //         tokenId_ <= _tokenIds.current(),
+    //         "CustomCollection : sellBiddingNFT -> tokenId doesn't correspond to any NFT"
+    //     );
+
+    //     return (
+    //         address(this),
+    //         tokenId_,
+    //         ownerOf(tokenId_),
+    //         tokenURI(tokenId_),
+    //         nfts[tokenId_]
+    //     );
+    // }
 }

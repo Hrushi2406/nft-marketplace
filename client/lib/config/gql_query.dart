@@ -32,6 +32,7 @@ const qCollection = r'''
         name
         image
         metadata
+        nItems
         volumeOfEth
       }
       nfts(where: {cAddress: $cAddress}) {
@@ -88,6 +89,7 @@ const qCreator = r'''
         cAddress
         name
         image
+        nItems
       }
       nfts(where: {owner: $uAddress}) {
         cAddress

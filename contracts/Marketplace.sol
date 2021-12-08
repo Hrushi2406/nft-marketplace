@@ -1,45 +1,46 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.6;
 
-import "./CustomERC721Collection.sol";
+import "./CustomCollection.sol";
 
 contract Marketplace {
     // ** User ** //
 
-    // Required user data in contract
-    struct User {
-        string name;
-        string metadataURI;
-    }
+    // // To store user
+    // struct User {
+    //     string name;
+    //     string image;
+    //     string twitterUrl;
+    //     string websiteUrl;
+    // }
 
-    // To store users (address => User)
-    mapping(address => User) public users;
+    // // To store users (address => string)
+    // mapping(address => User) public users;
 
     // On user creation
     event UserCreated(
         address uAddress,
         string name,
         string image,
-        string metadata
+        string twitterUrl,
+        string websiteUrl
     );
 
     // Create/Update user profile
     function createUser(
         string memory name_,
         string memory image_,
-        string memory metadata_
+        string memory twitterUrl_,
+        string memory websiteUrl_
     ) public {
-        // Map metadata to address
-        users[msg.sender] = User(name_, metadata_);
+        // Map User to address
+        // users[msg.sender] = User(name_, metadata_);
 
         // Log event to subgraph
-        emit UserCreated(msg.sender, name_, image_, metadata_);
+        emit UserCreated(msg.sender, name_, image_, twitterUrl_, websiteUrl_);
     }
 
     // ** Custom Collection ** //
-
-    // To store if collection is listed (address => bool)
-    mapping(address => bool) listedCollections;
 
     // On collection creation
     event CollectionCreated(
@@ -50,39 +51,19 @@ contract Marketplace {
         string metadata
     );
 
-    // List collection on marketplace
-    function listCollection(
-        address cAddress_,
+    // Create and List collection on marketplace
+    function createCollection(
         string memory name_,
+        string memory symbol_,
         string memory image_,
         string memory metadata_
     ) public {
-        // Check if collection contract exists
-        try CustomERC721Collection(cAddress_).creator() returns (
-            address payable owner_
-        ) {
-            // Check if caller is collection
-            require(
-                msg.sender == owner_,
-                "Marketplace : createCollection -> Caller is not collection owner"
-            );
-        } catch {
-            revert(
-                "Marketplace : createCollection -> Collection contract doesn't exist"
-            );
-        }
-
-        // Stop if marketplace record exists i.e. prevent updates
-        require(
-            !listedCollections[cAddress_],
-            "Marketplace : createCollection -> Collection already exists on marketplace"
+        address cAddress = address(
+            new CustomCollection(name_, symbol_, metadata_, msg.sender)
         );
 
-        // Store collection in marketplace
-        listedCollections[cAddress_] = true;
-
         // Log event to subgraph
-        emit CollectionCreated(cAddress_, name_, image_, msg.sender, metadata_);
+        emit CollectionCreated(cAddress, name_, image_, msg.sender, metadata_);
     }
 
     // To buy fixed price nfts
@@ -98,7 +79,7 @@ contract Marketplace {
             "Marketplace : marketPlaceTransferFrom -> Caller is not contract"
         );
 
-        CustomERC721Collection(cAddress).safeTransferFrom(
+        CustomCollection(cAddress).safeTransferFrom(
             nftOwner,
             newOwner,
             tokenId
@@ -108,6 +89,4 @@ contract Marketplace {
     // To receive ether
     // Function to receive Ether. msg.data must be empty
     receive() external payable {}
-
-    // TODO: Get Matic / USD
 }
