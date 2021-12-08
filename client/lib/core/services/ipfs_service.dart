@@ -57,8 +57,9 @@ class IPFSService {
   _cacheResponse(String cid, String body) async {
     await _prefs.setString('getJson-$cid', body);
 
-    Timer(const Duration(seconds: 12), () async {
+    Timer(const Duration(seconds: 15), () async {
       await _prefs.remove('getJson-$cid');
+
       debugPrint('Removed cache');
     });
   }

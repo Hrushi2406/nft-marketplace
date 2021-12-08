@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nfts/core/animations/slide_animation.dart';
 import 'package:nfts/core/utils/utils.dart';
 import 'package:nfts/core/widgets/custom_widgets.dart';
 import 'package:nfts/provider/nft_provider.dart';
@@ -14,42 +15,45 @@ class ActivityWidget extends StatelessWidget {
     return Consumer<NFTProvider>(
       builder: (context, provider, child) {
         if (provider.activities.isNotEmpty) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              UpperCaseText(
-                'Activity',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              SizedBox(height: rh(space3x)),
+          return SlideAnimation(
+            begin: const Offset(0, 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                UpperCaseText(
+                  'Activity',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                SizedBox(height: rh(space3x)),
 
-              //ACITIVITY LIST
-              ListView.separated(
-                itemCount: provider.activities.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.zero,
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(height: rh(space3x));
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  final activity = provider.activities[index];
-                  return ActivityTile(
-                    action: activity.eventType,
-                    from: formatAddress(activity.from),
-                    to: formatAddress(activity.to),
-                    amount: activity.eventType == 'Minted'
-                        ? null
-                        : '${activity.price} MAT',
-                  );
-                },
-              ),
+                //ACITIVITY LIST
+                ListView.separated(
+                  itemCount: provider.activities.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(height: rh(space3x));
+                  },
+                  itemBuilder: (BuildContext context, int index) {
+                    final activity = provider.activities[index];
+                    return ActivityTile(
+                      action: activity.eventType,
+                      from: formatAddress(activity.from),
+                      to: formatAddress(activity.to),
+                      amount: activity.eventType == 'Minted'
+                          ? null
+                          : '${activity.price} MAT',
+                    );
+                  },
+                ),
 
 //SPACER
-              SizedBox(height: rh(space2x)),
-              const Divider(),
-              SizedBox(height: rh(space2x)),
-            ],
+                SizedBox(height: rh(space2x)),
+                const Divider(),
+                SizedBox(height: rh(space2x)),
+              ],
+            ),
           );
         } else {
           return Container();

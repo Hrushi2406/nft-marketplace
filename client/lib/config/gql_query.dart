@@ -16,11 +16,12 @@ const qHome = r'''
       nfts(first: $first) {
         cAddress
         tokenId
+        metadata
         name
         image
         cName
+        cImage
         creator
-        metadata
         owner
       }
     }
@@ -38,9 +39,11 @@ const qCollection = r'''
       nfts(where: {cAddress: $cAddress}) {
         cAddress
         tokenId
+        metadata
         name
         image
         cName
+        cImage
         creator
         metadata
         owner
@@ -55,19 +58,6 @@ const qNFT = r'''
       users(where: {uAddress: $creator}) {
         name
         image
-      }
-      collections(where: {cAddress: $cAddress}) {
-        name
-        image
-      }
-      nfts(where: {cAddress: $cAddress, tokenId: $tokenId}) {
-        name
-        image
-        cName
-        properties
-        metadata
-        creator
-        owner
       }
       nftevents(where: {cAddress: $cAddress, tokenId: $tokenId}) {
         id
@@ -113,3 +103,13 @@ const qCreator = r'''
       }
     }
 ''';
+
+  //  nfts(where: {cAddress: $cAddress, tokenId: $tokenId}) {
+  //       name
+  //       image
+  //       cName
+  //       properties
+  //       metadata
+  //       creator
+  //       owner
+  //     }

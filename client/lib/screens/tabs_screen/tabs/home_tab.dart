@@ -118,7 +118,7 @@ class HomeTab extends StatelessWidget {
                       // image: 'assets/images/nft-${index + 1}.png',
                       image: nft.image,
                       title: nft.name,
-                      subtitle: nft.collectionName,
+                      subtitle: nft.cName,
                     );
                   },
                 );

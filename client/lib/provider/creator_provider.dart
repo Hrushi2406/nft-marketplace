@@ -36,7 +36,7 @@ class CreatorProvider with ChangeNotifier {
         name: 'Unamed',
         uAddress: address,
         metadata: '',
-        image: 'bafybeid3njd5agpz7a3mloo3q5cdcmtvo7o3uab6hhwongfck23ycv3uyy',
+        image: 'QmWTq1mVjiBp6kPXeT2XZftvsWQ6nZwSBvTbqKLumipMwD',
       );
     } else {
       user = User.fromMap(data['users'][0]);

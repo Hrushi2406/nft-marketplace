@@ -16,6 +16,7 @@ const fcreateCollection = 'createCollection';
 
 const fcreator = 'creator';
 const fgetUnlockableContent = 'getUnlockableContent';
+const fnfts = 'nfts';
 
 // sends
 

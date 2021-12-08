@@ -16,9 +16,9 @@ class ContractService {
   Future<void> _init() async {
     //collection
     collection = await _loadABI(
-      'assets/abi/CustomERC721Collection.json',
-      'CustomERC721Collection',
-      marketPlaceAddress,
+      'assets/abi/CustomCollection.json',
+      'CustomCollection',
+      customERC721Address,
     );
 
     //Marketplace
@@ -36,12 +36,12 @@ class ContractService {
   ) async {
     String abiString = await rootBundle.loadString(path);
 
-    final abiJson = jsonDecode(abiString);
+    // final abiJson = jsonDecode(abiString);
 
-    final abi = jsonEncode(abiJson['abi']);
+    // final abi = jsonEncode(abiJson['abi']);
 
     final contract = DeployedContract(
-      ContractAbi.fromJson(abi, name),
+      ContractAbi.fromJson(abiString, name),
       EthereumAddress.fromHex(contractAddress),
     );
 

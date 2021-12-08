@@ -68,9 +68,6 @@ class AppProvider with ChangeNotifier {
     //FETCHING HOME SCREEN DATA
     final data = await _graphql.get(qHome);
 
-    ///Fetch other screen data in background
-    _getCreatorPageData();
-
     //Model Collections
     topCollections = data['collections']
         .map<Collection>((collection) => Collection.fromMap(collection))
@@ -81,18 +78,6 @@ class AppProvider with ChangeNotifier {
         data['nfts'].map<NFT>((collection) => NFT.fromMap(collection)).toList();
 
     _handleLoaded();
-  }
-
-  _getCreatorPageData() async {
-    final data =
-        await _graphql.get(qCreator, {'uAddress': _walletProvider.address.hex});
-
-    userCreatedCollections = data['collections']
-        .map<Collection>((collection) => Collection.fromMap(collection))
-        .toList();
-
-    userCollected =
-        data['nfts'].map<NFT>((collection) => NFT.fromMap(collection)).toList();
   }
 
   logOut(BuildContext context) async {

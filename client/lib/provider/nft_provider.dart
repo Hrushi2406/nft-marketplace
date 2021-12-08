@@ -24,12 +24,14 @@ class NFTProvider with ChangeNotifier {
 
   fetchNFTMetadata(NFT nft) async {
     try {
+      final stopWatch = Stopwatch();
+      stopWatch.start();
+
       state = NFTState.loading;
 
       //reset State
       metadata = NFTMetadata.initEmpty();
       activities.clear();
-      // collectionItems.clear();
 
       final gData = await _graphql.get(qNFT, {
         'cAddress': nft.cAddress,
@@ -37,26 +39,14 @@ class NFTProvider with ChangeNotifier {
         'creator': nft.creator,
       });
 
-      print(gData);
-
       ///NFT Activity of Buying selling
       activities = gData['nftevents']
           .map<NFTActivity>((activity) => NFTActivity.fromMap(activity))
           .toList();
 
-      // print(gData);
-
-      //Collection Items
-      // collectionItems =
-      // gData['nfts'].map<NFT>((nft) => NFT.fromMap(nft)).toList();
-
-      // _handleLoaded();
-
-      final stopWatch = Stopwatch();
-      stopWatch.start();
+      _handleLoaded();
 
       final data = await _ipfs.getJson(nft.metadata);
-      print(data);
 
       metadata = NFTMetadata.fromMap(data);
 

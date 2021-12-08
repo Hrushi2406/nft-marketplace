@@ -157,10 +157,14 @@ class _NFTScreenState extends State<NFTScreen> {
                         )
                       ],
                     ),
-                    SizedBox(height: rh(space3x)),
-                    Text(
-                      'Minimalism is all about owning only what adds value and meaning to your life and removing the rest.',
-                      style: Theme.of(context).textTheme.caption,
+                    SizedBox(height: rh(space2x)),
+                    Consumer<NFTProvider>(
+                      builder: (context, provider, child) {
+                        return Text(
+                          provider.metadata.description,
+                          style: Theme.of(context).textTheme.caption,
+                        );
+                      },
                     ),
                     SizedBox(height: rh(space3x)),
 
@@ -169,16 +173,16 @@ class _NFTScreenState extends State<NFTScreen> {
                       children: [
                         Expanded(
                           child: DataInfoChip(
-                            image: 'assets/images/collection-2.png',
-                            // image: widget.nft
+                            image: widget.nft.cImage,
                             label: 'From collection',
-                            value: widget.nft.collectionName,
+                            value: widget.nft.cName,
                             // 'The minimalist',
                           ),
                         ),
                         Expanded(
                           child: DataInfoChip(
-                            image: 'assets/images/collection-3.png',
+                            image:
+                                'QmWTq1mVjiBp6kPXeT2XZftvsWQ6nZwSBvTbqKLumipMwD',
                             label: 'Owned by',
                             value: formatAddress(widget.nft.owner),
                             // 'The minimalist',
