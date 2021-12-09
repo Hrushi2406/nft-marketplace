@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart';
+import 'package:nfts/core/services/gasprice_service.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../core/services/wallet_service.dart';
@@ -9,9 +11,10 @@ enum WalletState { empty, loading, loaded, success, error, logOut }
 
 class WalletProvider with ChangeNotifier {
   final WalletService _walletService;
-  final Web3Client client;
+  final Web3Client _client;
+  final GasPriceService _gasPriceService;
 
-  WalletProvider(this._walletService, this.client);
+  WalletProvider(this._walletService, this._client, this._gasPriceService);
 
   WalletState state = WalletState.empty;
   String errMessage = '';
@@ -20,11 +23,66 @@ class WalletProvider with ChangeNotifier {
   late EthereumAddress address;
   EtherAmount? balance;
 
-  // fetchBalance() =>
+  //Transaction Specific
+  GasInfo? gasInfo;
+  Transaction? transactionInfo;
+  double totalAmount = 0;
+  String lastTxHash = '';
 
   getBalance() async {
-    balance = await client.getBalance(address);
+    balance = await _client.getBalance(address);
     _handleLoaded();
+  }
+
+  //Get Transaction Cost
+  getTransactionFee(Transaction transaction) async {
+    try {
+      transactionInfo = transaction;
+      gasInfo = null;
+
+      _handleLoading();
+
+      gasInfo = null;
+
+      gasInfo = await _gasPriceService.getGasInfo(transaction);
+
+      if (transactionInfo!.value == null) {
+        totalAmount = gasInfo!.totalGasRequired;
+      } else {
+        totalAmount = gasInfo!.totalGasRequired +
+            transactionInfo!.value!.getInEther.toDouble();
+      }
+
+      getBalance();
+    } catch (e) {
+      debugPrint('Error at WallerProvider -> GetTransactionFee: $e');
+    }
+  }
+
+  sendTransaction(Transaction transaction) async {
+    debugPrint('Sending transaction');
+    try {
+      _handleLoading();
+
+      lastTxHash = '';
+      lastTxHash = await _client.sendTransaction(
+        cred,
+        transaction,
+        chainId: null,
+        fetchChainIdFromNetworkId: true,
+      );
+
+      debugPrint('Transaction completed $lastTxHash');
+
+      getBalance();
+      _handleSuccess();
+
+      return;
+    } catch (e) {
+      debugPrint('Error at WalletProvider -> sendTransaction: $e');
+
+      _handleError(e);
+    }
   }
 
   initializeWallet() async {

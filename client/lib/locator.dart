@@ -22,11 +22,18 @@ Future<void> init() async {
   //PROVIDER
   locator.registerLazySingleton(
       () => AppProvider(locator(), locator(), locator(), locator()));
-  locator.registerLazySingleton(() => WalletProvider(locator(), locator()));
+  locator.registerLazySingleton(
+      () => WalletProvider(locator(), locator(), locator()));
   locator.registerLazySingleton(() => CreatorProvider(locator(), locator()));
   locator.registerLazySingleton(() => NFTProvider(locator(), locator()));
-  locator.registerLazySingleton(
-      () => CollectionProvider(locator(), locator(), locator(), locator()));
+  locator.registerLazySingleton(() => CollectionProvider(
+        locator(),
+        locator(),
+        locator(),
+        locator(),
+        locator(),
+        locator(),
+      ));
 
   //SERVICES
   locator.registerSingleton<ContractService>(ContractService());

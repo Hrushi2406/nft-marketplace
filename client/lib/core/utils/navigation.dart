@@ -4,21 +4,21 @@ import 'package:flutter/material.dart';
 
 class Navigation {
   //Push on next page material page route
-  static void push(
+  static Future<dynamic>? push(
     BuildContext context, {
     Widget? screen,
     String? name,
-    Route? customPageTransition,
+    Route<Object>? customPageTransition,
   }) {
     if (customPageTransition != null) {
-      Navigator.of(context).push(customPageTransition);
+      return Navigator.of(context).push(customPageTransition);
     }
     if (screen != null) {
-      Navigator.of(context).push(
+      return Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => screen),
       );
     } else if (name != null) {
-      Navigator.of(context).pushNamed(name);
+      return Navigator.of(context).pushNamed(name);
     }
   }
 

@@ -18,6 +18,8 @@ class NFTProvider with ChangeNotifier {
   NFTState state = NFTState.empty;
   String errMessage = '';
 
+  //ADD VARIABLES
+  List<Map<String, dynamic>> properties = [];
   //Vairables
   NFTMetadata metadata = NFTMetadata.initEmpty();
   List<NFTActivity> activities = [];

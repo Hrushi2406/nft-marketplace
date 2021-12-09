@@ -32,7 +32,7 @@ class CollectionListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: image,
+      tag: '$image-$title-$subtitle',
       flightShuttleBuilder: (
         BuildContext flightContext,
         Animation<double> animation,

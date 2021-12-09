@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nfts/screens/confirmation_screen/confirmation_screen.dart';
 import 'package:nfts/screens/create_collection_screen/create_collection_screen.dart';
+import 'package:nfts/screens/create_nft_screen/create_nft_screen.dart';
+import 'package:nfts/screens/tabs_screen/tabs_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'core/theme/app_theme.dart';
@@ -45,7 +48,13 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             themeMode: ThemeMode.light,
             home: const SplashScreen(),
+            routes: {
+              'create_collection': (_) => const CreateCollectionScreen(),
+              'create_nft': (_) => const CreateNFTScreen(),
+              'tabs_screen': (_) => const TabsScreen(),
+            },
             // home: const CreateCollectionScreen(),
+            // home: const ConfirmationScreen(),
           );
         },
       ),

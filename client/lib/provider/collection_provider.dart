@@ -1,6 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:nfts/config/functions.dart';
 import 'package:nfts/core/services/contract_service.dart';
 import 'package:nfts/core/services/gasprice_service.dart';
+import 'package:nfts/provider/creator_provider.dart';
+import 'package:nfts/provider/wallet_provider.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../config/gql_query.dart';
@@ -17,9 +21,18 @@ class CollectionProvider with ChangeNotifier {
   final GraphqlService _graphql;
   final GasPriceService _gasPriceService;
   final ContractService _contractService;
+  final CreatorProvider _creatorProvider;
+
+  final WalletProvider _walletProvider;
 
   CollectionProvider(
-      this._ipfs, this._graphql, this._gasPriceService, this._contractService);
+    this._ipfs,
+    this._graphql,
+    this._gasPriceService,
+    this._contractService,
+    this._creatorProvider,
+    this._walletProvider,
+  );
 
   CollectionState state = CollectionState.empty;
   String errMessage = '';
@@ -27,68 +40,127 @@ class CollectionProvider with ChangeNotifier {
   //Variables
   List<NFT> collectionItems = [];
   CollectionMetaData metaData = CollectionMetaData.initEmpty();
+  // Transaction
+  CollectionMetaData collectionToCreate = CollectionMetaData.initEmpty();
 
   String? imageCID;
   String? metadataCID;
 
+  //TO QUE REQUESTS
+  List<int> uploadImageQue = [];
+  List<int> uploadMetadataQue = [];
+
   //Upload image to ipfs and store cid
   uploadImage(String imgPath) async {
     try {
+      //Add the request to que
+      uploadImageQue.add(1);
+
       imageCID = null;
 
       imageCID = await _ipfs.uploadImage(imgPath);
 
-      print('Uploaded Imaeg');
+      //Remove request from que
+      uploadImageQue.removeLast();
     } catch (e) {
       debugPrint('Error at CollectionProvider -> uploadImage: $e');
+
+      //Remove request from que
+      uploadImageQue.removeLast();
 
       _handleError(e);
     }
   }
 
   //Upload metadata to ipfs and store cid
-  uploadMetadata(CollectionMetaData metaDataWithoutImage) async {
+  uploadMetadata(CollectionMetaData metaDataWithoutImage,
+      {bool isRecursive = false}) async {
     try {
-      _handleLoading();
+      //Add request to que
+      if (!isRecursive) {
+        uploadMetadataQue.add(1);
+      }
+
       metadataCID = null;
 
-      if (imageCID == null) {
-        await Future.delayed(const Duration(milliseconds: 450));
-        uploadMetadata(metaDataWithoutImage);
+      if (uploadImageQue.isNotEmpty) {
+        await Future.delayed(const Duration(milliseconds: 650));
+
+        uploadMetadata(metaDataWithoutImage, isRecursive: true);
         return;
       }
 
-      final metaData = metaDataWithoutImage.copyWith(image: imageCID);
+      collectionToCreate = metaDataWithoutImage.copyWith(image: imageCID);
 
-      metadataCID = await _ipfs.uploadMetaData(metaData.toMap());
+      metadataCID = await _ipfs.uploadMetaData(collectionToCreate.toMap());
 
-      print('Uploaded Metadata');
+      //remove request from que
+      uploadMetadataQue.removeLast();
 
       _handleSuccess();
-
-      // print('')
     } catch (e) {
       debugPrint('Error at CollectionProvider -> uploadMetadata: $e');
 
+      //remove request from que
+      uploadMetadataQue.removeLast();
+
       _handleError(e);
     }
   }
 
-  getGasFee(String cAddress) async {
+  createCollection() async {
     try {
-      final contract = await _contractService.loadCollectionContract(cAddress);
+      if (uploadMetadataQue.isNotEmpty) {
+        await Future.delayed(const Duration(milliseconds: 650));
 
-// _web3Client.
+        createCollection();
+        return;
+      }
 
-      // final transaction = Transaction.callContract(contract: contract, function: contract.function(f) parameters: parameters,);
+      final contract = _contractService.marketPlace;
 
-      // final gasInfo = await _gasPriceService.getGasInfo(transaction);
+      final transaction = Transaction.callContract(
+        contract: contract,
+        function: contract.function(fcreateCollection),
+        parameters: [
+          collectionToCreate.name,
+          collectionToCreate.symbol,
+          // THIS WILL BE IMAGE
+          collectionToCreate.image,
+          //THIS WILL BE METADATA
+          metadataCID,
+        ],
+      );
+
+      await _walletProvider.sendTransaction(transaction);
     } catch (e) {
-      debugPrint('Error at CollectionProvider -> getGasFee: $e');
+      debugPrint('Error at CollectionProvider -> getTransactionFee: $e');
 
       _handleError(e);
     }
   }
+
+  getTransactionFee(CollectionMetaData collection) {
+    final contract = _contractService.marketPlace;
+
+    final transaction = Transaction.callContract(
+      from: _walletProvider.address,
+      contract: contract,
+      function: contract.function(fcreateCollection),
+      parameters: [
+        collection.name,
+        collection.symbol,
+        // THIS WILL BE IMAGE
+        'bafybeielrpyysfeos56qr2paenj5zmdamvry3rkyyzld4zua7xnpgeg3py',
+        //THIS WILL BE METADATA
+        'bafkreiggxphdigslrtq3d3qkgo65ohmggprsvcbqixxcodhpdzgn2ppxba',
+      ],
+    );
+
+    _walletProvider.getTransactionFee(transaction);
+  }
+
+  // confi
 
   //TODO :Check colletion on opean sea 0x5ee04c97881eb4da8892b209c8baad55c3c17b30
 

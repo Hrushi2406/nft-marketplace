@@ -89,7 +89,10 @@ const qCreator = r'''
         cAddress
         name
         image
+        creator
+        metadata
         nItems
+        volumeOfEth
       }
       nfts(where: {owner: $uAddress,creator_not:$uAddress}) {
         cAddress

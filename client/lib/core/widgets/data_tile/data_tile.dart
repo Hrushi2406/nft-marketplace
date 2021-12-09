@@ -9,11 +9,13 @@ class DataTile extends StatelessWidget {
     required this.label,
     required this.value,
     this.icon,
+    this.isValueBold = true,
   }) : super(key: key);
 
   final String label;
   final String value;
   final IconData? icon;
+  final bool isValueBold;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,9 @@ class DataTile extends StatelessWidget {
               UpperCaseText(
                 value,
                 // style: Theme.of(context).textTheme.bodyText2,
-                style: Theme.of(context).textTheme.headline4,
+                style: isValueBold
+                    ? Theme.of(context).textTheme.headline4
+                    : Theme.of(context).textTheme.bodyText2,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),

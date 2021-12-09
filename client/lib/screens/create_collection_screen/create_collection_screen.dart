@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nfts/core/services/image_picker_service.dart';
 import 'package:nfts/core/services/ipfs_service.dart';
+import 'package:nfts/core/utils/debouncer.dart';
 import 'package:nfts/core/utils/utils.dart';
 import 'package:nfts/core/widgets/custom_widgets.dart';
 import 'package:nfts/models/collection_metadata.dart';
 import 'package:nfts/provider/collection_provider.dart';
+import 'package:nfts/screens/confirmation_screen/confirmation_screen.dart';
+import 'package:nfts/screens/wallet_init_screen/wallet_init_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../locator.dart';
@@ -27,6 +30,7 @@ class _CreateCollectionScreenState extends State<CreateCollectionScreen> {
   final TextEditingController _websiteUrlController = TextEditingController();
 
   String? _pickedImagePath;
+  final Debouncer _debouncer = Debouncer(milliseconds: 2000);
 
   _pickImage() async {
     final image = await ImagePickerService.pickImage();
@@ -35,8 +39,10 @@ class _CreateCollectionScreenState extends State<CreateCollectionScreen> {
       _pickedImagePath = image.path;
 
       setState(() {});
-      Provider.of<CollectionProvider>(context, listen: false)
-          .uploadImage(image.path);
+
+      _debouncer.run(() =>
+          Provider.of<CollectionProvider>(context, listen: false)
+              .uploadImage(image.path));
     }
   }
 
@@ -62,6 +68,12 @@ class _CreateCollectionScreenState extends State<CreateCollectionScreen> {
 
       Provider.of<CollectionProvider>(context, listen: false)
           .uploadMetadata(metadata);
+
+      Provider.of<CollectionProvider>(context, listen: false)
+          .getTransactionFee(metadata);
+
+//Navigate to other screen
+      Navigation.push(context, screen: const ConfirmationScreen());
     }
   }
 

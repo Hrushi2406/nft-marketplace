@@ -10,11 +10,13 @@ class BidTile extends StatelessWidget {
     required this.text,
     required this.value,
     this.isSelected = false,
+    this.isFontRegular = false,
   }) : super(key: key);
 
   final String text;
   final String value;
   final bool isSelected;
+  final bool isFontRegular;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +29,19 @@ class BidTile extends StatelessWidget {
           ),
         if (isSelected) SizedBox(width: rw(6)),
         Expanded(
-          child: UpperCaseText(
-            text,
-            style: Theme.of(context).textTheme.headline5,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
+          child: isFontRegular
+              ? Text(
+                  text,
+                  style: Theme.of(context).textTheme.bodyText1,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )
+              : UpperCaseText(
+                  text,
+                  style: Theme.of(context).textTheme.headline5,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
         ),
         // const Spacer(),
         UpperCaseText(

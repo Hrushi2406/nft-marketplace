@@ -27,19 +27,15 @@ class CreatorProvider with ChangeNotifier {
   List<NFT> singles = [];
 
   fetchCreatorInfo(EthereumAddress address) async {
-    _handleLoading();
+    try {
+      Stopwatch stopwatch = Stopwatch();
+      stopwatch.start();
+      _handleLoading();
 
-    final data = await _graphql.get(qCreator, {'uAddress': address.hex});
+      print('Calling creator info');
 
-    if (data['users'].isEmpty) {
-      user = User(
-        name: 'Unamed',
-        uAddress: address,
-        metadata: '',
-        image: 'QmWTq1mVjiBp6kPXeT2XZftvsWQ6nZwSBvTbqKLumipMwD',
-      );
-    } else {
-      user = User.fromMap(data['users'][0]);
+      final data = await _graphql.get(qCreator, {'uAddress': address.hex});
+      print(data['collections'].length);
 
       createdCollections = data['collections']
           .map<Collection>((collection) => Collection.fromMap(collection))
@@ -49,9 +45,26 @@ class CreatorProvider with ChangeNotifier {
       singles = data['nfts'].map<NFT>((nft) => NFT.fromMap(nft)).toList();
 
       collectedNFTs = data['nfts'].map<NFT>((nft) => NFT.fromMap(nft)).toList();
-    }
 
-    _handleLoaded();
+      if (data['users'].isEmpty) {
+        user = User(
+          name: 'Unamed',
+          uAddress: address,
+          metadata: '',
+          image: 'QmWTq1mVjiBp6kPXeT2XZftvsWQ6nZwSBvTbqKLumipMwD',
+        );
+      } else {
+        user = User.fromMap(data['users'][0]);
+      }
+
+      print('Request Completed');
+      print(stopwatch.elapsed);
+      _handleLoaded();
+    } catch (e) {
+      debugPrint('Error at Creator Provider -> fetchCreator: $e');
+
+      _handleError(e);
+    }
   }
 
   // fetchCreator(String address) async {

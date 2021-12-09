@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../../utils/utils.dart';
 import '../custom_widgets.dart';
@@ -9,11 +10,13 @@ class PropertiesChip extends StatelessWidget {
     required this.label,
     required this.value,
     required this.percent,
+    this.onPressed,
   }) : super(key: key);
 
   final String label;
   final String value;
   final String percent;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +53,15 @@ class PropertiesChip extends StatelessWidget {
             percent,
             style: Theme.of(context).textTheme.subtitle1,
           ),
+
+          if (onPressed != null)
+            Buttons.icon(
+              context: context,
+              icon: Icons.close,
+              size: rf(16),
+              semanticLabel: 'close',
+              onPressed: onPressed!,
+            ),
         ],
       ),
     );

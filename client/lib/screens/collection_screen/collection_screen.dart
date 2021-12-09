@@ -60,6 +60,8 @@ class _CollectionScreenState extends State<CollectionScreen> {
               builder: (context, provider, child) {
                 return Text(
                   provider.metaData.description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   // 'UnknownCulturz is a unique limited series of 25 artworks which tells a story in the metaverse.',
                   style: Theme.of(context).textTheme.caption,
                 );

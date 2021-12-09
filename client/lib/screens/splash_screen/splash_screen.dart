@@ -42,7 +42,13 @@ class _SplashScreenState extends State<SplashScreen> {
           // return CreateWalletScreen();
           _navigate(const CreateWalletScreen());
         } else if (provider.state == AppState.loaded) {
-          _navigate(const TabsScreen());
+          // _navigate(const TabsScreen());
+          scheduleMicrotask(() {
+            Navigation.pushReplacement(
+              context,
+              name: 'tabs_screen',
+            );
+          });
           // return TabsScreen();
         }
         return Column(

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:nfts/provider/wallet_provider.dart';
+import 'package:nfts/screens/collection_screen/collection_screen.dart';
+import 'package:nfts/screens/create_collection_screen/create_collection_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/utils/utils.dart';
@@ -28,9 +31,23 @@ class _UserTabState extends State<UserTab> with SingleTickerProviderStateMixin {
     Provider.of<AppProvider>(context, listen: false).logOut(context);
   }
 
-  _createNFT() {}
+  _createNFT() {
+    Navigation.push(
+      context,
+      name: 'create_nft',
+    );
+  }
 
-  _createCollection() {}
+  _createCollection() async {
+    await Navigation.push(
+      context,
+      name: 'create_collection',
+    );
+
+    Provider.of<CreatorProvider>(context, listen: false).fetchCreatorInfo(
+      Provider.of<WalletProvider>(context, listen: false).address,
+    );
+  }
 
   @override
   void dispose() {
@@ -250,11 +267,18 @@ class _UserTabState extends State<UserTab> with SingleTickerProviderStateMixin {
                                 final collection =
                                     provider.createdCollections[index];
 
-                                return CollectionListTile(
-                                  image: 'assets/images/nft-${index + 1}.png',
-                                  title: 'Less is more',
-                                  subtitle: 'By The Minimalist',
-                                  isFav: true,
+                                return GestureDetector(
+                                  onTap: () => Navigation.push(context,
+                                      screen: CollectionScreen(
+                                        collection: collection,
+                                      )),
+                                  child: CollectionListTile(
+                                    image: collection.image,
+                                    title: collection.name,
+                                    subtitle: '${collection.nItems} items',
+                                    // 'By ${formatAddress(collection.creator)}',
+                                    isFav: true,
+                                  ),
                                 );
                               },
                             ),
