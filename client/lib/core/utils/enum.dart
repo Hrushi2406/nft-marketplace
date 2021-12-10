@@ -35,3 +35,9 @@ String formatBalance(EtherAmount? balance, [int precision = 4]) =>
 
 String formatAddress(String address) =>
     address.substring(0, 4) + '...' + address.substring(38, 42);
+
+enum ListingType {
+  fixedPriceSale,
+  fixedPriceNotSale,
+  bidding,
+}

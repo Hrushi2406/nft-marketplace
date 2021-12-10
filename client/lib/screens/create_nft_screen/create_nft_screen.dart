@@ -5,7 +5,13 @@ import 'package:nfts/core/services/image_picker_service.dart';
 import 'package:nfts/core/utils/debouncer.dart';
 import 'package:nfts/core/utils/utils.dart';
 import 'package:nfts/core/widgets/custom_widgets.dart';
+import 'package:nfts/models/collection.dart';
+import 'package:nfts/models/nft.dart';
+import 'package:nfts/models/nft_metadata.dart';
+import 'package:nfts/screens/create_nft_screen/create_listing_screen.dart';
 import 'package:nfts/screens/create_nft_screen/widgets/add_property.dart';
+import 'package:nfts/screens/create_nft_screen/widgets/choose_collections_widget.dart';
+import 'package:nfts/screens/update_listing_screen/update_listing_screen.dart';
 
 class CreateNFTScreen extends StatefulWidget {
   const CreateNFTScreen({Key? key}) : super(key: key);
@@ -25,6 +31,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
   final Debouncer _debouncer = Debouncer(milliseconds: 2000);
 
   List<Map<String, dynamic>> properties = [];
+  Collection? _selectedCollection;
 
   _pickImage() async {
     final image = await ImagePickerService.pickImage();
@@ -61,6 +68,44 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
         setState(() {});
       }),
     );
+  }
+
+  _chooseCollection() {
+    showModalBottomSheet(
+      context: context,
+      enableDrag: true,
+      isScrollControlled: true,
+      isDismissible: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      builder: (_) => ChooseCollectionWidget(
+        selectCollection: (Collection collection) {
+          _selectedCollection = collection;
+          setState(() {});
+        },
+      ),
+    );
+  }
+
+  _next() {
+    if (_formKey.currentState!.validate() &&
+        _isImagePicked() &&
+        _selectedCollection != null) {
+      //UPLOAD METADAT
+      final nftMetadata = NFTMetadata(
+        name: _nameController.text,
+        description: _descriptionController.text,
+        image: _pickedImagePath!,
+        properties: properties,
+      );
+
+      Navigation.push(
+        context,
+        screen: CreateNFTListingScreen(
+          nftMetadata: nftMetadata,
+          collection: _selectedCollection!,
+        ),
+      );
+    }
   }
 
   @override
@@ -104,6 +149,39 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
               ),
               SizedBox(height: rh(space3x)),
 
+              GestureDetector(
+                onTap: _chooseCollection,
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: space2x,
+                    vertical: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(space1x),
+                    border: Border.all(
+                      width: 1,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      UpperCaseText(
+                        _selectedCollection == null
+                            ? 'Choose Collection'
+                            : _selectedCollection!.name,
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      Icon(
+                        Iconsax.arrow_down_1,
+                        size: rf(space2x),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              SizedBox(height: rh(space2x)),
               //INPUT Field
               Form(
                 key: _formKey,
@@ -153,7 +231,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                 ],
               ),
 
-              SizedBox(height: rh(space3x)),
+              SizedBox(height: rh(space2x)),
 
               Wrap(
                 spacing: rf(12),
@@ -172,6 +250,16 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                     )
                     .toList(),
               ),
+
+              SizedBox(height: rh(space4x)),
+              Buttons.flexible(
+                width: double.infinity,
+                context: context,
+                text: 'Next',
+                onPressed: _next,
+              ),
+
+              SizedBox(height: rh(space6x)),
             ],
           ),
         ),

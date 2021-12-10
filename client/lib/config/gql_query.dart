@@ -51,6 +51,21 @@ const qCollection = r'''
     }
 ''';
 
+const qUserCollection = r'''
+
+    query collectionQuery($uAddress: String) {
+      collections(where: {creator: $uAddress}) {
+        cAddress
+        name
+        image
+        creator
+        metadata
+        nItems
+        volumeOfEth
+      }
+    }
+''';
+
 // NFT page
 
 const qNFT = r'''

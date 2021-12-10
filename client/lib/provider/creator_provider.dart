@@ -23,6 +23,7 @@ class CreatorProvider with ChangeNotifier {
   User? user;
 
   List<Collection> createdCollections = [];
+  List<Collection> userCollections = [];
   List<NFT> collectedNFTs = [];
   List<NFT> singles = [];
 
@@ -62,6 +63,25 @@ class CreatorProvider with ChangeNotifier {
       _handleLoaded();
     } catch (e) {
       debugPrint('Error at Creator Provider -> fetchCreator: $e');
+
+      _handleError(e);
+    }
+  }
+
+  fetchCurrentUserCollections() async {
+    try {
+      state = CreatorState.loading;
+
+      final data = await _graphql
+          .get(qUserCollection, {'uAddress': _walletProvider.address.hex});
+
+      userCollections = data['collections']
+          .map<Collection>((collection) => Collection.fromMap(collection))
+          .toList();
+
+      _handleLoaded();
+    } catch (e) {
+      debugPrint('Error at Creator Provider -> fetchCurrentUserCollection: $e');
 
       _handleError(e);
     }

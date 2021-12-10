@@ -24,6 +24,16 @@ class NFTProvider with ChangeNotifier {
   NFTMetadata metadata = NFTMetadata.initEmpty();
   List<NFTActivity> activities = [];
 
+  // getUsersCollections() async {
+  //   try {
+  //     await _graphql.get(qCreator);
+  //   } catch (e) {
+  //     debugPrint('Error at NFTProvider -> getUsersCollection: $e');
+
+  //     _handleError(e);
+  //   }
+  // }
+
   fetchNFTMetadata(NFT nft) async {
     try {
       final stopWatch = Stopwatch();
@@ -56,7 +66,7 @@ class NFTProvider with ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      debugPrint('Error at CollectionProvider -> fetchCollectionMeta: $e');
+      debugPrint('Error at NFTProvider -> fetchCollectionMeta: $e');
 
       _handleError(e);
     }
