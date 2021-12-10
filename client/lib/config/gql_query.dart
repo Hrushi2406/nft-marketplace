@@ -74,6 +74,15 @@ const qNFT = r'''
         name
         image
       }
+      collections(where: {cAddress: $cAddress}) {
+        cAddress
+        name
+        image
+        creator
+        metadata
+        nItems
+        volumeOfEth
+      }
       nftevents(where: {cAddress: $cAddress, tokenId: $tokenId}) {
         id
         eventType
@@ -86,6 +95,7 @@ const qNFT = r'''
         from
         price
       }
+
     }
 ''';
 
@@ -112,11 +122,12 @@ const qCreator = r'''
       nfts(where: {owner: $uAddress,creator_not:$uAddress}) {
         cAddress
         tokenId
+        metadata
         name
         image
         cName
+        cImage
         creator
-        metadata
         owner
       }
     }

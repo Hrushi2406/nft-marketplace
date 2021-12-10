@@ -34,20 +34,20 @@ class Scratch extends StatelessWidget {
               SizedBox(height: rh(60)),
               Row(
                 children: const [
-                  Expanded(
-                    child: DataInfoChip(
-                      image: 'assets/images/collection-2.png',
-                      label: 'From collection',
-                      value: 'The minimalist',
-                    ),
-                  ),
-                  Expanded(
-                    child: DataInfoChip(
-                      image: 'assets/images/collection-3.png',
-                      label: 'Owned by',
-                      value: 'Roger Belson',
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: DataInfoChip(
+                  //     image: 'assets/images/collection-2.png',
+                  //     label: 'From collection',
+                  //     value: 'The minimalist',
+                  //   ),
+                  // ),
+                  // Expanded(
+                  //   child: DataInfoChip(
+                  //     image: 'assets/images/collection-3.png',
+                  //     label: 'Owned by',
+                  //     value: 'Roger Belson',
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(height: rh(30)),

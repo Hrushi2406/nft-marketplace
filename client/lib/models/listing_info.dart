@@ -5,7 +5,7 @@ class ListingInfo {
   late bool isFixedPrice;
   final ListingType listingType;
   final double price;
-  final double royalties;
+  final int royalties;
 
   ListingInfo({
     required this.listingType,
@@ -14,7 +14,9 @@ class ListingInfo {
   }) {
     forSale = listingType == ListingType.fixedPriceSale;
 
-    isFixedPrice = listingType == ListingType.fixedPriceSale ||
-        listingType == ListingType.fixedPriceNotSale;
+    isFixedPrice = !(listingType == ListingType.bidding);
+
+    // listingType == ListingType.fixedPriceSale ||
+    // listingType == ListingType.fixedPriceNotSale;
   }
 }

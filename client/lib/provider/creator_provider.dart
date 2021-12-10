@@ -41,10 +41,11 @@ class CreatorProvider with ChangeNotifier {
       createdCollections = data['collections']
           .map<Collection>((collection) => Collection.fromMap(collection))
           .toList();
+
       createdCollections.sort((a, b) => b.nItems.compareTo(a.nItems));
 
       //TODO: Change Singles logic
-      singles = data['nfts'].map<NFT>((nft) => NFT.fromMap(nft)).toList();
+      // singles = data['nfts'].map<NFT>((nft) => NFT.fromMap(nft)).toList();
 
       collectedNFTs = data['nfts'].map<NFT>((nft) => NFT.fromMap(nft)).toList();
 

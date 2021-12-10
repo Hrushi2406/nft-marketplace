@@ -82,16 +82,19 @@ class _CollectionScreenState extends State<CollectionScreen> {
                   '|',
                   style: Theme.of(context).textTheme.headline4,
                 ),
-                UpperCaseText(
-                  '24 Owners',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
+                Consumer<CollectionProvider>(
+                    builder: (context, provider, child) {
+                  return UpperCaseText(
+                    '${provider.distinctOwners.length} Owners',
+                    style: Theme.of(context).textTheme.headline4,
+                  );
+                }),
                 UpperCaseText(
                   '|',
                   style: Theme.of(context).textTheme.headline4,
                 ),
                 UpperCaseText(
-                  '${widget.collection.volumeOfEth} ETH Vol',
+                  '${widget.collection.volumeOfEth} MAT Vol',
                   style: Theme.of(context).textTheme.headline4,
                 ),
               ],
@@ -161,7 +164,6 @@ class _CollectionScreenState extends State<CollectionScreen> {
             Expanded(
               child: Consumer<CollectionProvider>(
                   builder: (context, provider, child) {
-                print(provider.state);
                 if (provider.state == CollectionState.loading) {
                   return const LoadingIndicator();
                 } else if (provider.state == CollectionState.empty) {
@@ -182,7 +184,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                       onTap: () =>
                           Navigation.push(context, screen: NFTScreen(nft: nft)),
                       child: Hero(
-                        tag: nft.image,
+                        tag: '${nft.cAddress}-${nft.tokenId}',
                         child: _ItemsTile(
                           image: nft.image,
                           title: nft.name,

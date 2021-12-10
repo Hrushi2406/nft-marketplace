@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
+import 'package:nfts/core/services/contract_service.dart';
 import 'package:nfts/core/services/gasprice_service.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -13,8 +15,14 @@ class WalletProvider with ChangeNotifier {
   final WalletService _walletService;
   final Web3Client _client;
   final GasPriceService _gasPriceService;
+  final ContractService _contractService;
 
-  WalletProvider(this._walletService, this._client, this._gasPriceService);
+  WalletProvider(
+    this._walletService,
+    this._client,
+    this._gasPriceService,
+    this._contractService,
+  );
 
   WalletState state = WalletState.empty;
   String errMessage = '';
@@ -28,6 +36,9 @@ class WalletProvider with ChangeNotifier {
   Transaction? transactionInfo;
   double totalAmount = 0;
   String lastTxHash = '';
+
+  //Transaction Async
+  Function? onNetworkConfirmationRun;
 
   getBalance() async {
     balance = await _client.getBalance(address);
@@ -50,7 +61,7 @@ class WalletProvider with ChangeNotifier {
         totalAmount = gasInfo!.totalGasRequired;
       } else {
         totalAmount = gasInfo!.totalGasRequired +
-            transactionInfo!.value!.getInEther.toDouble();
+            transactionInfo!.value!.getValueInUnit(EtherUnit.ether);
       }
 
       getBalance();
@@ -83,6 +94,27 @@ class WalletProvider with ChangeNotifier {
 
       _handleError(e);
     }
+  }
+
+  buildTransaction(String contractAddress, String fName, List<dynamic> args,
+      [double? value]) async {
+    final contract =
+        await _contractService.loadCollectionContract(contractAddress);
+
+    final transaction = Transaction.callContract(
+      from: address,
+      contract: contract,
+      value: value == null
+          ? null
+          : EtherAmount.fromUnitAndValue(
+              EtherUnit.gwei,
+              BigInt.from(value * pow(10, 9)),
+            ),
+      function: contract.function(fName),
+      parameters: args,
+    );
+
+    getTransactionFee(transaction);
   }
 
   initializeWallet() async {

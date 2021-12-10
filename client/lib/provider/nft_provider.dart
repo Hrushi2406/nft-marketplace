@@ -1,19 +1,23 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
-import 'package:nfts/config/functions.dart';
-import 'package:nfts/config/gql_query.dart';
-import 'package:nfts/core/services/contract_service.dart';
-import 'package:nfts/core/services/graphql_service.dart';
-import 'package:nfts/core/services/ipfs_service.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/models/collection.dart';
-import 'package:nfts/models/listing_info.dart';
-import 'package:nfts/models/nft.dart';
-import 'package:nfts/models/nft_activity.dart';
-import 'package:nfts/models/nft_metadata.dart';
-import 'package:nfts/provider/collection_provider.dart';
-import 'package:nfts/provider/creator_provider.dart';
-import 'package:nfts/provider/wallet_provider.dart';
 import 'package:web3dart/web3dart.dart';
+
+import '../config/functions.dart';
+import '../config/gql_query.dart';
+import '../core/services/contract_service.dart';
+import '../core/services/graphql_service.dart';
+import '../core/services/ipfs_service.dart';
+import '../core/services/nft_repo.dart';
+import '../core/utils/utils.dart';
+import '../models/bid.dart';
+import '../models/collection.dart';
+import '../models/listing_info.dart';
+import '../models/nft.dart';
+import '../models/nft_activity.dart';
+import '../models/nft_metadata.dart';
+import 'collection_provider.dart';
+import 'wallet_provider.dart';
 
 enum NFTState { empty, loading, loaded, success, error }
 
@@ -23,6 +27,7 @@ class NFTProvider with ChangeNotifier {
   final ContractService _contractService;
   final WalletProvider _walletProvider;
   final CollectionProvider _collectionProvider;
+  final NFTRepo _repo;
 
   NFTProvider(
     this._graphql,
@@ -30,6 +35,7 @@ class NFTProvider with ChangeNotifier {
     this._contractService,
     this._walletProvider,
     this._collectionProvider,
+    this._repo,
   );
 
   //State variables
@@ -39,6 +45,9 @@ class NFTProvider with ChangeNotifier {
   //Vairables
   NFTMetadata metadata = NFTMetadata.initEmpty();
   List<NFTActivity> activities = [];
+  ListingInfo? listingInfo;
+  List<Bid> bids = [];
+  Collection? nftCollection;
 
   //ADD VARIABLES
   List<Map<String, dynamic>> properties = [];
@@ -47,6 +56,13 @@ class NFTProvider with ChangeNotifier {
   ListingType get listingType => _listingType;
   set listingType(ListingType type) {
     _listingType = type;
+    notifyListeners();
+  }
+
+  Bid? _selectedBid;
+  Bid? get selectedBid => _selectedBid;
+  set selectedBid(Bid? bid) {
+    _selectedBid = bid;
     notifyListeners();
   }
 
@@ -137,6 +153,7 @@ class NFTProvider with ChangeNotifier {
       final transaction = await buildTransaction(listingInfo, collection);
 
       await _walletProvider.sendTransaction(transaction);
+
       _clearState();
 
       _handleSuccess();
@@ -164,6 +181,9 @@ class NFTProvider with ChangeNotifier {
   ) async {
     final contract =
         await _contractService.loadCollectionContract(collection.cAddress);
+
+    final price = info.price * pow(10, 18);
+
     final transaction = Transaction.callContract(
       from: _walletProvider.address,
       contract: contract,
@@ -179,7 +199,7 @@ class NFTProvider with ChangeNotifier {
             'bafybeicklz6kbzwhiqeedmlr42kjr6g5qjb5o5rq3fne4arhsvynzuywk4',
         info.forSale,
         info.isFixedPrice,
-        BigInt.from(info.price),
+        BigInt.from(price),
         BigInt.from(info.royalties),
         //UNLOCKABLE CONTENT
         '',
@@ -234,6 +254,80 @@ class NFTProvider with ChangeNotifier {
   //   _walletProvider.getTransactionFee(transaction);
   // }
 
+  getPlaceBidFee(NFT nft, double biddingPrice) async {
+    try {
+      final contract =
+          await _contractService.loadCollectionContract(nft.cAddress);
+      print('Token ID ${nft.tokenId}');
+
+      final price = BigInt.from(biddingPrice * pow(10, 9));
+      print(price);
+
+      final data = ContractFunction(
+        fplaceBid,
+        [
+          FunctionParameter('tokenId', UintType()),
+        ],
+      ).encodeCall([
+        BigInt.from(nft.tokenId),
+      ]);
+
+      final transaction = Transaction(
+        from: _walletProvider.address,
+        to: contract.address,
+        value: EtherAmount.fromUnitAndValue(EtherUnit.ether, 1),
+        data: data,
+      );
+      // print(transaction.value!.getInWei.toString().length);
+
+      // final transaction = Transaction.callContract(
+      //   from: _walletProvider.address,
+      //   contract: contract,
+      //   function: contract.function(fbuyFixedPriceNFT),
+      //   value: EtherAmount.fromUnitAndValue(EtherUnit.ether, 2),
+      //   parameters: [
+      //     BigInt.from(nft.tokenId),
+      //     //UNLOCKABLE CONTENT
+      //   ],
+      // );
+
+      // final transaction = Transaction.callContract(
+      //   from: _walletProvider.address,
+      //   contract: contract,
+      //   function: contract.function(fplaceBid),
+      //   value: EtherAmount.fromUnitAndValue(EtherUnit.ether, 1),
+
+      //   // value: EtherAmount.inWei(price * BigInt.from(1000000000000)),
+      //   // value: EtherAmount.fromUnitAndValue(EtherUnit.wei, 10),
+      //   // value: EtherAmount.inWei(BigInt.from(price)),
+
+      //   // BigInt.from(price),
+      //   parameters: [BigInt.from(nft.tokenId)],
+      // );
+
+      // print(transaction.value!.getInWei.toString().length);
+      print('async tx build');
+
+      await _walletProvider.getTransactionFee(transaction);
+      // await _walletProvider.sendTransaction(transaction);
+
+      print('successfyully executed everything');
+    } catch (e) {
+      debugPrint('Error at NFTProvider->placebid: $e');
+
+      _handleError(e);
+    }
+  }
+
+  placeBid(Transaction transaction) async {
+    try {
+      await _walletProvider.sendTransaction(transaction);
+    } catch (e) {
+      debugPrint('Error at NFTProvider->PlaceBid: $e');
+      _handleError(e);
+    }
+  }
+
   fetchNFTMetadata(NFT nft) async {
     try {
       final stopWatch = Stopwatch();
@@ -243,7 +337,11 @@ class NFTProvider with ChangeNotifier {
 
       //reset State
       metadata = NFTMetadata.initEmpty();
+      listingInfo = null;
+      bids.clear();
+      nftCollection = null;
       activities.clear();
+      _selectedBid = null;
 
       final gData = await _graphql.get(qNFT, {
         'cAddress': nft.cAddress,
@@ -251,10 +349,22 @@ class NFTProvider with ChangeNotifier {
         'creator': nft.creator,
       });
 
+      listingInfo = await _repo.getNFTListingInfo(nft.cAddress, nft.tokenId);
+
+      listingType = listingInfo!.listingType;
+      nftCollection = Collection.fromMap(gData['collections'][0]);
+
       ///NFT Activity of Buying selling
       activities = gData['nftevents']
           .map<NFTActivity>((activity) => NFTActivity.fromMap(activity))
           .toList();
+
+      bids = gData['bids'].map<Bid>((bid) => Bid.fromMap(bid)).toList();
+
+      //sort bids by price
+      bids.sort((a, b) => b.price.compareTo(a.price));
+
+      if (bids.isNotEmpty) _selectedBid = bids[0];
 
       _handleLoaded();
 
@@ -262,11 +372,9 @@ class NFTProvider with ChangeNotifier {
 
       metadata = NFTMetadata.fromMap(data);
 
-      print(stopWatch.elapsed);
-
       notifyListeners();
     } catch (e) {
-      debugPrint('Error at NFTProvider -> fetchCollectionMeta: $e');
+      debugPrint('Error at NFTProvider -> fetchNFTMeta: $e');
 
       _handleError(e);
     }

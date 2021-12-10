@@ -2,18 +2,19 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nfts/core/animations/animations.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
-import 'package:nfts/models/collection.dart';
-import 'package:nfts/models/listing_info.dart';
-import 'package:nfts/models/nft_metadata.dart';
-import 'package:nfts/provider/nft_provider.dart';
-import 'package:nfts/provider/wallet_provider.dart';
-import 'package:nfts/screens/confirmation_screen/confirmation_screen.dart';
-import 'package:nfts/screens/create_nft_screen/widgets/selectable_container.dart';
-import 'package:nfts/screens/network_confirmation/network_confirmation_screen.dart';
 import 'package:provider/provider.dart';
+
+import '../../core/animations/animations.dart';
+import '../../core/utils/utils.dart';
+import '../../core/widgets/custom_widgets.dart';
+import '../../models/collection.dart';
+import '../../models/listing_info.dart';
+import '../../models/nft_metadata.dart';
+import '../../provider/nft_provider.dart';
+import '../../provider/wallet_provider.dart';
+import '../confirmation_screen/confirmation_screen.dart';
+import '../network_confirmation/network_confirmation_screen.dart';
+import 'widgets/selectable_container.dart';
 
 class CreateNFTListingScreen extends StatefulWidget {
   const CreateNFTListingScreen({
@@ -42,7 +43,7 @@ class _CreateNFTListingScreenState extends State<CreateNFTListingScreen> {
       final listing = ListingInfo(
         listingType: provider.listingType,
         price: double.parse(_priceController.text),
-        royalties: double.parse(_royaltiesController.text),
+        royalties: int.parse(_royaltiesController.text),
       );
       // provider.mintNFT(listing);
       final transaction =
@@ -146,16 +147,20 @@ class _CreateNFTListingScreenState extends State<CreateNFTListingScreen> {
                       textInputType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                     ),
-                    SizedBox(height: rh(space2x)),
-                    CustomTextFormField(
-                      controller: _priceController,
-                      labelText: _listingType == ListingType.bidding
-                          ? 'MINIMUM BID PRICE IN MAT'
-                          : 'FIXED PRICE IN MAT',
-                      validator: validator,
-                      textInputType: TextInputType.number,
-                      textInputAction: TextInputAction.done,
-                    ),
+                    if (_listingType != ListingType.fixedPriceNotSale)
+                      SizedBox(height: rh(space2x)),
+                    if (_listingType != ListingType.fixedPriceNotSale)
+                      FadeAnimation(
+                        child: CustomTextFormField(
+                          controller: _priceController,
+                          labelText: _listingType == ListingType.bidding
+                              ? 'MINIMUM BID PRICE IN MAT'
+                              : 'FIXED PRICE IN MAT',
+                          validator: validator,
+                          textInputType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                        ),
+                      ),
                   ],
                 ),
               ),

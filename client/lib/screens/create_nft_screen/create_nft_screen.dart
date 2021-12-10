@@ -152,9 +152,15 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                             ),
                     ),
                     child: _pickedImagePath == null
-                        ? UpperCaseText(
-                            '+ Add image',
-                            style: Theme.of(context).textTheme.headline4,
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.add),
+                              UpperCaseText(
+                                ' Add image',
+                                style: Theme.of(context).textTheme.headline2,
+                              ),
+                            ],
                           )
                         : null,
                   ),
@@ -168,12 +174,13 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(
                     horizontal: space2x,
-                    vertical: 12,
+                    vertical: 10,
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(space1x),
                     border: Border.all(
                       width: 1,
+                      color: Colors.black26,
                     ),
                   ),
                   child: Row(
@@ -183,7 +190,9 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                         _selectedCollection == null
                             ? 'Choose Collection'
                             : _selectedCollection!.name,
-                        style: Theme.of(context).textTheme.headline4,
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                              color: Colors.black87,
+                            ),
                       ),
                       Icon(
                         Iconsax.arrow_down_1,

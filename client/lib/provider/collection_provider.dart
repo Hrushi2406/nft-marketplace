@@ -1,3 +1,5 @@
+// ignore_for_file: iterable_contains_unrelated_type
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:nfts/config/functions.dart';
@@ -40,6 +42,7 @@ class CollectionProvider with ChangeNotifier {
   //Variables
   List<NFT> collectionItems = [];
   CollectionMetaData metaData = CollectionMetaData.initEmpty();
+  List<String> distinctOwners = [];
   // Transaction
   CollectionMetaData collectionToCreate = CollectionMetaData.initEmpty();
 
@@ -177,6 +180,7 @@ class CollectionProvider with ChangeNotifier {
       //reset State
       metaData = CollectionMetaData.initEmpty();
       collectionItems.clear();
+      distinctOwners.clear();
 
       final gData = await _graphql.get(qCollection, {
         'cAddress': collection.cAddress,
@@ -186,6 +190,14 @@ class CollectionProvider with ChangeNotifier {
       //Collection Items
       collectionItems =
           gData['nfts'].map<NFT>((nft) => NFT.fromMap(nft)).toList();
+
+      distinctOwners = [];
+
+      for (NFT item in collectionItems) {
+        if (!distinctOwners.contains(item.owner)) {
+          distinctOwners.add(item.owner);
+        }
+      }
 
       _handleLoaded();
 

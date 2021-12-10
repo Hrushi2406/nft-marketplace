@@ -20,6 +20,7 @@ class GasPriceService {
       final estimatedGas = await _web3client.estimateGas(
         sender: transaction.from,
         to: transaction.to,
+        value: transaction.value,
         data: transaction.data,
       );
 

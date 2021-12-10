@@ -11,12 +11,17 @@ import 'package:provider/provider.dart';
 import 'package:slide_to_confirm/slide_to_confirm.dart';
 
 class ConfirmationScreen extends StatefulWidget {
-  const ConfirmationScreen({Key? key, required this.onConfirmation})
-      : super(key: key);
+  const ConfirmationScreen({
+    Key? key,
+    this.onConfirmation,
+    this.isAutoMated = false,
+  }) : super(key: key);
 
   // final String image;
   // final String
-  final VoidCallback onConfirmation;
+
+  final bool isAutoMated;
+  final VoidCallback? onConfirmation;
 
   @override
   _ConfirmationScreenState createState() => _ConfirmationScreenState();
@@ -24,8 +29,14 @@ class ConfirmationScreen extends StatefulWidget {
 
 class _ConfirmationScreenState extends State<ConfirmationScreen> {
   //Confirm Transaction
-  _confirmTransaction() {
-    widget.onConfirmation();
+  _confirmTransaction() async {
+    if (widget.isAutoMated) {
+      final provider = Provider.of<WalletProvider>(context, listen: false);
+
+      provider.sendTransaction(provider.transactionInfo!);
+    }
+
+    if (widget.onConfirmation != null) widget.onConfirmation!();
   }
 
   @override

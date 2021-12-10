@@ -24,7 +24,8 @@ class TransactionFeeWidget extends StatelessWidget {
         if (transactionInfo.value != null)
           BidTile(
             text: 'Transaction Amount',
-            value: '${transactionInfo.value!.getInEther} MAT',
+            value:
+                '${transactionInfo.value!.getValueInUnit(EtherUnit.ether)} MAT',
             isFontRegular: true,
           ),
         if (transactionInfo.value != null) SizedBox(height: rh(space3x)),

@@ -16,7 +16,6 @@ class GraphqlService {
     final options = QueryOptions(
       document: parseString(query),
       variables: variables ?? {},
-      fetchPolicy: FetchPolicy.noCache,
     );
 
     final result = await client.query(options);

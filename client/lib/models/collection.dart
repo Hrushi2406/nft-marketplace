@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'dart:math';
+
 class Collection {
   final String cAddress;
   final String name;
@@ -7,7 +9,7 @@ class Collection {
   final String creator;
   final String metadata;
   final int nItems;
-  final int volumeOfEth;
+  final double volumeOfEth;
 
   const Collection({
     required this.cAddress,
@@ -26,7 +28,7 @@ class Collection {
     String? creator,
     String? metadata,
     int? nItems,
-    int? volumeOfEth,
+    double? volumeOfEth,
   }) {
     return Collection(
       cAddress: cAddress ?? this.cAddress,
@@ -59,7 +61,7 @@ class Collection {
       creator: map['creator'],
       metadata: map['metadata'],
       nItems: map['nItems'],
-      volumeOfEth: map['volumeOfEth'],
+      volumeOfEth: map['volumeOfEth'] / pow(10, 6),
     );
   }
 

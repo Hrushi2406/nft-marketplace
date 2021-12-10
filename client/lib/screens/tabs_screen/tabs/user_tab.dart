@@ -3,6 +3,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:nfts/provider/wallet_provider.dart';
 import 'package:nfts/screens/collection_screen/collection_screen.dart';
 import 'package:nfts/screens/create_collection_screen/create_collection_screen.dart';
+import 'package:nfts/screens/nft_screen/nft_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/utils/utils.dart';
@@ -224,7 +225,9 @@ class _UserTabState extends State<UserTab> with SingleTickerProviderStateMixin {
                 itemBuilder: (BuildContext context, int index) {
                   final nft = provider.collectedNFTs[index];
                   return NFTCard(
-                    onTap: () {},
+                    onTap: () =>
+                        Navigation.push(context, screen: NFTScreen(nft: nft)),
+                    heroTag: '${nft.cAddress}-${nft.tokenId}',
                     image: nft.image,
                     title: nft.name,
                     subtitle: 'By ' + formatAddress(nft.creator),
