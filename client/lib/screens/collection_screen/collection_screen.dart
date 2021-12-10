@@ -216,13 +216,16 @@ class _ItemsTile extends StatelessWidget {
     return Stack(
       children: [
         //BACKGROUND IMAGE
-        ClipRRect(
-          borderRadius: BorderRadius.circular(space1x),
-          child: CachedNetworkImage(
-            imageUrl: 'https://ipfs.io/ipfs/$image',
-            fit: BoxFit.cover,
-            placeholder: (_, url) => CustomPlaceHolder(size: rw(56)),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
+        AspectRatio(
+          aspectRatio: 1,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(space1x),
+            child: CachedNetworkImage(
+              imageUrl: 'https://ipfs.io/ipfs/$image',
+              fit: BoxFit.cover,
+              placeholder: (_, url) => CustomPlaceHolder(size: rw(56)),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
           ),
         ),
         //OverLay

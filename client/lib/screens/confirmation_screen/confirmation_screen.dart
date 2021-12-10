@@ -11,7 +11,12 @@ import 'package:provider/provider.dart';
 import 'package:slide_to_confirm/slide_to_confirm.dart';
 
 class ConfirmationScreen extends StatefulWidget {
-  const ConfirmationScreen({Key? key}) : super(key: key);
+  const ConfirmationScreen({Key? key, required this.onConfirmation})
+      : super(key: key);
+
+  // final String image;
+  // final String
+  final VoidCallback onConfirmation;
 
   @override
   _ConfirmationScreenState createState() => _ConfirmationScreenState();
@@ -20,12 +25,7 @@ class ConfirmationScreen extends StatefulWidget {
 class _ConfirmationScreenState extends State<ConfirmationScreen> {
   //Confirm Transaction
   _confirmTransaction() {
-    Provider.of<CollectionProvider>(context, listen: false).createCollection();
-    Navigation.popTillNamedAndPush(
-      context,
-      popTill: 'tabs_screen',
-      screen: const NetworkConfirmationScreen(),
-    );
+    widget.onConfirmation();
   }
 
   @override

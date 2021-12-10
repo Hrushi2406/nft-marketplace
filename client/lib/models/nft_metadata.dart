@@ -17,7 +17,7 @@ class NFTMetadata {
 
   factory NFTMetadata.initEmpty() => const NFTMetadata(
         name: '',
-        description: '',
+        description: 'loading decription..',
         image: '',
         properties: [],
       );

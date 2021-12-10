@@ -3,19 +3,9 @@ import 'package:gql/language.dart';
 import 'package:graphql/client.dart';
 
 class GraphqlService {
-  late final GraphQLClient client;
+  final GraphQLClient client;
 
-  final String url =
-      'https://api.thegraph.com/subgraphs/name/sumit-mahajan/nft-marketplace';
-
-  GraphqlService() {
-    final _httpLink = HttpLink(url);
-
-    client = GraphQLClient(
-      link: _httpLink,
-      cache: GraphQLCache(),
-    );
-  }
+  GraphqlService(this.client);
 
   ///GET METHOD FOR GRAPHQL TO FETCH DATA
   Future<Map<String, dynamic>> get(
@@ -26,6 +16,7 @@ class GraphqlService {
     final options = QueryOptions(
       document: parseString(query),
       variables: variables ?? {},
+      fetchPolicy: FetchPolicy.noCache,
     );
 
     final result = await client.query(options);

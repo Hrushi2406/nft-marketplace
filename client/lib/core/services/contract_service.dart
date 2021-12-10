@@ -53,7 +53,7 @@ class ContractService {
     String contractAddress,
   ) async =>
       await _loadABI(
-        'assets/abi/CustomERC721Collection.json',
+        'assets/abi/CustomCollection.json',
         'CustomERC721Collection',
         contractAddress,
       );

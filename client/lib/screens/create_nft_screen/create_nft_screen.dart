@@ -8,10 +8,12 @@ import 'package:nfts/core/widgets/custom_widgets.dart';
 import 'package:nfts/models/collection.dart';
 import 'package:nfts/models/nft.dart';
 import 'package:nfts/models/nft_metadata.dart';
+import 'package:nfts/provider/nft_provider.dart';
 import 'package:nfts/screens/create_nft_screen/create_listing_screen.dart';
 import 'package:nfts/screens/create_nft_screen/widgets/add_property.dart';
 import 'package:nfts/screens/create_nft_screen/widgets/choose_collections_widget.dart';
 import 'package:nfts/screens/update_listing_screen/update_listing_screen.dart';
+import 'package:provider/provider.dart';
 
 class CreateNFTScreen extends StatefulWidget {
   const CreateNFTScreen({Key? key}) : super(key: key);
@@ -25,10 +27,9 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _royaltiesController = TextEditingController();
 
   String? _pickedImagePath;
-  final Debouncer _debouncer = Debouncer(milliseconds: 2000);
+  final Debouncer _debouncer = Debouncer(milliseconds: 250);
 
   List<Map<String, dynamic>> properties = [];
   Collection? _selectedCollection;
@@ -41,15 +42,23 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
 
       setState(() {});
 
-      // _debouncer.run(() =>
-      // Provider.of<CollectionProvider>(context, listen: false)
-      // .uploadImage(image.path));
+      _debouncer.run(() => Provider.of<NFTProvider>(context, listen: false)
+          .uploadImage(image.path));
     }
   }
 
   _isImagePicked() {
     if (_pickedImagePath == null) {
       Fluttertoast.showToast(msg: 'Please select a image');
+
+      return false;
+    }
+    return true;
+  }
+
+  _checkIsCollectionSelected() {
+    if (_selectedCollection == null) {
+      Fluttertoast.showToast(msg: 'Please select a collection');
 
       return false;
     }
@@ -89,7 +98,8 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
   _next() {
     if (_formKey.currentState!.validate() &&
         _isImagePicked() &&
-        _selectedCollection != null) {
+        _checkIsCollectionSelected()) {
+      print('Run');
       //UPLOAD METADAT
       final nftMetadata = NFTMetadata(
         name: _nameController.text,
@@ -97,6 +107,9 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
         image: _pickedImagePath!,
         properties: properties,
       );
+
+      Provider.of<NFTProvider>(context, listen: false)
+          .uploadMetadata(nftMetadata);
 
       Navigation.push(
         context,
@@ -198,13 +211,6 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                       controller: _descriptionController,
                       labelText: 'DESCRIPTION',
                       validator: validator,
-                    ),
-                    SizedBox(height: rh(space2x)),
-                    CustomTextFormField(
-                      controller: _royaltiesController,
-                      labelText: 'ROYALTIES',
-                      validator: validator,
-                      textInputType: TextInputType.number,
                     ),
                     SizedBox(height: rh(space2x)),
                   ],

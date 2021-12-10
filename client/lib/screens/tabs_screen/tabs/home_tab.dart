@@ -114,7 +114,7 @@ class HomeTab extends StatelessWidget {
                     return NFTCard(
                       onTap: () =>
                           Navigation.push(context, screen: NFTScreen(nft: nft)),
-                      heroTag: nft.image,
+                      heroTag: '${nft.cAddress}-${nft.tokenId}',
                       // image: 'assets/images/nft-${index + 1}.png',
                       image: nft.image,
                       title: nft.name,

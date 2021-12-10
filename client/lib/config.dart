@@ -55,7 +55,7 @@ init() async {
 
     final d = await deployerAddress.extractAddress();
 
-    final service = GraphqlService();
+    // final service = GraphqlService();
 
     // final ipfs = IPFSService();
 

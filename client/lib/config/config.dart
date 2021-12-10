@@ -8,6 +8,10 @@ const rpcURL = 'https://rpc-mumbai.maticvigil.com';
 //IPFS FETCH URL
 const ipfsURL = 'https://ipfs.io/ipfs/';
 
+//GRAPHQL
+const graphqlURL =
+    'https://api.thegraph.com/subgraphs/name/sumit-mahajan/nft-marketplace';
+
 //NFT STORAGE API KEY
 const nftStorageKey =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEVDY0FBMGRGYkI4QmQ5Nzc3MDYxNTdmZTMyQUUyYTU2MGNFMzkwZjgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzODcwODg0ODYxOSwibmFtZSI6Ik5GVCBNYXJrZXRwbGFjZSJ9.wtt_vDthKSl9FTLgLGSqMQhutD2hZ90Njijvfz0kHc4";

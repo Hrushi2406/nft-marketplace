@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
 import 'package:nfts/core/services/gasprice_service.dart';
 import 'package:nfts/core/services/image_picker_service.dart';
@@ -25,7 +26,13 @@ Future<void> init() async {
   locator.registerLazySingleton(
       () => WalletProvider(locator(), locator(), locator()));
   locator.registerLazySingleton(() => CreatorProvider(locator(), locator()));
-  locator.registerLazySingleton(() => NFTProvider(locator(), locator()));
+  locator.registerLazySingleton(() => NFTProvider(
+        locator(),
+        locator(),
+        locator(),
+        locator(),
+        locator(),
+      ));
   locator.registerLazySingleton(() => CollectionProvider(
         locator(),
         locator(),
@@ -38,7 +45,10 @@ Future<void> init() async {
   //SERVICES
   locator.registerSingleton<ContractService>(ContractService());
   locator.registerLazySingleton(() => WalletService(locator()));
-  locator.registerLazySingleton(() => GraphqlService());
+  locator.registerLazySingleton(() => GraphqlService(GraphQLClient(
+        link: HttpLink(graphqlURL),
+        cache: GraphQLCache(),
+      )));
   locator.registerLazySingleton(() => IPFSService(locator()));
   locator.registerLazySingleton(() => GasPriceService(locator(), locator()));
   locator.registerLazySingleton(() => ImagePickerService());

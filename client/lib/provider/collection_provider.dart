@@ -133,6 +133,8 @@ class CollectionProvider with ChangeNotifier {
       );
 
       await _walletProvider.sendTransaction(transaction);
+
+      _clear();
     } catch (e) {
       debugPrint('Error at CollectionProvider -> getTransactionFee: $e');
 
@@ -160,7 +162,12 @@ class CollectionProvider with ChangeNotifier {
     _walletProvider.getTransactionFee(transaction);
   }
 
-  // confi
+  _clear() {
+    collectionToCreate = CollectionMetaData.initEmpty();
+
+    imageCID = null;
+    metadataCID = null;
+  }
 
   //TODO :Check colletion on opean sea 0x5ee04c97881eb4da8892b209c8baad55c3c17b30
 

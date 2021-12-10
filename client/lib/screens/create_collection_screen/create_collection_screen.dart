@@ -8,6 +8,7 @@ import 'package:nfts/core/widgets/custom_widgets.dart';
 import 'package:nfts/models/collection_metadata.dart';
 import 'package:nfts/provider/collection_provider.dart';
 import 'package:nfts/screens/confirmation_screen/confirmation_screen.dart';
+import 'package:nfts/screens/network_confirmation/network_confirmation_screen.dart';
 import 'package:nfts/screens/wallet_init_screen/wallet_init_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -73,7 +74,15 @@ class _CreateCollectionScreenState extends State<CreateCollectionScreen> {
           .getTransactionFee(metadata);
 
 //Navigate to other screen
-      Navigation.push(context, screen: const ConfirmationScreen());
+      Navigation.push(context, screen: ConfirmationScreen(onConfirmation: () {
+        Provider.of<CollectionProvider>(context, listen: false)
+            .createCollection();
+        Navigation.popTillNamedAndPush(
+          context,
+          popTill: 'tabs_screen',
+          screen: const NetworkConfirmationScreen(),
+        );
+      }));
     }
   }
 
