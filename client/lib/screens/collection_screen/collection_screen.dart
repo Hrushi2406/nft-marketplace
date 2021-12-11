@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:nfts/provider/fav_provider.dart';
+import 'package:nfts/provider/wallet_provider.dart';
+import 'package:nfts/screens/create_nft_screen/create_nft_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -35,6 +38,13 @@ class _CollectionScreenState extends State<CollectionScreen> {
     if (!await launch(url)) {}
   }
 
+  _createNFT() {
+    Navigation.push(
+      context,
+      screen: CreateNFTScreen(collection: widget.collection),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,11 +58,16 @@ class _CollectionScreenState extends State<CollectionScreen> {
             SizedBox(height: rh(space2x)),
 
             //LIST TILE
-            CollectionListTile(
-              image: widget.collection.image,
-              title: widget.collection.name,
-              subtitle: 'By ' + formatAddress(widget.collection.creator),
-            ),
+            Consumer<FavProvider>(builder: (context, favProvider, child) {
+              return CollectionListTile(
+                image: widget.collection.image,
+                title: widget.collection.name,
+                subtitle: 'By ' + formatAddress(widget.collection.creator),
+                isFav: favProvider.isFavCollection(widget.collection),
+                onFavPressed: () =>
+                    favProvider.setFavCollection(widget.collection),
+              );
+            }),
             SizedBox(height: rh(space3x)),
 
             //DESCRIPTION
@@ -139,12 +154,19 @@ class _CollectionScreenState extends State<CollectionScreen> {
                       onPressed: () {},
                     ),
                     const Spacer(),
-                    Buttons.text(
-                      context: context,
-                      right: 0,
-                      text: 'Create NFT',
-                      onPressed: () {},
-                    ),
+                    Consumer<WalletProvider>(
+                        builder: (context, walletProvider, child) {
+                      if (walletProvider.address.hex ==
+                          widget.collection.creator) {
+                        return Buttons.text(
+                          context: context,
+                          right: 0,
+                          text: 'Create NFT',
+                          onPressed: _createNFT,
+                        );
+                      }
+                      return Container();
+                    }),
                   ],
                 );
               },

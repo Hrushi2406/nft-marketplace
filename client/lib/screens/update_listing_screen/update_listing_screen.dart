@@ -35,6 +35,8 @@ class _UpdateListingScreenState extends State<UpdateListingScreen> {
               image: widget.nftMetadata!.image,
               title: widget.nftMetadata!.name,
               subtitle: '',
+              // isFav: favProvider.isFavCollection(collection),
+              // onFavPressed: () => favProvider.setFavCollection(collection),
             ),
           ],
         ),

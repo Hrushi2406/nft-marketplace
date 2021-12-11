@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:nfts/provider/fav_provider.dart';
 
 import '../config/gql_query.dart';
 import '../core/services/graphql_service.dart';
@@ -18,6 +19,7 @@ enum AppState { empty, loading, loaded, success, error, unauthenticated }
 class AppProvider with ChangeNotifier {
   final WalletService _walletService;
   final WalletProvider _walletProvider;
+  final FavProvider _favProvider;
   final CreatorProvider _creatorProvider;
   final GraphqlService _graphql;
 
@@ -26,6 +28,7 @@ class AppProvider with ChangeNotifier {
     this._walletProvider,
     this._graphql,
     this._creatorProvider,
+    this._favProvider,
   );
 
   //APP PROVIDER VAR
@@ -57,6 +60,9 @@ class AppProvider with ChangeNotifier {
 
       //FETCH USER PAGES DATA
       _creatorProvider.fetchCreatorInfo(_walletProvider.address);
+
+      //Fav Provider
+      _favProvider.fetchFav();
 
       _handleLoaded();
     }

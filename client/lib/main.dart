@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nfts/provider/fav_provider.dart';
 import 'package:nfts/screens/confirmation_screen/confirmation_screen.dart';
 import 'package:nfts/screens/create_collection_screen/create_collection_screen.dart';
 import 'package:nfts/screens/create_nft_screen/create_nft_screen.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => locator<CreatorProvider>()),
         ChangeNotifierProvider(create: (_) => locator<CollectionProvider>()),
         ChangeNotifierProvider(create: (_) => locator<NFTProvider>()),
+        ChangeNotifierProvider(create: (_) => locator<FavProvider>()),
       ],
       child: SizeConfiguration(
         designSize: const Size(375, 812),

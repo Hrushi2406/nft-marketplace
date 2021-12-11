@@ -16,6 +16,7 @@ class NFTCard extends StatelessWidget {
     this.heroTag = 'no-hero',
     this.isVerified = true,
     this.isFav = false,
+    required this.onFavPressed,
   }) : super(key: key);
 
   final String image;
@@ -27,6 +28,7 @@ class NFTCard extends StatelessWidget {
   final bool isFav;
 
   final VoidCallback onTap;
+  final VoidCallback onFavPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +91,7 @@ class NFTCard extends StatelessWidget {
                 context: context,
                 icon: isFav ? Iconsax.heart5 : Iconsax.heart,
                 semanticLabel: 'Heart',
-                onPressed: () {},
+                onPressed: onFavPressed,
               ),
             ],
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:nfts/provider/fav_provider.dart';
 import 'package:nfts/provider/wallet_provider.dart';
 import 'package:nfts/screens/collection_screen/collection_screen.dart';
 import 'package:nfts/screens/create_collection_screen/create_collection_screen.dart';
@@ -211,30 +212,33 @@ class _UserTabState extends State<UserTab> with SingleTickerProviderStateMixin {
             if (provider.collectedNFTs.isEmpty)
               const EmptyWidget(text: 'Nothing Collected yet')
             else
-              ListView.separated(
-                itemCount: provider.collectedNFTs.length,
-                padding: const EdgeInsets.only(
-                  left: space2x,
-                  right: space2x,
-                  bottom: space3x,
-                  top: space3x,
-                ),
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(height: rh(space3x));
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  final nft = provider.collectedNFTs[index];
-                  return NFTCard(
-                    onTap: () =>
-                        Navigation.push(context, screen: NFTScreen(nft: nft)),
-                    heroTag: '${nft.cAddress}-${nft.tokenId}',
-                    image: nft.image,
-                    title: nft.name,
-                    subtitle: 'By ' + formatAddress(nft.creator),
-                    isFav: true,
-                  );
-                },
-              ),
+              Consumer<FavProvider>(builder: (context, favProvider, child) {
+                return ListView.separated(
+                  itemCount: provider.collectedNFTs.length,
+                  padding: const EdgeInsets.only(
+                    left: space2x,
+                    right: space2x,
+                    bottom: space3x,
+                    top: space3x,
+                  ),
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(height: rh(space3x));
+                  },
+                  itemBuilder: (BuildContext context, int index) {
+                    final nft = provider.collectedNFTs[index];
+                    return NFTCard(
+                      onTap: () =>
+                          Navigation.push(context, screen: NFTScreen(nft: nft)),
+                      heroTag: '${nft.cAddress}-${nft.tokenId}',
+                      image: nft.image,
+                      title: nft.name,
+                      subtitle: 'By ' + formatAddress(nft.creator),
+                      isFav: favProvider.isFavNFT(nft),
+                      onFavPressed: () => favProvider.setFavNFT(nft),
+                    );
+                  },
+                );
+              }),
 
             //CREATED UI
             if (provider.createdCollections.isEmpty && provider.singles.isEmpty)
@@ -257,34 +261,39 @@ class _UserTabState extends State<UserTab> with SingleTickerProviderStateMixin {
                               style: Theme.of(context).textTheme.headline5,
                             ),
                             SizedBox(height: rh(space3x)),
-                            ListView.separated(
-                              itemCount: provider.createdCollections.length,
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              padding: EdgeInsets.zero,
-                              separatorBuilder:
-                                  (BuildContext context, int index) {
-                                return SizedBox(height: rh(space2x));
-                              },
-                              itemBuilder: (BuildContext context, int index) {
-                                final collection =
-                                    provider.createdCollections[index];
+                            Consumer<FavProvider>(
+                                builder: (context, favProvider, child) {
+                              return ListView.separated(
+                                itemCount: provider.createdCollections.length,
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                padding: EdgeInsets.zero,
+                                separatorBuilder:
+                                    (BuildContext context, int index) {
+                                  return SizedBox(height: rh(space2x));
+                                },
+                                itemBuilder: (BuildContext context, int index) {
+                                  final collection =
+                                      provider.createdCollections[index];
 
-                                return GestureDetector(
-                                  onTap: () => Navigation.push(context,
-                                      screen: CollectionScreen(
-                                        collection: collection,
-                                      )),
-                                  child: CollectionListTile(
-                                    image: collection.image,
-                                    title: collection.name,
-                                    subtitle: '${collection.nItems} items',
-                                    // 'By ${formatAddress(collection.creator)}',
-                                    isFav: true,
-                                  ),
-                                );
-                              },
-                            ),
+                                  return GestureDetector(
+                                    onTap: () => Navigation.push(context,
+                                        screen: CollectionScreen(
+                                          collection: collection,
+                                        )),
+                                    child: CollectionListTile(
+                                      image: collection.image,
+                                      title: collection.name,
+                                      subtitle: '${collection.nItems} items',
+                                      isFav: favProvider
+                                          .isFavCollection(collection),
+                                      onFavPressed: () => favProvider
+                                          .setFavCollection(collection),
+                                    ),
+                                  );
+                                },
+                              );
+                            }),
 
                             //DIVIDER
                             SizedBox(height: rh(space3x)),
@@ -304,26 +313,32 @@ class _UserTabState extends State<UserTab> with SingleTickerProviderStateMixin {
                         SizedBox(height: rh(space3x)),
 
                       if (provider.singles.isNotEmpty)
-                        ListView.separated(
-                          itemCount: 3,
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.only(
-                            bottom: space3x,
-                          ),
-                          separatorBuilder: (BuildContext context, int index) {
-                            return SizedBox(height: rh(space3x));
-                          },
-                          itemBuilder: (BuildContext context, int index) {
-                            return NFTCard(
-                              onTap: () {},
-                              image: 'assets/images/nft-${index + 1}.png',
-                              title: 'Less is more',
-                              subtitle: 'By The Minimalist',
-                              isFav: true,
-                            );
-                          },
-                        ),
+                        Consumer<FavProvider>(
+                            builder: (context, favProvider, child) {
+                          return ListView.separated(
+                            itemCount: 3,
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.only(
+                              bottom: space3x,
+                            ),
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return SizedBox(height: rh(space3x));
+                            },
+                            itemBuilder: (BuildContext context, int index) {
+                              final nft = provider.singles[index];
+                              return NFTCard(
+                                onTap: () {},
+                                image: nft.image,
+                                title: nft.name,
+                                subtitle: nft.cName,
+                                isFav: favProvider.isFavNFT(nft),
+                                onFavPressed: () => favProvider.setFavNFT(nft),
+                              );
+                            },
+                          );
+                        }),
                     ],
                   ),
                 ),

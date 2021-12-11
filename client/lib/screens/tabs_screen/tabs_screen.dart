@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nfts/core/animations/animations.dart';
+import 'package:nfts/core/animations/slide_animation.dart';
 
 import 'tabs/fav_tab.dart';
 import 'tabs/home_tab.dart';

@@ -16,7 +16,9 @@ import 'package:nfts/screens/update_listing_screen/update_listing_screen.dart';
 import 'package:provider/provider.dart';
 
 class CreateNFTScreen extends StatefulWidget {
-  const CreateNFTScreen({Key? key}) : super(key: key);
+  const CreateNFTScreen({Key? key, this.collection}) : super(key: key);
+
+  final Collection? collection;
 
   @override
   _CreateNFTScreenState createState() => _CreateNFTScreenState();
@@ -33,6 +35,12 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
 
   List<Map<String, dynamic>> properties = [];
   Collection? _selectedCollection;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedCollection = widget.collection;
+  }
 
   _pickImage() async {
     final image = await ImagePickerService.pickImage();
@@ -99,7 +107,6 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
     if (_formKey.currentState!.validate() &&
         _isImagePicked() &&
         _checkIsCollectionSelected()) {
-      print('Run');
       //UPLOAD METADAT
       final nftMetadata = NFTMetadata(
         name: _nameController.text,

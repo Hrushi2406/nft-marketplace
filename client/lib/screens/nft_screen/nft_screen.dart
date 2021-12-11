@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:nfts/provider/fav_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -200,13 +201,18 @@ class _NFTScreenState extends State<NFTScreen> {
                           widget.nft.name,
                           style: Theme.of(context).textTheme.headline4,
                         ),
-                        Buttons.icon(
-                          context: context,
-                          icon: Iconsax.heart,
-                          size: rf(18),
-                          semanticLabel: 'Heart',
-                          onPressed: () {},
-                        )
+                        Consumer<FavProvider>(
+                            builder: (context, favProvider, child) {
+                          return Buttons.icon(
+                            context: context,
+                            icon: favProvider.isFavNFT(widget.nft)
+                                ? Iconsax.heart5
+                                : Iconsax.heart,
+                            size: rf(24),
+                            semanticLabel: 'Heart',
+                            onPressed: () => favProvider.setFavNFT(widget.nft),
+                          );
+                        })
                       ],
                     ),
                     SizedBox(height: rh(space2x)),

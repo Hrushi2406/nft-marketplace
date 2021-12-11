@@ -85,8 +85,8 @@ class Collection {
         other.image == image &&
         other.creator == creator &&
         other.metadata == metadata &&
-        other.nItems == nItems &&
-        other.volumeOfEth == volumeOfEth;
+        other.nItems == nItems;
+    // other.volumeOfEth == volumeOfEth;
   }
 
   @override

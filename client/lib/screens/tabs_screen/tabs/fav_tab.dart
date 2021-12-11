@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nfts/provider/fav_provider.dart';
+import 'package:nfts/screens/collection_screen/collection_screen.dart';
+import 'package:nfts/screens/nft_screen/nft_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/utils/utils.dart';
 import '../../../core/widgets/custom_widgets.dart';
@@ -13,60 +17,72 @@ class FavTab extends StatelessWidget {
       children: <Widget>[
         SizedBox(height: rh(60)),
         Expanded(
-          child: CustomTabBar(
-            titles: const ['Collections', 'NFTS'],
-            tabs: [
-              //COLLECTION VIEW
-              ListView.separated(
-                itemCount: 3,
-                padding: const EdgeInsets.only(
-                  left: space2x,
-                  right: space2x,
-                  bottom: space3x,
-                  top: space3x,
+          child: Consumer<FavProvider>(builder: (context, favProvider, child) {
+            return CustomTabBar(
+              titles: const ['Collections', 'NFTS'],
+              tabs: [
+                //COLLECTION VIEW
+                ListView.separated(
+                  itemCount: favProvider.favCollections.length,
+                  padding: const EdgeInsets.only(
+                    left: space2x,
+                    right: space2x,
+                    bottom: space3x,
+                    top: space3x,
+                  ),
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(height: rh(space2x));
+                  },
+                  itemBuilder: (BuildContext context, int index) {
+                    final collection = favProvider.favCollections[index];
+                    return GestureDetector(
+                      onTap: () => Navigation.push(
+                        context,
+                        screen: CollectionScreen(collection: collection),
+                      ),
+                      child: CollectionListTile(
+                        image: collection.image,
+                        title: collection.name,
+                        subtitle: 'By ${formatAddress(collection.creator)}',
+                        isFav: favProvider.isFavCollection(collection),
+                        onFavPressed: () =>
+                            favProvider.setFavCollection(collection),
+                      ),
+                    );
+                  },
                 ),
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(height: rh(space2x));
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () => Navigation.push(
-                      context,
-                      // screen: const CollectionScreen(),
-                    ),
-                    child: CollectionListTile(
-                      image: 'assets/images/collection-${index + 1}.png',
-                      title: 'Less is more',
-                      subtitle: 'By The Minimalist',
-                    ),
-                  );
-                },
-              ),
 
-              //NFT VIEW
-              ListView.separated(
-                itemCount: 3,
-                padding: const EdgeInsets.only(
-                  left: space2x,
-                  right: space2x,
-                  bottom: space3x,
-                  top: space3x,
+                //NFT VIEW
+                ListView.separated(
+                  itemCount: favProvider.favNFT.length,
+                  padding: const EdgeInsets.only(
+                    left: space2x,
+                    right: space2x,
+                    bottom: space3x,
+                    top: space3x,
+                  ),
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(height: rh(space3x));
+                  },
+                  itemBuilder: (BuildContext context, int index) {
+                    final nft = favProvider.favNFT[index];
+                    return NFTCard(
+                      onTap: () => Navigation.push(
+                        context,
+                        screen: NFTScreen(nft: nft),
+                      ),
+                      heroTag: '${nft.cAddress}-${nft.tokenId}',
+                      image: nft.image,
+                      title: nft.name,
+                      subtitle: nft.cName,
+                      isFav: favProvider.isFavNFT(nft),
+                      onFavPressed: () => favProvider.setFavNFT(nft),
+                    );
+                  },
                 ),
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(height: rh(space3x));
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  return NFTCard(
-                    onTap: () {},
-                    image: 'assets/images/nft-${index + 1}.png',
-                    title: 'Less is more',
-                    subtitle: 'By The Minimalist',
-                    isFav: true,
-                  );
-                },
-              ),
-            ],
-          ),
+              ],
+            );
+          }),
         ),
       ],
     );

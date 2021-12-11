@@ -15,3 +15,6 @@ const graphqlURL =
 //NFT STORAGE API KEY
 const nftStorageKey =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEVDY0FBMGRGYkI4QmQ5Nzc3MDYxNTdmZTMyQUUyYTU2MGNFMzkwZjgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzODcwODg0ODYxOSwibmFtZSI6Ik5GVCBNYXJrZXRwbGFjZSJ9.wtt_vDthKSl9FTLgLGSqMQhutD2hZ90Njijvfz0kHc4";
+
+const kFavCollection = 'fav-collections';
+const kFavNFT = 'fav-nfts';

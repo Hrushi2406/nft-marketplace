@@ -13,6 +13,7 @@ class CollectionListTile extends StatelessWidget {
     required this.image,
     required this.title,
     required this.subtitle,
+    this.onFavPressed,
     this.isTitleVerified = false,
     this.isSubtitleVerified = true,
     this.isFav = false,
@@ -29,10 +30,12 @@ class CollectionListTile extends StatelessWidget {
   final bool isFav;
   final bool showFav;
 
+  final VoidCallback? onFavPressed;
+
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: '$image-$title-$subtitle',
+      tag: '$image-$title',
       flightShuttleBuilder: (
         BuildContext flightContext,
         Animation<double> animation,
@@ -103,7 +106,7 @@ class CollectionListTile extends StatelessWidget {
                 context: context,
                 icon: isFav ? Iconsax.heart5 : Iconsax.heart,
                 semanticLabel: 'Heart',
-                onPressed: () {},
+                onPressed: onFavPressed ?? () {},
               ),
           ],
         ),

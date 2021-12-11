@@ -15,11 +15,11 @@ class Scratch extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: rh(100)),
-              const CollectionListTile(
-                image: 'assets/images/collection-2.png',
-                title: 'Way into the woods',
-                subtitle: 'By Nature',
-              ),
+              // const CollectionListTile(
+              //   image: 'assets/images/collection-2.png',
+              //   title: 'Way into the woods',
+              //   subtitle: 'By Nature',
+              // ),
               SizedBox(height: rh(60)),
               const BidTile(
                 text: 'Hrushikesh Kuklare',
@@ -126,12 +126,12 @@ class Scratch extends StatelessWidget {
                 ],
               ),
               SizedBox(height: rh(60)),
-              NFTCard(
-                onTap: () {},
-                image: 'assets/images/nft-2.png',
-                title: 'Woven into fabric',
-                subtitle: 'Fabric Cloths',
-              ),
+              // NFTCard(
+              //   onTap: () {},
+              //   image: 'assets/images/nft-2.png',
+              //   title: 'Woven into fabric',
+              //   subtitle: 'Fabric Cloths',
+              // ),
             ],
           ),
         ),

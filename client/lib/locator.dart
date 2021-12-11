@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:nfts/core/services/gasprice_service.dart';
 import 'package:nfts/core/services/image_picker_service.dart';
 import 'package:nfts/core/services/nft_repo.dart';
+import 'package:nfts/provider/fav_provider.dart';
 import 'package:nfts/provider/nft_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web3dart/web3dart.dart';
@@ -22,8 +23,16 @@ final locator = GetIt.instance;
 
 Future<void> init() async {
   //PROVIDER
-  locator.registerLazySingleton(
-      () => AppProvider(locator(), locator(), locator(), locator()));
+  locator.registerLazySingleton(() => AppProvider(
+        locator(),
+        locator(),
+        locator(),
+        locator(),
+        locator(),
+      ));
+
+  locator.registerLazySingleton(() => FavProvider(locator()));
+
   locator.registerLazySingleton(() => WalletProvider(
         locator(),
         locator(),
