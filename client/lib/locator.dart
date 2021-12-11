@@ -6,6 +6,7 @@ import 'package:nfts/core/services/image_picker_service.dart';
 import 'package:nfts/core/services/nft_repo.dart';
 import 'package:nfts/provider/fav_provider.dart';
 import 'package:nfts/provider/nft_provider.dart';
+import 'package:nfts/provider/search_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -32,6 +33,7 @@ Future<void> init() async {
       ));
 
   locator.registerLazySingleton(() => FavProvider(locator()));
+  locator.registerLazySingleton(() => SearchProvider(locator()));
 
   locator.registerLazySingleton(() => WalletProvider(
         locator(),

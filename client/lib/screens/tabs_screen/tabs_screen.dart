@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nfts/core/animations/animations.dart';
 import 'package:nfts/core/animations/slide_animation.dart';
+import 'package:nfts/screens/tabs_screen/tabs/search_tab.dart';
 
 import 'tabs/fav_tab.dart';
 import 'tabs/home_tab.dart';
@@ -17,7 +18,12 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _tabs = [const HomeTab(), const FavTab(), const UserTab()];
+  final List<Widget> _tabs = [
+    const HomeTab(),
+    const SearchTab(),
+    const FavTab(),
+    const UserTab()
+  ];
 
   @override
   Widget build(BuildContext context) {

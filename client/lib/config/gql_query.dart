@@ -130,15 +130,82 @@ const qCreator = r'''
         creator
         owner
       }
+
     }
 ''';
 
-  //  nfts(where: {cAddress: $cAddress, tokenId: $tokenId}) {
-  //       name
-  //       image
-  //       cName
-  //       properties
-  //       metadata
-  //       creator
-  //       owner
-  //     }
+//  nfts(where: {cAddress: $cAddress, tokenId: $tokenId}) {
+//       name
+//       image
+//       cName
+//       properties
+//       metadata
+//       creator
+//       owner
+//     }
+
+const qSearchName = r'''
+
+ query searchName($name: String) {
+    collections(where: {name_contains:$name}) {
+        cAddress
+        name
+        image
+        creator
+        metadata
+        nItems
+        volumeOfEth
+  }
+      nfts(where:{name_contains:$name}, first:15) {
+        cAddress
+        tokenId
+        metadata
+        name
+        image
+        cName
+        cImage
+        creator
+        owner
+      }
+      users(where: {name_contains: $name}) {
+        name
+        uAddress
+        image
+        twitterUrl
+        websiteUrl
+      }
+    }
+
+''';
+
+const qSearchAddress = r'''
+ query searchAddress($address: String) {
+    collections(where: {cAddress_contains:$address}) {
+        cAddress
+        name
+        image
+        creator
+        metadata
+        nItems
+        volumeOfEth
+  }
+      nfts(where:{cAddress_contains:$address}) {
+        cAddress
+        tokenId
+        metadata
+        name
+        image
+        cName
+        cImage
+        creator
+        owner
+      }
+      users(where: {uAddress_contains: $address}) {
+        name
+        uAddress
+        image
+        twitterUrl
+        websiteUrl
+      }
+    }
+''';
