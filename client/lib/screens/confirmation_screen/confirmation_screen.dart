@@ -15,10 +15,16 @@ class ConfirmationScreen extends StatefulWidget {
     Key? key,
     this.onConfirmation,
     this.isAutoMated = false,
+    required this.image,
+    required this.title,
+    required this.subtitle,
+    required this.action,
   }) : super(key: key);
 
-  // final String image;
-  // final String
+  final String image;
+  final String title;
+  final String subtitle;
+  final String action;
 
   final bool isAutoMated;
   final VoidCallback? onConfirmation;
@@ -53,7 +59,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const CustomAppBar(),
+                        CustomAppBar(title: widget.action),
                         SizedBox(height: rh(space4x)),
 
                         //NETWORK INFO
@@ -72,15 +78,40 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                           ],
                         ),
 
-                        SizedBox(height: rh(space4x)),
+                        SizedBox(height: rh(space2x)),
                         const Divider(),
-                        SizedBox(height: rh(space4x)),
+                        SizedBox(height: rh(space2x)),
+
+                        // Center(
+                        //   child: UpperCaseText(
+                        //     widget.action,
+                        //     style:
+                        //         Theme.of(context).textTheme.headline6!.copyWith(
+                        //               letterSpacing: 2.5,
+                        //             ),
+                        //   ),
+                        // ),
+                        // SizedBox(height: rh(18)),
+
+                        //Input
+                        CollectionListTile(
+                          image: widget.image,
+                          title: widget.title,
+                          subtitle: widget.subtitle,
+                          // subtitle: widget.action,
+                          isSubtitleVerified: true,
+                          showFav: false,
+                        ),
+
+                        SizedBox(height: rh(space3x)),
+                        const Divider(),
+                        SizedBox(height: rh(space3x)),
 
                         //FORM TO INFO
-                        if (provider.transactionInfo != null)
-                          TransactionInfo(
-                            transactionInfo: provider.transactionInfo!,
-                          ),
+                        // if (provider.transactionInfo != null)
+                        //   TransactionInfo(
+                        //     transactionInfo: provider.transactionInfo!,
+                        //   ),
 
                         //FEE INFO
                         if (provider.state == WalletState.loading)

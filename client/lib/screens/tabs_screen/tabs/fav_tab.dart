@@ -28,7 +28,7 @@ class FavTab extends StatelessWidget {
                     left: space2x,
                     right: space2x,
                     bottom: space3x,
-                    top: space3x,
+                    top: space4x,
                   ),
                   separatorBuilder: (BuildContext context, int index) {
                     return SizedBox(height: rh(space2x));

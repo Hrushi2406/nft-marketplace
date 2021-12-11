@@ -57,6 +57,10 @@ class _ModifyListingScreenState extends State<ModifyListingScreen> {
     Navigation.push(
       context,
       screen: ConfirmationScreen(
+        action: 'Place Bid',
+        image: widget.nft.image,
+        title: widget.nft.name,
+        subtitle: widget.nft.cName,
         isAutoMated: true,
         onConfirmation: () {
           // Provider.of<NFTProvider>(context, listen: false)
@@ -146,8 +150,8 @@ class _ModifyListingScreenState extends State<ModifyListingScreen> {
                     child: CustomTextFormField(
                       controller: _priceController,
                       labelText: _listingType == ListingType.bidding
-                          ? 'MINIMUM BID PRICE IN MAT'
-                          : 'FIXED PRICE IN MAT',
+                          ? 'Minimum bid price in MAT '
+                          : 'Fixed Price in MAT',
                       validator: validator,
                       textInputType: TextInputType.number,
                       textInputAction: TextInputAction.done,

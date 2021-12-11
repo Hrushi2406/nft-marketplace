@@ -42,6 +42,7 @@ class _SearchTabState extends State<SearchTab> {
           SizedBox(height: rh(60)),
           CustomTextFormField(
             controller: _searchController,
+            isAutoFocused: true,
             labelText: 'Search',
             validator: validator,
             onChanged: _onChanged,

@@ -49,6 +49,10 @@ class _PlaceBidScreenState extends State<PlaceBidScreen> {
       Navigation.push(
         context,
         screen: ConfirmationScreen(
+          action: 'Place Bid',
+          image: widget.nft.image,
+          title: widget.nft.name,
+          subtitle: widget.nft.cName,
           isAutoMated: true,
           onConfirmation: () {
             Navigation.popTillNamedAndPush(

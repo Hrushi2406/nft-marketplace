@@ -38,52 +38,50 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: isHeroAnimated ? 'app_bar' : 'no_hero_animation',
-      child: Container(
-        width: double.infinity,
-        color: Theme.of(context).scaffoldBackgroundColor,
-        height: Scaffold.of(context).appBarMaxHeight,
-        padding: EdgeInsets.only(
-          top: rh(50),
-          bottom: rh(16),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: <Widget>[
-                //Back Button
-                if (hasBackButton)
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: PlatformIcon(),
-                  ),
-
-                //Main Heading and Title
-                Align(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 50),
-                    child: Text(
-                      title,
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                  ),
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          width: double.infinity,
+          color: Theme.of(context).scaffoldBackgroundColor,
+          padding: EdgeInsets.only(
+            top: rh(50),
+            bottom: rh(16),
+          ),
+          child: Stack(
+            fit: StackFit.loose,
+            children: <Widget>[
+              //Back Button
+              if (hasBackButton)
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: PlatformIcon(),
                 ),
 
-                //Actions
-                if (actions != null)
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: actions!,
-                    ),
+              //Main Heading and Title
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 50),
+                alignment: Alignment.center,
+                child: UpperCaseText(
+                  title,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.headline3!.copyWith(
+                        height: rf(1.5),
+                      ),
+                ),
+              ),
+
+              //Actions
+              if (actions != null)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: actions!,
                   ),
-              ],
-            ),
-            //Back Button
-          ],
+                ),
+            ],
+          ),
         ),
       ),
     );

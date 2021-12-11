@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:nfts/core/animations/scale_animation.dart';
 
 import '../../utils/utils.dart';
 import '../custom_widgets.dart';
@@ -23,9 +24,11 @@ class BidTile extends StatelessWidget {
     return Row(
       children: <Widget>[
         if (isSelected)
-          Icon(
-            Iconsax.tick_circle4,
-            size: rf(14),
+          ScaleAnimation(
+            child: Icon(
+              Iconsax.tick_circle4,
+              size: rf(14),
+            ),
           ),
         if (isSelected) SizedBox(width: rw(6)),
         Expanded(

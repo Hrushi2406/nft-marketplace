@@ -372,6 +372,8 @@ class NFTProvider with ChangeNotifier {
 
       metadata = NFTMetadata.fromMap(data);
 
+      activities = activities.reversed.toList();
+
       notifyListeners();
     } catch (e) {
       debugPrint('Error at NFTProvider -> fetchNFTMeta: $e');

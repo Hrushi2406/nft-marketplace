@@ -219,13 +219,13 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                   children: <Widget>[
                     CustomTextFormField(
                       controller: _nameController,
-                      labelText: 'NAME',
+                      labelText: 'Name',
                       validator: validator,
                     ),
                     SizedBox(height: rh(space2x)),
                     CustomTextFormField(
                       controller: _descriptionController,
-                      labelText: 'DESCRIPTION',
+                      labelText: 'Description',
                       validator: validator,
                     ),
                     SizedBox(height: rh(space2x)),

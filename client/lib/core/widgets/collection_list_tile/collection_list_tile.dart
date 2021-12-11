@@ -49,13 +49,12 @@ class CollectionListTile extends StatelessWidget {
       },
       child: Container(
         color: Colors.transparent,
-        // child: Image.asset(name)
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             //Image Leading
 
-            !image.contains('assets')
+            !image.contains('image_picker')
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(space1x),
                     child: CachedNetworkImage(
@@ -73,6 +72,7 @@ class CollectionListTile extends StatelessWidget {
                     child: Image.asset(
                       image,
                       width: rw(56),
+                      height: rf(56),
                       fit: BoxFit.cover,
                     ),
                   ),

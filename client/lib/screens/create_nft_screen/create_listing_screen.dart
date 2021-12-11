@@ -54,14 +54,19 @@ class _CreateNFTListingScreenState extends State<CreateNFTListingScreen> {
 
       Navigation.push(
         context,
-        screen: ConfirmationScreen(onConfirmation: () {
-          provider.mintNFT(listing, widget.collection);
-          Navigation.popTillNamedAndPush(
-            context,
-            popTill: 'tabs_screen',
-            screen: const NetworkConfirmationScreen(),
-          );
-        }),
+        screen: ConfirmationScreen(
+            action: 'Miniting NFT',
+            image: widget.nftMetadata.image,
+            title: widget.nftMetadata.name,
+            subtitle: widget.collection.name,
+            onConfirmation: () {
+              provider.mintNFT(listing, widget.collection);
+              Navigation.popTillNamedAndPush(
+                context,
+                popTill: 'tabs_screen',
+                screen: const NetworkConfirmationScreen(),
+              );
+            }),
       );
     }
   }
@@ -142,7 +147,7 @@ class _CreateNFTListingScreenState extends State<CreateNFTListingScreen> {
                   children: <Widget>[
                     CustomTextFormField(
                       controller: _royaltiesController,
-                      labelText: 'ROYALTIES %',
+                      labelText: 'Royalties in %',
                       validator: validator,
                       textInputType: TextInputType.number,
                       textInputAction: TextInputAction.next,
@@ -154,8 +159,8 @@ class _CreateNFTListingScreenState extends State<CreateNFTListingScreen> {
                         child: CustomTextFormField(
                           controller: _priceController,
                           labelText: _listingType == ListingType.bidding
-                              ? 'MINIMUM BID PRICE IN MAT'
-                              : 'FIXED PRICE IN MAT',
+                              ? 'Minimum bid price in MAT'
+                              : 'Fixed Price in MAT',
                           validator: validator,
                           textInputType: TextInputType.number,
                           textInputAction: TextInputAction.done,
@@ -173,6 +178,14 @@ class _CreateNFTListingScreenState extends State<CreateNFTListingScreen> {
                 text: 'Mint NFT',
                 onPressed: _mintNFT,
               ),
+              const Spacer(),
+              Center(
+                child: UpperCaseText(
+                  '* Platform doesn\'t take any percentage From royalties ',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(height: rh(space6x + space1x)),
             ],
           );
         }),

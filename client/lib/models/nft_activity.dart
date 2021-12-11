@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'dart:math';
+
 class NFTActivity {
   final String id;
   final String eventType;
   final String from;
   final String to;
-  final int price;
+  final double price;
   final String timestamp;
 
   const NFTActivity({
@@ -22,7 +24,7 @@ class NFTActivity {
     String? eventType,
     String? from,
     String? to,
-    int? price,
+    double? price,
     String? timestamp,
   }) {
     return NFTActivity(
@@ -52,7 +54,7 @@ class NFTActivity {
       eventType: map['eventType'],
       from: map['from'],
       to: map['to'],
-      price: map['price'],
+      price: map['price'] / pow(10, 6),
       timestamp: map['timestamp'],
     );
   }

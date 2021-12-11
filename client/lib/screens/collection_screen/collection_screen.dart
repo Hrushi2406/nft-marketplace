@@ -50,142 +50,141 @@ class _CollectionScreenState extends State<CollectionScreen> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: space2x),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CustomAppBar(),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CustomAppBar(),
 
-            SizedBox(height: rh(space2x)),
+              SizedBox(height: rh(space2x)),
 
-            //LIST TILE
-            Consumer<FavProvider>(builder: (context, favProvider, child) {
-              return CollectionListTile(
-                image: widget.collection.image,
-                title: widget.collection.name,
-                subtitle: 'By ' + formatAddress(widget.collection.creator),
-                isFav: favProvider.isFavCollection(widget.collection),
-                onFavPressed: () =>
-                    favProvider.setFavCollection(widget.collection),
-              );
-            }),
-            SizedBox(height: rh(space3x)),
-
-            //DESCRIPTION
-            Consumer<CollectionProvider>(
-              builder: (context, provider, child) {
-                return Text(
-                  provider.metaData.description,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  // 'UnknownCulturz is a unique limited series of 25 artworks which tells a story in the metaverse.',
-                  style: Theme.of(context).textTheme.caption,
+              //LIST TILE
+              Consumer<FavProvider>(builder: (context, favProvider, child) {
+                return CollectionListTile(
+                  image: widget.collection.image,
+                  title: widget.collection.name,
+                  subtitle: 'By ' + formatAddress(widget.collection.creator),
+                  isFav: favProvider.isFavCollection(widget.collection),
+                  onFavPressed: () =>
+                      favProvider.setFavCollection(widget.collection),
                 );
-              },
-            ),
-            SizedBox(height: rh(space3x)),
+              }),
+              SizedBox(height: rh(space3x)),
 
-            //INSIGHTS
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                UpperCaseText(
-                  // '25 Items',
-                  ' ${widget.collection.nItems} Items',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                UpperCaseText(
-                  '|',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                Consumer<CollectionProvider>(
-                    builder: (context, provider, child) {
-                  return UpperCaseText(
-                    '${provider.distinctOwners.length} Owners',
-                    style: Theme.of(context).textTheme.headline4,
+              //DESCRIPTION
+              Consumer<CollectionProvider>(
+                builder: (context, provider, child) {
+                  return Text(
+                    provider.metaData.description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    // 'UnknownCulturz is a unique limited series of 25 artworks which tells a story in the metaverse.',
+                    style: Theme.of(context).textTheme.caption,
                   );
-                }),
-                UpperCaseText(
-                  '|',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                UpperCaseText(
-                  '${widget.collection.volumeOfEth} MAT Vol',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              ],
-            ),
-            SizedBox(height: rh(space3x)),
+                },
+              ),
+              SizedBox(height: rh(space3x)),
 
-            //LINKS
-            Consumer<CollectionProvider>(
-              builder: (context, provider, child) {
-                final metaData = provider.metaData;
-                return Row(
-                  children: <Widget>[
-                    if (metaData.twitterUrl.isNotEmpty)
-                      SlideAnimation(
-                        begin: const Offset(-60, 0),
-                        child: Buttons.icon(
-                          context: context,
-                          svgPath: 'assets/images/twitter.svg',
-                          right: rw(space2x),
-                          semanticLabel: 'twitter',
-                          onPressed: () => _openUrl(metaData.twitterUrl),
+              //INSIGHTS
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  UpperCaseText(
+                    // '25 Items',
+                    ' ${widget.collection.nItems} Items',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  UpperCaseText(
+                    '|',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Consumer<CollectionProvider>(
+                      builder: (context, provider, child) {
+                    return UpperCaseText(
+                      '${provider.distinctOwners.length} Owners',
+                      style: Theme.of(context).textTheme.headline4,
+                    );
+                  }),
+                  UpperCaseText(
+                    '|',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  UpperCaseText(
+                    '${widget.collection.volumeOfEth} MAT Vol',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                ],
+              ),
+              SizedBox(height: rh(space3x)),
+
+              //LINKS
+              Consumer<CollectionProvider>(
+                builder: (context, provider, child) {
+                  final metaData = provider.metaData;
+                  return Row(
+                    children: <Widget>[
+                      if (metaData.twitterUrl.isNotEmpty)
+                        SlideAnimation(
+                          begin: const Offset(-60, 0),
+                          child: Buttons.icon(
+                            context: context,
+                            svgPath: 'assets/images/twitter.svg',
+                            right: rw(space2x),
+                            semanticLabel: 'twitter',
+                            onPressed: () => _openUrl(metaData.twitterUrl),
+                          ),
                         ),
-                      ),
-                    if (metaData.websiteUrl.isNotEmpty)
-                      SlideAnimation(
-                        begin: const Offset(-40, 0),
-                        child: Buttons.icon(
-                          context: context,
-                          icon: Iconsax.global5,
-                          right: rw(space2x),
-                          semanticLabel: 'Website',
-                          onPressed: () => _openUrl(metaData.websiteUrl),
+                      if (metaData.websiteUrl.isNotEmpty)
+                        SlideAnimation(
+                          begin: const Offset(-40, 0),
+                          child: Buttons.icon(
+                            context: context,
+                            icon: Iconsax.global5,
+                            right: rw(space2x),
+                            semanticLabel: 'Website',
+                            onPressed: () => _openUrl(metaData.websiteUrl),
+                          ),
                         ),
+                      Buttons.icon(
+                        context: context,
+                        icon: Iconsax.share,
+                        right: rw(space2x),
+                        top: 0,
+                        bottom: 0,
+                        semanticLabel: 'Share',
+                        onPressed: () {},
                       ),
-                    Buttons.icon(
-                      context: context,
-                      icon: Iconsax.share,
-                      right: rw(space2x),
-                      top: 0,
-                      bottom: 0,
-                      semanticLabel: 'Share',
-                      onPressed: () {},
-                    ),
-                    const Spacer(),
-                    Consumer<WalletProvider>(
-                        builder: (context, walletProvider, child) {
-                      if (walletProvider.address.hex ==
-                          widget.collection.creator) {
-                        return Buttons.text(
-                          context: context,
-                          right: 0,
-                          text: 'Create NFT',
-                          onPressed: _createNFT,
-                        );
-                      }
-                      return Container();
-                    }),
-                  ],
-                );
-              },
-            ),
+                      const Spacer(),
+                      Consumer<WalletProvider>(
+                          builder: (context, walletProvider, child) {
+                        if (walletProvider.address.hex ==
+                            widget.collection.creator) {
+                          return Buttons.text(
+                            context: context,
+                            right: 0,
+                            text: 'Create NFT',
+                            onPressed: _createNFT,
+                          );
+                        }
+                        return Container();
+                      }),
+                    ],
+                  );
+                },
+              ),
 
-            SizedBox(height: rh(space3x)),
-            const Divider(),
-            SizedBox(height: rh(space3x)),
+              SizedBox(height: rh(space3x)),
+              const Divider(),
+              SizedBox(height: rh(space3x)),
 
-            //ITEMS
-            UpperCaseText(
-              'Items',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            SizedBox(height: rh(space3x)),
+              //ITEMS
+              UpperCaseText(
+                'Items',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+              SizedBox(height: rh(space3x)),
 
-            Expanded(
-              child: Consumer<CollectionProvider>(
-                  builder: (context, provider, child) {
+              Consumer<CollectionProvider>(builder: (context, provider, child) {
                 if (provider.state == CollectionState.loading) {
                   return const LoadingIndicator();
                 } else if (provider.state == CollectionState.empty) {
@@ -193,6 +192,8 @@ class _CollectionScreenState extends State<CollectionScreen> {
                 }
                 return GridView.builder(
                   padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 1,
@@ -217,8 +218,8 @@ class _CollectionScreenState extends State<CollectionScreen> {
                   },
                 );
               }),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

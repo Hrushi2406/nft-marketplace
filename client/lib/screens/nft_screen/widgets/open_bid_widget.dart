@@ -18,9 +18,6 @@ class OpenBidWidget extends StatefulWidget {
 }
 
 class _OpenBidWidgetState extends State<OpenBidWidget> {
-  //CANCEL BID
-  _cancel() {}
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -85,7 +82,10 @@ class _OpenBidWidgetState extends State<OpenBidWidget> {
                     final bid = nftProvider.bids[index];
 
                     return GestureDetector(
-                      onTap: () => nftProvider.selectedBid = bid,
+                      onTap: () {
+                        nftProvider.selectedBid = bid;
+                        Navigation.pop(context);
+                      },
                       child: BidTile(
                         text: formatAddress(bid.from),
                         value: '${bid.price} MAT',

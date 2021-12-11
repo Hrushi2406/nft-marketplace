@@ -8,6 +8,7 @@ import '../../config/config.dart';
 class ContractService {
   late final DeployedContract collection;
   late final DeployedContract marketPlace;
+  late final DeployedContract priceFeed;
 
   ContractService() {
     _init();
@@ -19,6 +20,12 @@ class ContractService {
       'assets/abi/CustomCollection.json',
       'CustomCollection',
       customERC721Address,
+    );
+
+    priceFeed = await _loadABI(
+      'assets/abi/PrieFeed.json',
+      'PriceFeed',
+      priceFeedAddress,
     );
 
     //Marketplace

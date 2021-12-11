@@ -7,6 +7,7 @@ import 'package:nfts/core/utils/utils.dart';
 import 'package:nfts/core/widgets/custom_widgets.dart';
 import 'package:nfts/models/collection_metadata.dart';
 import 'package:nfts/provider/collection_provider.dart';
+import 'package:nfts/provider/wallet_provider.dart';
 import 'package:nfts/screens/confirmation_screen/confirmation_screen.dart';
 import 'package:nfts/screens/network_confirmation/network_confirmation_screen.dart';
 import 'package:nfts/screens/wallet_init_screen/wallet_init_screen.dart';
@@ -74,15 +75,22 @@ class _CreateCollectionScreenState extends State<CreateCollectionScreen> {
           .getTransactionFee(metadata);
 
 //Navigate to other screen
-      Navigation.push(context, screen: ConfirmationScreen(onConfirmation: () {
-        Provider.of<CollectionProvider>(context, listen: false)
-            .createCollection();
-        Navigation.popTillNamedAndPush(
-          context,
-          popTill: 'tabs_screen',
-          screen: const NetworkConfirmationScreen(),
-        );
-      }));
+      Navigation.push(context,
+          screen: ConfirmationScreen(
+              action: 'Miniting NFT',
+              image: _pickedImagePath!,
+              title: _nameController.text,
+              subtitle:
+                  'By ${formatAddress(Provider.of<WalletProvider>(context, listen: false).address.hex)}',
+              onConfirmation: () {
+                Provider.of<CollectionProvider>(context, listen: false)
+                    .createCollection();
+                Navigation.popTillNamedAndPush(
+                  context,
+                  popTill: 'tabs_screen',
+                  screen: const NetworkConfirmationScreen(),
+                );
+              }));
     }
   }
 
@@ -116,9 +124,15 @@ class _CreateCollectionScreenState extends State<CreateCollectionScreen> {
                           ),
                   ),
                   child: _pickedImagePath == null
-                      ? UpperCaseText(
-                          '+ Add image',
-                          style: Theme.of(context).textTheme.headline4,
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.add),
+                            UpperCaseText(
+                              ' Add image',
+                              style: Theme.of(context).textTheme.headline2,
+                            ),
+                          ],
                         )
                       : null,
                 ),
@@ -135,32 +149,36 @@ class _CreateCollectionScreenState extends State<CreateCollectionScreen> {
                 children: <Widget>[
                   CustomTextFormField(
                     controller: _nameController,
-                    labelText: 'NAME',
+                    // labelText: 'NAME',
+                    labelText: 'Name',
                     validator: validator,
                   ),
                   SizedBox(height: rh(space2x)),
                   CustomTextFormField(
                     controller: _symbolController,
-                    labelText: 'SYMBOL',
+                    // labelText: 'SYMBOL',
+                    labelText: 'Symbol',
                     validator: validator,
                   ),
                   SizedBox(height: rh(space2x)),
                   CustomTextFormField(
                     controller: _descriptionController,
-                    labelText: 'DESCRIPTION',
+                    labelText: 'Description',
+                    // labelText: 'DESCRIPTION',
                     validator: validator,
                   ),
                   SizedBox(height: rh(space2x)),
                   CustomTextFormField(
                     controller: _twitterUrlController,
-                    labelText: 'TWITTER URL',
+                    // labelText: 'TWITTER URL',
+                    labelText: 'Twitter URL',
                     validator: urlValidator,
                     textInputType: TextInputType.url,
                   ),
                   SizedBox(height: rh(space2x)),
                   CustomTextFormField(
                     controller: _websiteUrlController,
-                    labelText: 'WEBSITE URL',
+                    labelText: 'Website URL',
                     validator: urlValidator,
                     textInputType: TextInputType.url,
                     textInputAction: TextInputAction.done,

@@ -144,20 +144,20 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
                   children: <Widget>[
                     CustomTextFormField(
                       controller: _nameController,
-                      labelText: 'NAME',
+                      labelText: 'Name',
                       validator: validator,
                     ),
                     SizedBox(height: rh(space2x)),
                     CustomTextFormField(
                       controller: _websiteController,
-                      labelText: 'WEBSITE URL',
+                      labelText: 'Website URL',
                       validator: validator,
                       textInputType: TextInputType.url,
                     ),
                     SizedBox(height: rh(space2x)),
                     CustomTextFormField(
                       controller: _twitterController,
-                      labelText: 'TWITTER URL',
+                      labelText: 'Twitter URL',
                       validator: validator,
                       textInputType: TextInputType.url,
                       textInputAction: TextInputAction.done,

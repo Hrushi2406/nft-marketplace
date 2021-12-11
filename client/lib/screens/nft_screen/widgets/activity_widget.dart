@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nfts/core/animations/animations.dart';
 import 'package:nfts/core/animations/slide_animation.dart';
 import 'package:nfts/core/utils/utils.dart';
 import 'package:nfts/core/widgets/custom_widgets.dart';
@@ -15,8 +16,8 @@ class ActivityWidget extends StatelessWidget {
     return Consumer<NFTProvider>(
       builder: (context, provider, child) {
         if (provider.activities.isNotEmpty) {
-          return SlideAnimation(
-            begin: const Offset(0, 10),
+          return FadeAnimation(
+            // begin: const Offset(0, 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

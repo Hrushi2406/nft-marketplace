@@ -30,6 +30,9 @@ class AppTheme {
       tabBarTheme: const TabBarTheme(
         labelColor: Colors.black,
       ),
+      dividerTheme: const DividerThemeData(
+        color: Color(0xffDEDADA),
+      ),
       colorScheme: const ColorScheme.light().copyWith(
         primary: _primaryColor,
         primaryVariant: _primaryColor,

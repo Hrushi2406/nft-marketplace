@@ -16,8 +16,8 @@ class PropertiesWidget extends StatelessWidget {
     return Consumer<NFTProvider>(
       builder: (context, provider, child) {
         if (provider.metadata.properties.isNotEmpty) {
-          return SlideAnimation(
-            begin: const Offset(0, 10),
+          return FadeAnimation(
+            // begin: const Offset(0, 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -37,28 +37,6 @@ class PropertiesWidget extends StatelessWidget {
                             percent: '56%',
                           ))
                       .toList(),
-                  // children: const [
-                  //   PropertiesChip(
-                  //     label: 'Accessory',
-                  //     value: 'Headband',
-                  //     percent: '56%',
-                  //   ),
-                  //   PropertiesChip(
-                  //     label: 'Accessory',
-                  //     value: 'Chai',
-                  //     percent: '40%',
-                  //   ),
-                  //   PropertiesChip(
-                  //     label: 'Style',
-                  //     value: 'Coolish',
-                  //     percent: '16%',
-                  //   ),
-                  //   PropertiesChip(
-                  //     label: 'Accessory',
-                  //     value: 'Something',
-                  //     percent: '12%',
-                  //   ),
-                  // ],
                 ),
                 //Divider
                 SizedBox(height: rh(space2x)),

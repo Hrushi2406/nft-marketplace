@@ -47,8 +47,8 @@ class BottomBar extends StatelessWidget {
                 style: Theme.of(context).textTheme.headline4,
               ),
             )
-          : SlideAnimation(
-              begin: const Offset(0, 10),
+          : FadeAnimation(
+              // begin: const Offset(0, 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,

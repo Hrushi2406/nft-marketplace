@@ -75,6 +75,10 @@ class _NFTScreenState extends State<NFTScreen> {
     Navigation.push(
       context,
       screen: ConfirmationScreen(
+        action: 'Cancel Bid',
+        image: widget.nft.image,
+        title: widget.nft.name,
+        subtitle: widget.nft.cName,
         isAutoMated: true,
         onConfirmation: () {
           Provider.of<NFTProvider>(context, listen: false)
@@ -106,6 +110,10 @@ class _NFTScreenState extends State<NFTScreen> {
     Navigation.push(
       context,
       screen: ConfirmationScreen(
+        action: 'Sell NFT',
+        image: widget.nft.image,
+        title: widget.nft.name,
+        subtitle: 'Selling to ${formatAddress(nftProvider.selectedBid!.from)}',
         isAutoMated: true,
         onConfirmation: () {
           // Provider.of<NFTProvider>(context, listen: false)
@@ -143,6 +151,10 @@ class _NFTScreenState extends State<NFTScreen> {
     Navigation.push(
       context,
       screen: ConfirmationScreen(
+        action: 'Buy NFT',
+        image: widget.nft.image,
+        title: widget.nft.name,
+        subtitle: widget.nft.cName,
         isAutoMated: true,
         onConfirmation: () {
           // Provider.of<NFTProvider>(context, listen: false)
@@ -208,7 +220,7 @@ class _NFTScreenState extends State<NFTScreen> {
                             icon: favProvider.isFavNFT(widget.nft)
                                 ? Iconsax.heart5
                                 : Iconsax.heart,
-                            size: rf(24),
+                            size: rf(20),
                             semanticLabel: 'Heart',
                             onPressed: () => favProvider.setFavNFT(widget.nft),
                           );
@@ -312,7 +324,7 @@ class _NFTScreenState extends State<NFTScreen> {
                       label: 'Minimum Bid',
                       price: '${_listingInfo.price} MAT',
                       buttonText: '',
-                      onIconPressed: () => _openBids(_isOwner),
+                      // onIconPressed: () => _openBids(_isOwner),
                       // onButtonPressed: _sellBid,
                     );
                   } else {

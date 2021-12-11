@@ -6,6 +6,7 @@ import 'package:nfts/screens/collection_screen/collection_screen.dart';
 import 'package:nfts/screens/create_collection_screen/create_collection_screen.dart';
 import 'package:nfts/screens/nft_screen/nft_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/utils/utils.dart';
 import '../../../core/widgets/custom_widgets.dart';
@@ -49,6 +50,10 @@ class _UserTabState extends State<UserTab> with SingleTickerProviderStateMixin {
     Provider.of<CreatorProvider>(context, listen: false).fetchCreatorInfo(
       Provider.of<WalletProvider>(context, listen: false).address,
     );
+  }
+
+  _openUrl(String url) async {
+    if (!await launch(url)) {}
   }
 
   @override
@@ -101,52 +106,56 @@ class _UserTabState extends State<UserTab> with SingleTickerProviderStateMixin {
                     SizedBox(height: rh(space3x)),
 
                     //LINKS
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: space2x),
-                      child: Row(
-                        children: <Widget>[
-                          Buttons.icon(
-                            context: context,
-                            svgPath: 'assets/images/twitter.svg',
-                            right: rw(space2x),
-                            semanticLabel: 'twitter',
-                            onPressed: () {},
-                          ),
-                          Buttons.icon(
-                            context: context,
-                            icon: Iconsax.global5,
-                            right: rw(space2x),
-                            semanticLabel: 'Website',
-                            onPressed: () {},
-                          ),
-                          Buttons.icon(
-                            context: context,
-                            icon: Iconsax.share,
-                            right: rw(space2x),
-                            semanticLabel: 'Share',
-                            onPressed: () {},
-                          ),
-                          Buttons.icon(
-                            context: context,
-                            icon: Iconsax.edit_2,
-                            right: rw(space2x),
-                            semanticLabel: 'Edit',
-                            onPressed: () => Navigation.push(
-                              context,
-                              screen: const EditUserInfoScreen(),
+                    if (provider.user != null)
+                      Padding(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: space2x),
+                        child: Row(
+                          children: <Widget>[
+                            // if(provider.user.)
+                            Buttons.icon(
+                              context: context,
+                              svgPath: 'assets/images/twitter.svg',
+                              right: rw(space2x),
+                              semanticLabel: 'twitter',
+                              onPressed: () {},
+                              // onPressed: () => _openUrl(url),
                             ),
-                          ),
-                          Buttons.icon(
-                            context: context,
-                            // icon: Icons.exit_to_app_rounded,
-                            icon: Iconsax.logout,
-                            right: rw(space2x),
-                            semanticLabel: 'Share',
-                            onPressed: _logOut,
-                          ),
-                        ],
+                            Buttons.icon(
+                              context: context,
+                              icon: Iconsax.global5,
+                              right: rw(space2x),
+                              semanticLabel: 'Website',
+                              onPressed: () {},
+                            ),
+                            Buttons.icon(
+                              context: context,
+                              icon: Iconsax.share,
+                              right: rw(space2x),
+                              semanticLabel: 'Share',
+                              onPressed: () {},
+                            ),
+                            Buttons.icon(
+                              context: context,
+                              icon: Iconsax.edit_2,
+                              right: rw(space2x),
+                              semanticLabel: 'Edit',
+                              onPressed: () => Navigation.push(
+                                context,
+                                screen: const EditUserInfoScreen(),
+                              ),
+                            ),
+                            Buttons.icon(
+                              context: context,
+                              // icon: Icons.exit_to_app_rounded,
+                              icon: Iconsax.logout,
+                              right: rw(space2x),
+                              semanticLabel: 'Share',
+                              onPressed: _logOut,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
 
                     SizedBox(height: rh(space3x)),
 
@@ -285,6 +294,7 @@ class _UserTabState extends State<UserTab> with SingleTickerProviderStateMixin {
                                       image: collection.image,
                                       title: collection.name,
                                       subtitle: '${collection.nItems} items',
+                                      isSubtitleVerified: false,
                                       isFav: favProvider
                                           .isFavCollection(collection),
                                       onFavPressed: () => favProvider
@@ -329,7 +339,8 @@ class _UserTabState extends State<UserTab> with SingleTickerProviderStateMixin {
                             itemBuilder: (BuildContext context, int index) {
                               final nft = provider.singles[index];
                               return NFTCard(
-                                onTap: () {},
+                                onTap: () => Navigation.push(context,
+                                    screen: NFTScreen(nft: nft)),
                                 image: nft.image,
                                 title: nft.name,
                                 subtitle: nft.cName,
