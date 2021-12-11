@@ -17,6 +17,7 @@ import '../models/nft.dart';
 import '../models/nft_activity.dart';
 import '../models/nft_metadata.dart';
 import 'collection_provider.dart';
+import 'user_provider.dart';
 import 'wallet_provider.dart';
 
 enum NFTState { empty, loading, loaded, success, error }
@@ -27,6 +28,7 @@ class NFTProvider with ChangeNotifier {
   final ContractService _contractService;
   final WalletProvider _walletProvider;
   final CollectionProvider _collectionProvider;
+  final UserProvider _userProvider;
   final NFTRepo _repo;
 
   NFTProvider(
@@ -36,6 +38,7 @@ class NFTProvider with ChangeNotifier {
     this._walletProvider,
     this._collectionProvider,
     this._repo,
+    this._userProvider,
   );
 
   //State variables
@@ -156,9 +159,10 @@ class NFTProvider with ChangeNotifier {
 
       _clearState();
 
-      _handleSuccess();
-
+      _userProvider.fetchUserInfo();
       _collectionProvider.fetchCollectionMeta(collection);
+
+      _handleSuccess();
     } catch (e) {
       debugPrint('Error at NFTProvider -> mintNFT: $e');
 
@@ -208,51 +212,6 @@ class NFTProvider with ChangeNotifier {
 
     return transaction;
   }
-
-  // getTransactionFee(NFTMetadata nftMetadata, Collection collection) async {
-  //   final contract =
-  //       await _contractService.loadCollectionContract(collection.cAddress);
-
-  //   final bool isForSale = _listingType == ListingType.fixedPriceSale;
-
-  //   final bool isFixedPrice = _listingType == ListingType.fixedPriceSale ||
-  //       _listingType == ListingType.fixedPriceNotSale;
-
-  //   final transaction = Transaction.callContract(
-  //     contract: contract,
-  //     function: contract.function(fmintNFT),
-  //     parameters: [
-  //       nftMetadata.name,
-  //       'bafybeielrpyysfeos56qr2paenj5zmdamvry3rkyyzld4zua7xnpgeg3py',
-  //       nftMetadata.properties,
-  //       //metadata
-  //       'bafybeicklz6kbzwhiqeedmlr42kjr6g5qjb5o5rq3fne4arhsvynzuywk4',
-  //       isForSale,
-  //       isFixedPrice,
-
-  //       // nftMetadata.image,
-  //     ],
-  //   );
-  // }
-  // getTransactionFee(NFTMetadata collection) {
-  //   // final contract = _contractService.c;
-
-  //   final transaction = Transaction.callContract(
-  //     from: _walletProvider.address,
-  //     contract: contract,
-  //     function: contract.function(fcreateCollection),
-  //     parameters: [
-  //       collection.name,
-  //       collection.symbol,
-  //       // THIS WILL BE IMAGE
-  //       'bafybeielrpyysfeos56qr2paenj5zmdamvry3rkyyzld4zua7xnpgeg3py',
-  //       //THIS WILL BE METADATA
-  //       'bafkreiggxphdigslrtq3d3qkgo65ohmggprsvcbqixxcodhpdzgn2ppxba',
-  //     ],
-  //   );
-
-  //   _walletProvider.getTransactionFee(transaction);
-  // }
 
   getPlaceBidFee(NFT nft, double biddingPrice) async {
     try {
@@ -330,9 +289,6 @@ class NFTProvider with ChangeNotifier {
 
   fetchNFTMetadata(NFT nft) async {
     try {
-      final stopWatch = Stopwatch();
-      stopWatch.start();
-
       state = NFTState.loading;
 
       //reset State
@@ -353,6 +309,8 @@ class NFTProvider with ChangeNotifier {
 
       listingType = listingInfo!.listingType;
       nftCollection = Collection.fromMap(gData['collections'][0]);
+      print(nft.cAddress);
+      print(gData['bids']);
 
       ///NFT Activity of Buying selling
       activities = gData['nftevents']

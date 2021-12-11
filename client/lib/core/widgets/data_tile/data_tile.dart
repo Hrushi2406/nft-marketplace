@@ -10,12 +10,14 @@ class DataTile extends StatelessWidget {
     required this.value,
     this.icon,
     this.isValueBold = true,
+    this.onIconPressed,
   }) : super(key: key);
 
   final String label;
   final String value;
   final IconData? icon;
   final bool isValueBold;
+  final VoidCallback? onIconPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +53,9 @@ class DataTile extends StatelessWidget {
           Buttons.icon(
             context: context,
             icon: icon,
-            size: rf(16),
-            semanticLabel: 'Heart',
-            onPressed: () {},
+            size: rf(18),
+            semanticLabel: 'Copy',
+            onPressed: onIconPressed ?? () {},
           ),
       ],
     );

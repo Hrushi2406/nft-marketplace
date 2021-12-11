@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:nfts/provider/fav_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -10,10 +9,12 @@ import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_placeholder/custom_placeholder.dart';
 import '../../core/widgets/custom_widgets.dart';
 import '../../models/nft.dart';
+import '../../provider/fav_provider.dart';
 import '../../provider/nft_provider.dart';
 import '../../provider/wallet_provider.dart';
 import '../collection_screen/collection_screen.dart';
 import '../confirmation_screen/confirmation_screen.dart';
+import '../creator_screen/creator_screen.dart';
 import '../modify_listing_screen/modify_listing_screen.dart';
 import '../network_confirmation/network_confirmation_screen.dart';
 import '../place_bid_screen/place_bid_screen.dart';
@@ -81,8 +82,6 @@ class _NFTScreenState extends State<NFTScreen> {
         subtitle: widget.nft.cName,
         isAutoMated: true,
         onConfirmation: () {
-          Provider.of<NFTProvider>(context, listen: false)
-              .fetchNFTMetadata(widget.nft);
           Navigation.popTillNamedAndPush(
             context,
             popTill: 'tabs_screen',
@@ -266,7 +265,12 @@ class _NFTScreenState extends State<NFTScreen> {
                                 'QmWTq1mVjiBp6kPXeT2XZftvsWQ6nZwSBvTbqKLumipMwD',
                             label: 'Owned by',
                             value: formatAddress(widget.nft.owner),
-                            onTap: () {},
+                            onTap: () {
+                              Navigation.push(
+                                context,
+                                screen: CreatorScreen(owner: widget.nft.owner),
+                              );
+                            },
                             // 'The minimalist',
                           ),
                         ),
@@ -311,10 +315,6 @@ class _NFTScreenState extends State<NFTScreen> {
               final _listingInfo = nftProvider.listingInfo!;
 
               final _bids = nftProvider.bids;
-
-              print(_listingType);
-
-              print('Owner $_isOwner');
 
               if (_isOwner) {
                 //BIDDING

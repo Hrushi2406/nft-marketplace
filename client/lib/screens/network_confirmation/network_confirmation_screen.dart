@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
-import 'package:nfts/provider/wallet_provider.dart';
+import '../../core/utils/utils.dart';
+import '../../core/widgets/custom_widgets.dart';
+import '../../provider/wallet_provider.dart';
 import 'package:provider/provider.dart';
 
 class NetworkConfirmationScreen extends StatefulWidget {
@@ -41,7 +41,7 @@ class _NetworkConfirmationScreenState extends State<NetworkConfirmationScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: space2x),
               child: UpperCaseText(
-                'While we are confirmation your transaction with Polygon network',
+                'While we are confirmation your transaction with Polygon network. Sometimes it may take more than 20 seconds please.',
                 style:
                     Theme.of(context).textTheme.headline6!.copyWith(height: 2),
                 textAlign: TextAlign.center,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_widgets.dart';
-import '../tabs_screen/tabs_screen.dart';
+import '../../provider/wallet_provider.dart';
+import '../test_matic_screen/test_matic_screen.dart';
 import '../wallet_init_screen/wallet_init_screen.dart';
 
 class CreateWalletScreen extends StatefulWidget {
@@ -21,10 +23,12 @@ class _CreateWalletScreenState extends State<CreateWalletScreen> {
     );
   }
 
-  _createWallet() {
+  _createWallet() async {
+    await Provider.of<WalletProvider>(context, listen: false).createWallet();
+
     Navigation.push(
       context,
-      screen: const TabsScreen(),
+      screen: const TestMaticScreen(),
     );
   }
 

@@ -16,12 +16,13 @@ class GraphqlService {
     final options = QueryOptions(
       document: parseString(query),
       variables: variables ?? {},
+      cacheRereadPolicy: CacheRereadPolicy.mergeOptimistic,
+      fetchPolicy: FetchPolicy.cacheAndNetwork,
     );
 
     final result = await client.query(options);
 
     //IF ERRORS THROW ERROR MESSAGE
-
     if (result.hasException) {
       debugPrint(result.exception.toString());
 

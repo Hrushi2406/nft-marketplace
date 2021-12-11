@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:nfts/provider/fav_provider.dart';
 
 import '../config/gql_query.dart';
 import '../core/services/graphql_service.dart';
@@ -11,7 +10,8 @@ import '../core/utils/utils.dart';
 import '../models/collection.dart';
 import '../models/nft.dart';
 import '../screens/create_wallet_screen/create_wallet_screen.dart';
-import 'creator_provider.dart';
+import 'fav_provider.dart';
+import 'user_provider.dart';
 import 'wallet_provider.dart';
 
 enum AppState { empty, loading, loaded, success, error, unauthenticated }
@@ -20,14 +20,14 @@ class AppProvider with ChangeNotifier {
   final WalletService _walletService;
   final WalletProvider _walletProvider;
   final FavProvider _favProvider;
-  final CreatorProvider _creatorProvider;
+  final UserProvider _userProvider;
   final GraphqlService _graphql;
 
   AppProvider(
     this._walletService,
     this._walletProvider,
     this._graphql,
-    this._creatorProvider,
+    this._userProvider,
     this._favProvider,
   );
 
@@ -59,7 +59,7 @@ class AppProvider with ChangeNotifier {
       await fetchInitialData();
 
       //FETCH USER PAGES DATA
-      _creatorProvider.fetchCreatorInfo(_walletProvider.address);
+      _userProvider.fetchUserInfo();
 
       //Fav Provider
       _favProvider.fetchFav();
@@ -118,7 +118,6 @@ class AppProvider with ChangeNotifier {
   }
 
   void _handleUnauthenticated() {
-    print('as');
     state = AppState.unauthenticated;
     errMessage = '';
     notifyListeners();

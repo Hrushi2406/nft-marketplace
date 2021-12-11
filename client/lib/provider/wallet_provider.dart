@@ -2,11 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart';
-import 'package:nfts/core/services/contract_service.dart';
-import 'package:nfts/core/services/gasprice_service.dart';
 import 'package:web3dart/web3dart.dart';
 
+import '../core/services/contract_service.dart';
+import '../core/services/gasprice_service.dart';
 import '../core/services/wallet_service.dart';
 
 enum WalletState { empty, loading, loaded, success, error, logOut }
@@ -42,6 +41,7 @@ class WalletProvider with ChangeNotifier {
 
   getBalance() async {
     balance = await _client.getBalance(address);
+    print(address);
     _handleLoaded();
   }
 
@@ -64,6 +64,14 @@ class WalletProvider with ChangeNotifier {
             transactionInfo!.value!.getValueInUnit(EtherUnit.ether);
       }
 
+      // final contract = _contractService.priceFeed;
+      // final price = await _client.call(
+      //   contract: contract,
+      //   function: contract.function('getLatestPrice'),
+      //   params: [],
+      // );
+      // print(price);
+
       getBalance();
     } catch (e) {
       debugPrint('Error at WallerProvider -> GetTransactionFee: $e');
@@ -85,7 +93,10 @@ class WalletProvider with ChangeNotifier {
 
       debugPrint('Transaction completed $lastTxHash');
 
-      getBalance();
+      await getBalance();
+
+      await Future.delayed(const Duration(seconds: 18));
+
       _handleSuccess();
 
       return;
@@ -148,6 +159,8 @@ class WalletProvider with ChangeNotifier {
     _handleLoading();
     cred = _walletService.generateRandomAccount();
     address = await cred.extractAddress();
+    cred.extractAddress();
+
     getBalance();
 
     _handleSuccess();

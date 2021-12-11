@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../edit_user_info_screen/edit_user_info_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_widgets.dart';
+import '../../provider/app_provider.dart';
 import '../../provider/wallet_provider.dart';
+import '../edit_user_info_screen/edit_user_info_screen.dart';
+import '../splash_screen/splash_screen.dart';
 
 class WalletInitScreen extends StatefulWidget {
   const WalletInitScreen({Key? key}) : super(key: key);
@@ -21,14 +24,18 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   //Github source code
-  _navigateToGithub() {}
+  _navigateToGithub() async {
+    if (await launch('https://github.com/Hrushi2406/nft-marketplace')) {}
+  }
 
-  _next() {
+  _next() async {
     if (_formKey.currentState!.validate()) {
-      Provider.of<WalletProvider>(context, listen: false)
+      await Provider.of<WalletProvider>(context, listen: false)
           .initializeFromKey(_keyController.text);
 
-      // Navigation.push(context, screen: const EditUserInfoScreen());
+      await Provider.of<AppProvider>(context, listen: false).initialize();
+
+      Navigation.popAllAndPush(context, screen: const SplashScreen());
     }
   }
 
@@ -47,10 +54,11 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: rh(100)),
+              const CustomAppBar(),
+              SizedBox(height: rh(60)),
               Center(
                 child: UpperCaseText(
-                  'Welcome to Builders of world',
+                  'Welcome to NFT Platform',
                   style: Theme.of(context).textTheme.headline2,
                 ),
               ),

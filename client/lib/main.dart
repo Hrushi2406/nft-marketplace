@@ -1,10 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/provider/fav_provider.dart';
-import 'package:nfts/provider/search_provider.dart';
-import 'package:nfts/screens/confirmation_screen/confirmation_screen.dart';
-import 'package:nfts/screens/create_collection_screen/create_collection_screen.dart';
-import 'package:nfts/screens/create_nft_screen/create_nft_screen.dart';
-import 'package:nfts/screens/tabs_screen/tabs_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'core/theme/app_theme.dart';
@@ -14,9 +8,15 @@ import 'locator.dart' as di;
 import 'provider/app_provider.dart';
 import 'provider/collection_provider.dart';
 import 'provider/creator_provider.dart';
+import 'provider/fav_provider.dart';
 import 'provider/nft_provider.dart';
+import 'provider/search_provider.dart';
+import 'provider/user_provider.dart';
 import 'provider/wallet_provider.dart';
+import 'screens/create_collection_screen/create_collection_screen.dart';
+import 'screens/create_nft_screen/create_nft_screen.dart';
 import 'screens/splash_screen/splash_screen.dart';
+import 'screens/tabs_screen/tabs_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => locator<NFTProvider>()),
         ChangeNotifierProvider(create: (_) => locator<FavProvider>()),
         ChangeNotifierProvider(create: (_) => locator<SearchProvider>()),
+        ChangeNotifierProvider(create: (_) => locator<UserProvider>()),
       ],
       child: SizeConfiguration(
         designSize: const Size(375, 812),
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             themeMode: ThemeMode.light,
             home: const SplashScreen(),
+            // home: TestMaticScreen(),
             routes: {
               'create_collection': (_) => const CreateCollectionScreen(),
               'create_nft': (_) => const CreateNFTScreen(),

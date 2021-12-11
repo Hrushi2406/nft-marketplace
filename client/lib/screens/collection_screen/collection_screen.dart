@@ -1,9 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:nfts/provider/fav_provider.dart';
-import 'package:nfts/provider/wallet_provider.dart';
-import 'package:nfts/screens/create_nft_screen/create_nft_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -13,6 +10,9 @@ import '../../core/widgets/custom_placeholder/custom_placeholder.dart';
 import '../../core/widgets/custom_widgets.dart';
 import '../../models/collection.dart';
 import '../../provider/collection_provider.dart';
+import '../../provider/fav_provider.dart';
+import '../../provider/wallet_provider.dart';
+import '../create_nft_screen/create_nft_screen.dart';
 import '../nft_screen/nft_screen.dart';
 
 class CollectionScreen extends StatefulWidget {
@@ -157,6 +157,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                       const Spacer(),
                       Consumer<WalletProvider>(
                           builder: (context, walletProvider, child) {
+                        // print(widget.collection.creator);
                         if (walletProvider.address.hex ==
                             widget.collection.creator) {
                           return Buttons.text(

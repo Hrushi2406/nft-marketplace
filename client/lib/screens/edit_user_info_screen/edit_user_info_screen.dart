@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -123,6 +124,9 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
                       DataTile(
                         label: 'Public Address',
                         value: provider.address.hex,
+
+                        icon: Iconsax.copy,
+                        onIconPressed: () => copy(provider.address.hex),
                         // '0x7E104F0dcB499eBcC8b680C2B83f3f35250445dE',
                       ),
                       SizedBox(height: rh(space3x)),

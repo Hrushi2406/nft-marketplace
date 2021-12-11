@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:nfts/core/services/image_picker_service.dart';
-import 'package:nfts/core/utils/debouncer.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
-import 'package:nfts/models/collection.dart';
-import 'package:nfts/models/nft.dart';
-import 'package:nfts/models/nft_metadata.dart';
-import 'package:nfts/provider/nft_provider.dart';
-import 'package:nfts/screens/create_nft_screen/create_listing_screen.dart';
-import 'package:nfts/screens/create_nft_screen/widgets/add_property.dart';
-import 'package:nfts/screens/create_nft_screen/widgets/choose_collections_widget.dart';
-import 'package:nfts/screens/update_listing_screen/update_listing_screen.dart';
 import 'package:provider/provider.dart';
+
+import '../../core/services/image_picker_service.dart';
+import '../../core/utils/debouncer.dart';
+import '../../core/utils/utils.dart';
+import '../../core/widgets/custom_widgets.dart';
+import '../../models/collection.dart';
+import '../../models/nft_metadata.dart';
+import '../../provider/nft_provider.dart';
+import 'create_listing_screen.dart';
+import 'widgets/add_property.dart';
+import 'widgets/choose_collections_widget.dart';
 
 class CreateNFTScreen extends StatefulWidget {
   const CreateNFTScreen({Key? key, this.collection}) : super(key: key);

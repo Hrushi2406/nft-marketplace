@@ -15,6 +15,13 @@ class User {
     required this.image,
   });
 
+  factory User.initEmpty(String address) => User(
+        name: 'Unamed',
+        uAddress: EthereumAddress.fromHex(address),
+        metadata: '',
+        image: 'QmWTq1mVjiBp6kPXeT2XZftvsWQ6nZwSBvTbqKLumipMwD',
+      );
+
   User copyWith({
     String? name,
     EthereumAddress? uAddress,

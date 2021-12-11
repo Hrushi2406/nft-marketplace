@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
-import 'package:nfts/models/collection.dart';
-import 'package:nfts/provider/creator_provider.dart';
-import 'package:nfts/provider/nft_provider.dart';
-import 'package:nfts/provider/wallet_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../../../core/utils/utils.dart';
+import '../../../core/widgets/custom_widgets.dart';
+import '../../../models/collection.dart';
+import '../../../provider/user_provider.dart';
 
 class ChooseCollectionWidget extends StatefulWidget {
   const ChooseCollectionWidget({Key? key, required this.selectCollection})
@@ -29,7 +27,7 @@ class _ChooseCollectionWidgetState extends State<ChooseCollectionWidget> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    Provider.of<CreatorProvider>(context, listen: false)
+    Provider.of<UserProvider>(context, listen: false)
         .fetchCurrentUserCollections();
   }
 
@@ -38,8 +36,8 @@ class _ChooseCollectionWidgetState extends State<ChooseCollectionWidget> {
     return Container(
       height: 80 * rHeightMultiplier,
       padding: const EdgeInsets.symmetric(horizontal: space2x),
-      child: Consumer<CreatorProvider>(builder: (context, provider, child) {
-        if (provider.state == CreatorState.loading) {
+      child: Consumer<UserProvider>(builder: (context, provider, child) {
+        if (provider.state == UserState.loading) {
           return const LoadingIndicator();
         }
 

@@ -23,7 +23,7 @@ class ContractService {
     );
 
     priceFeed = await _loadABI(
-      'assets/abi/PrieFeed.json',
+      'assets/abi/PriceFeed.json',
       'PriceFeed',
       priceFeedAddress,
     );

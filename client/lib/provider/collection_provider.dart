@@ -6,6 +6,7 @@ import 'package:nfts/config/functions.dart';
 import 'package:nfts/core/services/contract_service.dart';
 import 'package:nfts/core/services/gasprice_service.dart';
 import 'package:nfts/provider/creator_provider.dart';
+import 'package:nfts/provider/user_provider.dart';
 import 'package:nfts/provider/wallet_provider.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -24,6 +25,7 @@ class CollectionProvider with ChangeNotifier {
   final GasPriceService _gasPriceService;
   final ContractService _contractService;
   final CreatorProvider _creatorProvider;
+  final UserProvider _userProvider;
 
   final WalletProvider _walletProvider;
 
@@ -34,6 +36,7 @@ class CollectionProvider with ChangeNotifier {
     this._contractService,
     this._creatorProvider,
     this._walletProvider,
+    this._userProvider,
   );
 
   CollectionState state = CollectionState.empty;
@@ -138,6 +141,8 @@ class CollectionProvider with ChangeNotifier {
       await _walletProvider.sendTransaction(transaction);
 
       _clear();
+
+      _userProvider.fetchUserInfo();
     } catch (e) {
       debugPrint('Error at CollectionProvider -> getTransactionFee: $e');
 

@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:web3dart/web3dart.dart';
 
 String enumToString(Object o) => o.toString().split('.').last;
@@ -40,4 +42,10 @@ enum ListingType {
   fixedPriceSale,
   fixedPriceNotSale,
   bidding,
+}
+
+copy(String data) async {
+  await Clipboard.setData(ClipboardData(text: data));
+
+  Fluttertoast.showToast(msg: 'Copied to Clipboard');
 }

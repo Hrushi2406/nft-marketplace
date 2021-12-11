@@ -82,8 +82,9 @@ class _OpenBidWidgetState extends State<OpenBidWidget> {
                     final bid = nftProvider.bids[index];
 
                     return GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         nftProvider.selectedBid = bid;
+                        await Future.delayed(const Duration(milliseconds: 250));
                         Navigation.pop(context);
                       },
                       child: BidTile(

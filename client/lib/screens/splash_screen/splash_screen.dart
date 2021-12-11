@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:nfts/screens/test_matic_screen/test_matic_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/utils/utils.dart';
@@ -42,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
           // return CreateWalletScreen();
           _navigate(const CreateWalletScreen());
         } else if (provider.state == AppState.loaded) {
-          // _navigate(const TabsScreen());
+          // _navigate(const TestMaticScreen());
           scheduleMicrotask(() {
             Navigation.pushReplacement(
               context,

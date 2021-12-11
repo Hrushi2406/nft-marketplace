@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:web3dart/web3dart.dart';
 
 import '../config/gql_query.dart';
 import '../core/services/graphql_service.dart';
@@ -8,15 +7,15 @@ import '../models/nft.dart';
 import '../models/user.dart';
 import 'wallet_provider.dart';
 
-enum CreatorState { empty, loading, loaded, success, error }
+enum UserState { empty, loading, loaded, success, error }
 
-class CreatorProvider with ChangeNotifier {
+class UserProvider with ChangeNotifier {
   final GraphqlService _graphql;
   final WalletProvider _walletProvider;
 
-  CreatorProvider(this._graphql, this._walletProvider);
+  UserProvider(this._graphql, this._walletProvider);
 
-  CreatorState state = CreatorState.empty;
+  UserState state = UserState.empty;
   String errMessage = '';
 
   ///VARAIBLES
@@ -27,13 +26,14 @@ class CreatorProvider with ChangeNotifier {
   List<NFT> collectedNFTs = [];
   List<NFT> singles = [];
 
-  fetchCreatorInfo(String address) async {
+  fetchUserInfo() async {
     try {
-      user = User.initEmpty(address);
+      user = User.initEmpty(_walletProvider.address.hex);
 
-      state = CreatorState.loading;
+      _handleLoading();
 
-      final data = await _graphql.get(qCreator, {'uAddress': address});
+      final data = await _graphql
+          .get(qCreator, {'uAddress': _walletProvider.address.hex});
 
       createdCollections = data['collections']
           .map<Collection>((collection) => Collection.fromMap(collection))
@@ -46,7 +46,7 @@ class CreatorProvider with ChangeNotifier {
       if (data['users'].isEmpty) {
         user = User(
           name: 'Unamed',
-          uAddress: EthereumAddress.fromHex(address),
+          uAddress: _walletProvider.address,
           metadata: '',
           image: 'QmWTq1mVjiBp6kPXeT2XZftvsWQ6nZwSBvTbqKLumipMwD',
         );
@@ -54,40 +54,61 @@ class CreatorProvider with ChangeNotifier {
         user = User.fromMap(data['users'][0]);
       }
 
+      print('Request Completed');
+
       _handleLoaded();
     } catch (e) {
-      debugPrint('Error at Creator Provider -> fetchCreator: $e');
+      debugPrint('Error at User Provider -> fetchUserInfo: $e');
+
+      _handleError(e);
+    }
+  }
+
+  fetchCurrentUserCollections() async {
+    try {
+      state = UserState.loading;
+
+      final data = await _graphql
+          .get(qUserCollection, {'uAddress': _walletProvider.address.hex});
+
+      userCollections = data['collections']
+          .map<Collection>((collection) => Collection.fromMap(collection))
+          .toList();
+
+      _handleLoaded();
+    } catch (e) {
+      debugPrint('Error at Creator Provider -> fetchCurrentUserCollection: $e');
 
       _handleError(e);
     }
   }
 
   void _handleEmpty() {
-    state = CreatorState.empty;
+    state = UserState.empty;
     errMessage = '';
     notifyListeners();
   }
 
   void _handleLoading() {
-    state = CreatorState.loading;
+    state = UserState.loading;
     errMessage = '';
     notifyListeners();
   }
 
   void _handleLoaded() {
-    state = CreatorState.loaded;
+    state = UserState.loaded;
     errMessage = '';
     notifyListeners();
   }
 
   void _handleSuccess() {
-    state = CreatorState.success;
+    state = UserState.success;
     errMessage = '';
     notifyListeners();
   }
 
   void _handleError(e) {
-    state = CreatorState.error;
+    state = UserState.error;
     errMessage = e.toString();
     notifyListeners();
   }

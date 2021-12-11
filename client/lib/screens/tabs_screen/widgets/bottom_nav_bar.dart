@@ -33,9 +33,12 @@ class BottomNavBar extends StatelessWidget {
           label: 'Home',
         ),
         //TODO: FIX SEARCH ICON
-        const BottomNavigationBarItem(
-          icon: Icon(Iconsax.search_normal_1),
-          activeIcon: Icon(Iconsax.search_normal_15),
+        BottomNavigationBarItem(
+          icon: const Icon(Iconsax.search_normal_1),
+          activeIcon: SvgPicture.asset(
+            "assets/images/search.svg",
+            width: rf(24),
+          ),
           label: 'Favourite',
         ),
         const BottomNavigationBarItem(

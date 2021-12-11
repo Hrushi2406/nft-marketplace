@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:nfts/core/utils/utils.dart';
 import 'package:nfts/core/widgets/custom_widgets.dart';
 import 'package:nfts/models/nft.dart';
@@ -21,6 +22,8 @@ class ContractDetailsWidget extends StatelessWidget {
         DataTile(
           label: 'Contract Address',
           value: nft.cAddress,
+          icon: Iconsax.copy,
+          onIconPressed: () => copy(nft.cAddress),
         ),
         SizedBox(height: rh(space2x)),
         DataTile(

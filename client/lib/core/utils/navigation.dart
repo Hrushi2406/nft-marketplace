@@ -68,23 +68,23 @@ class Navigation {
   }
 
   /// POP until given name and push
-  static void popTillNamedAndPush(
+  static Future<Object?> popTillNamedAndPush(
     BuildContext context, {
     required String popTill,
     Widget? screen,
     String? name,
-    Route? customPageTransition,
-  }) {
+    Route<Object>? customPageTransition,
+  }) async {
     if (customPageTransition != null) {
-      Navigator.of(context).push(customPageTransition);
+      return await Navigator.of(context).push(customPageTransition);
     }
     if (screen != null) {
-      Navigator.of(context).pushAndRemoveUntil(
+      return await Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => screen),
         ModalRoute.withName(popTill),
       );
     } else if (name != null) {
-      Navigator.of(context).pushNamedAndRemoveUntil(
+      return await Navigator.of(context).pushNamedAndRemoveUntil(
         name,
         ModalRoute.withName(popTill),
       );
