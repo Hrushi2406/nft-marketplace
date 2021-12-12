@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:nfts/core/animations/fade_animation.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_widgets.dart';
 import '../../provider/wallet_provider.dart';
-import 'package:provider/provider.dart';
 
 class NetworkConfirmationScreen extends StatefulWidget {
   const NetworkConfirmationScreen({Key? key}) : super(key: key);
@@ -41,10 +42,38 @@ class _NetworkConfirmationScreenState extends State<NetworkConfirmationScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: space2x),
               child: UpperCaseText(
-                'While we are confirmation your transaction with Polygon network. Sometimes it may take more than 20 seconds please.',
+                'we are confirmation your transaction \n Allow upto 20 seconds',
                 style:
                     Theme.of(context).textTheme.headline6!.copyWith(height: 2),
                 textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(height: rh(space6x)),
+            FadeAnimation(
+              duration: const Duration(milliseconds: 5000),
+              intervalStart: 0.85,
+              child: Buttons.text(
+                context: context,
+                text: 'process transaction in background',
+                onPressed: () {
+                  Navigation.pop(context);
+                },
+              ),
+            ),
+            SizedBox(height: rh(space1x)),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: space2x),
+              child: FadeAnimation(
+                duration: const Duration(milliseconds: 5000),
+                intervalStart: 0.85,
+                child: UpperCaseText(
+                  '*When you Skip, It may take time to reflect changes.',
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle1!
+                      .copyWith(height: 2),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ],

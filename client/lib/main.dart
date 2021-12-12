@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nfts/screens/network_confirmation/network_confirmation_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'core/theme/app_theme.dart';
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
         designSize: const Size(375, 812),
         builder: (_) {
           return MaterialApp(
-            title: 'Flutter Demo',
+            title: 'Mintit',
             theme: AppTheme.light(),
             debugShowCheckedModeBanner: false,
             themeMode: ThemeMode.light,
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
               'tabs_screen': (_) => const TabsScreen(),
             },
             // home: const CreateCollectionScreen(),
-            // home: const ConfirmationScreen(),
+            // home: const NetworkConfirmationScreen(),
           );
         },
       ),

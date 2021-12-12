@@ -13,7 +13,7 @@ const qHome = r'''
         nItems
         volumeOfEth
       }
-      nfts(first: $first) {
+      nfts(first: $first, orderBy: tokenId) {
         cAddress
         tokenId
         metadata

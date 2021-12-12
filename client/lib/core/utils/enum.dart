@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:web3dart/web3dart.dart';
 
 String enumToString(Object o) => o.toString().split('.').last;
@@ -48,4 +53,33 @@ copy(String data) async {
   await Clipboard.setData(ClipboardData(text: data));
 
   Fluttertoast.showToast(msg: 'Copied to Clipboard');
+}
+
+share(
+  String title,
+  String image,
+  String description,
+) async {
+  try {
+    Fluttertoast.showToast(msg: 'Please wait');
+    final imageUrl = 'https://ipfs.io/ipfs/$image';
+
+    final response = await http.get(Uri.parse(imageUrl));
+    final bytes = response.bodyBytes;
+    final temp = await getTemporaryDirectory();
+    final path = '${temp.path}/image.jpg';
+
+    File(path).writeAsBytesSync(bytes);
+
+    const link = ' ';
+
+    await Share.shareFiles(
+      [path],
+      text: 'Look at this ' + title,
+      subject: description + link,
+    );
+  } catch (e) {
+    // ignore: avoid_print
+    print('Error at share: $e');
+  }
 }

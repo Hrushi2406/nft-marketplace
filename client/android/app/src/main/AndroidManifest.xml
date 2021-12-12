@@ -22,9 +22,10 @@
     <data android:mimeType="*/*" />
   </intent>
 </queries>
+<uses-permission android:name="android.permission.INTERNET" />
 
    <application
-        android:label="nfts"
+        android:label="Mintit"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:nfts/core/animations/scale_animation.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -13,8 +14,11 @@ import '../splash_screen/splash_screen.dart';
 class TestMaticScreen extends StatelessWidget {
   const TestMaticScreen({Key? key}) : super(key: key);
 
-  _openUrl(String url) async {
-    if (!await launch(url)) {}
+  _openUrl(String url, BuildContext context) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+      _skipForNow(context);
+    }
   }
 
   _skipForNow(context) async {
@@ -34,9 +38,12 @@ class TestMaticScreen extends StatelessWidget {
           children: [
             // SizedBox(height: rh(80)),
 
-            SvgPicture.asset(
-              'assets/images/tick.svg',
-              width: rf(100),
+            ScaleAnimation(
+              duration: const Duration(milliseconds: 750),
+              child: SvgPicture.asset(
+                'assets/images/tick.svg',
+                width: rf(100),
+              ),
             ),
             SizedBox(height: rh(20)),
 
@@ -82,7 +89,8 @@ class TestMaticScreen extends StatelessWidget {
               width: double.infinity,
               context: context,
               text: 'Lets get some Fresh TEST matic',
-              onPressed: () => _openUrl('https://faucet.polygon.technology'),
+              onPressed: () =>
+                  _openUrl('https://faucet.polygon.technology', context),
             ),
             SizedBox(height: rh(space3x)),
             Buttons.text(

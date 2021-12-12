@@ -123,7 +123,11 @@ class _CreatorScreenState extends State<CreatorScreen>
                               icon: Iconsax.share,
                               right: rw(space2x),
                               semanticLabel: 'Share',
-                              onPressed: () {},
+                              onPressed: () => share(
+                                provider.user.name,
+                                provider.user.image,
+                                provider.user.uAddress.hex,
+                              ),
                             ),
                           ],
                         ),

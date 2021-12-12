@@ -77,7 +77,7 @@ class _CreateCollectionScreenState extends State<CreateCollectionScreen> {
 //Navigate to other screen
       Navigation.push(context,
           screen: ConfirmationScreen(
-              action: 'Miniting NFT',
+              action: 'Create Collection',
               image: _pickedImagePath!,
               title: _nameController.text,
               subtitle:

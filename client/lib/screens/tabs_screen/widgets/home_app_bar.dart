@@ -14,7 +14,14 @@ class HomeAppBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        Container(),
+        // UpperCaseText(
+        //   'Caya',
+        //   style: Theme.of(context).textTheme.headline2!.copyWith(
+        //         letterSpacing: 2,
+        //         fontWeight: FontWeight.w400,
+        //       ),
+        // ),
+        const Spacer(),
 
         ///WALLET
         Column(

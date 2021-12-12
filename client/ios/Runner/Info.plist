@@ -11,7 +11,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>nfts</string>
+	<string>Mintit</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -30,6 +30,8 @@
 	<string>This app requires access to the camera.</string>
 	<key>NSPhotoLibraryUsageDescription</key> 
 	<string>We need access to your gallary to pick images</string>
+	<key>NSPhotoLibraryAddUsageDescription</key> 
+	<string>Allow the user to save sample pics to their images.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

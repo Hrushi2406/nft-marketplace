@@ -129,18 +129,22 @@ class _UserTabState extends State<UserTab>
                             icon: Iconsax.share,
                             right: rw(space2x),
                             semanticLabel: 'Share',
-                            onPressed: () {},
-                          ),
-                          Buttons.icon(
-                            context: context,
-                            icon: Iconsax.edit_2,
-                            right: rw(space2x),
-                            semanticLabel: 'Edit',
-                            onPressed: () => Navigation.push(
-                              context,
-                              screen: const EditUserInfoScreen(),
+                            onPressed: () => share(
+                              provider.user.name,
+                              provider.user.image,
+                              provider.user.uAddress.hex,
                             ),
                           ),
+                          // Buttons.icon(
+                          //   context: context,
+                          //   icon: Iconsax.edit_2,
+                          //   right: rw(space2x),
+                          //   semanticLabel: 'Edit',
+                          //   onPressed: () => Navigation.push(
+                          //     context,
+                          //     screen: const EditUserInfoScreen(),
+                          //   ),
+                          // ),
                           Buttons.icon(
                             context: context,
                             // icon: Icons.exit_to_app_rounded,

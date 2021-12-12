@@ -54,8 +54,6 @@ class UserProvider with ChangeNotifier {
         user = User.fromMap(data['users'][0]);
       }
 
-      print('Request Completed');
-
       _handleLoaded();
     } catch (e) {
       debugPrint('Error at User Provider -> fetchUserInfo: $e');

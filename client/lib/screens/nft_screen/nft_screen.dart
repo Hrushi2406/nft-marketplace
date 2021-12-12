@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:nfts/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -181,7 +184,23 @@ class _NFTScreenState extends State<NFTScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CustomAppBar(),
+                    CustomAppBar(
+                      actions: [
+                        Buttons.icon(
+                          context: context,
+                          icon: Iconsax.share,
+                          left: rw(space2x),
+                          top: 0,
+                          bottom: 0,
+                          semanticLabel: 'Share',
+                          onPressed: () => share(
+                            widget.nft.name,
+                            widget.nft.image,
+                            widget.nft.cName,
+                          ),
+                        ),
+                      ],
+                    ),
                     SizedBox(height: rh(space2x)),
 
                     //IMAGE
@@ -380,10 +399,11 @@ class _NFTScreenState extends State<NFTScreen> {
                     return BottomBar(
                       label: 'Highest Bid',
                       price: '${_bids[0].price} MAT',
-                      buttonText: 'Cancel Bid',
+                      buttonText: hasUserBid ? 'Cancel Bid' : 'Place Bid',
                       icon: Iconsax.arrow_up_2,
                       onIconPressed: () => _openBids(_isOwner),
-                      onButtonPressed: () => _cancelBid(),
+                      onButtonPressed: () =>
+                          hasUserBid ? _cancelBid() : _placeBid(),
                     );
                   }
                 }

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
-import 'package:nfts/provider/collection_provider.dart';
-import 'package:nfts/provider/wallet_provider.dart';
-import 'package:nfts/screens/confirmation_screen/widgets/transaction_fee_widget.dart';
-import 'package:nfts/screens/confirmation_screen/widgets/transaction_info.dart';
-import 'package:nfts/screens/network_confirmation/network_confirmation_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_to_confirm/slide_to_confirm.dart';
+
+import '../../core/utils/utils.dart';
+import '../../core/widgets/custom_widgets.dart';
+import '../../provider/wallet_provider.dart';
+import 'widgets/transaction_fee_widget.dart';
 
 class ConfirmationScreen extends StatefulWidget {
   const ConfirmationScreen({
@@ -118,11 +115,33 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                           const Center(
                             child: EmptyWidget(text: 'Estimating gas fee ...'),
                           )
+                        else if (provider.state == WalletState.error)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: space2x,
+                              vertical: space2x,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Theme.of(context).errorColor,
+                            ),
+                            child: UpperCaseText(
+                              provider.errMessage,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5!
+                                  .copyWith(
+                                    color: Colors.white,
+                                    height: 1.8,
+                                  ),
+                            ),
+                          )
                         else
                           TransactionFeeWidget(
                             transactionInfo: provider.transactionInfo!,
                             gasInfo: provider.gasInfo!,
                             totalAmount: provider.totalAmount,
+                            maticPrice: provider.maticPrice,
                           ),
                       ],
                     );
@@ -141,12 +160,16 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                   stickToEnd:
                       provider.state == WalletState.loading ? false : true,
                   backgroundColor: Theme.of(context).colorScheme.background,
-                  foregroundColor: provider.state == WalletState.loading
+                  foregroundColor: provider.state == WalletState.loading ||
+                          provider.state == WalletState.error
                       ? Theme.of(context).colorScheme.surface
                       : Theme.of(context).primaryColor,
                   textStyle: Theme.of(context).textTheme.subtitle1,
-                  text: 'SLIDE TO CONFIRM',
-                  onConfirmation: provider.state == WalletState.loading
+                  text: provider.state == WalletState.error
+                      ? 'Error Occured'
+                      : 'SLIDE TO CONFIRM',
+                  onConfirmation: provider.state == WalletState.loading ||
+                          provider.state == WalletState.error
                       ? () {}
                       : _confirmTransaction,
                   shadow: BoxShadow(

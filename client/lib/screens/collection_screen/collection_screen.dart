@@ -152,7 +152,11 @@ class _CollectionScreenState extends State<CollectionScreen> {
                         top: 0,
                         bottom: 0,
                         semanticLabel: 'Share',
-                        onPressed: () {},
+                        onPressed: () => share(
+                          widget.collection.name,
+                          widget.collection.image,
+                          metaData.description,
+                        ),
                       ),
                       const Spacer(),
                       Consumer<WalletProvider>(

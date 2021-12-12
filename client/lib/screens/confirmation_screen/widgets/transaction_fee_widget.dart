@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/core/animations/animations.dart';
-import 'package:nfts/core/animations/slide_animation.dart';
-import 'package:nfts/core/services/gasprice_service.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
 import 'package:web3dart/web3dart.dart';
+
+import '../../../core/animations/animations.dart';
+import '../../../core/services/gasprice_service.dart';
+import '../../../core/utils/utils.dart';
+import '../../../core/widgets/custom_widgets.dart';
 
 class TransactionFeeWidget extends StatelessWidget {
   const TransactionFeeWidget({
@@ -12,11 +12,13 @@ class TransactionFeeWidget extends StatelessWidget {
     required this.transactionInfo,
     required this.gasInfo,
     required this.totalAmount,
+    required this.maticPrice,
   }) : super(key: key);
 
   final Transaction transactionInfo;
   final GasInfo gasInfo;
   final double totalAmount;
+  final double maticPrice;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,16 @@ class TransactionFeeWidget extends StatelessWidget {
             text: 'Total',
             value: '$totalAmount MAT',
             isFontRegular: true,
+          ),
+          SizedBox(height: rh(space2x)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              UpperCaseText(
+                '~ ' + (maticPrice * totalAmount).toStringAsFixed(4) + " USD",
+                style: Theme.of(context).textTheme.headline4,
+              ),
+            ],
           ),
         ],
       ),

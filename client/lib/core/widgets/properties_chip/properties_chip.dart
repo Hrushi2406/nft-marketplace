@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 
 import '../../utils/utils.dart';
 import '../custom_widgets.dart';
@@ -49,10 +48,10 @@ class PropertiesChip extends StatelessWidget {
 
           SizedBox(width: rw(space2x)),
           //Percent Value
-          UpperCaseText(
-            percent,
-            style: Theme.of(context).textTheme.subtitle1,
-          ),
+          // UpperCaseText(
+          //   percent,
+          //   style: Theme.of(context).textTheme.subtitle1,
+          // ),
 
           if (onPressed != null)
             Buttons.icon(

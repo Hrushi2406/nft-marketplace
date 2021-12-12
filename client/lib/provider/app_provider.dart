@@ -72,7 +72,7 @@ class AppProvider with ChangeNotifier {
     // _handleLoading();
 
     //FETCHING HOME SCREEN DATA
-    final data = await _graphql.get(qHome);
+    final data = await _graphql.get(qHome, {'first': 15});
 
     //Model Collections
     topCollections = data['collections']

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
+import 'package:nfts/provider/user_provider.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../core/services/contract_service.dart';
@@ -15,12 +16,14 @@ class WalletProvider with ChangeNotifier {
   final Web3Client _client;
   final GasPriceService _gasPriceService;
   final ContractService _contractService;
+  // final UserProvider _userProvider;
 
   WalletProvider(
     this._walletService,
     this._client,
     this._gasPriceService,
     this._contractService,
+    // this._userProvider,
   );
 
   WalletState state = WalletState.empty;
@@ -35,13 +38,13 @@ class WalletProvider with ChangeNotifier {
   Transaction? transactionInfo;
   double totalAmount = 0;
   String lastTxHash = '';
+  double maticPrice = 0;
 
   //Transaction Async
   Function? onNetworkConfirmationRun;
 
   getBalance() async {
     balance = await _client.getBalance(address);
-    print(address);
     _handleLoaded();
   }
 
@@ -64,17 +67,22 @@ class WalletProvider with ChangeNotifier {
             transactionInfo!.value!.getValueInUnit(EtherUnit.ether);
       }
 
-      // final contract = _contractService.priceFeed;
-      // final price = await _client.call(
-      //   contract: contract,
-      //   function: contract.function('getLatestPrice'),
-      //   params: [],
-      // );
-      // print(price);
+      final contract = _contractService.priceFeed;
+      final price = await _client.call(
+        contract: contract,
+        function: contract.function('getLatestPrice'),
+        params: [],
+      );
+
+      maticPrice = price[0] / BigInt.from(10).pow(8);
 
       getBalance();
     } catch (e) {
       debugPrint('Error at WallerProvider -> GetTransactionFee: $e');
+      final err = e.toString();
+      final split = err.split('"');
+
+      _handleError(split[1]);
     }
   }
 
@@ -97,12 +105,13 @@ class WalletProvider with ChangeNotifier {
 
       await Future.delayed(const Duration(seconds: 18));
 
+      // _userProvider.fetchUserInfo();
+
       _handleSuccess();
 
       return;
     } catch (e) {
       debugPrint('Error at WalletProvider -> sendTransaction: $e');
-
       _handleError(e);
     }
   }

@@ -160,6 +160,7 @@ class NFTProvider with ChangeNotifier {
       _clearState();
 
       _userProvider.fetchUserInfo();
+
       _collectionProvider.fetchCollectionMeta(collection);
 
       _handleSuccess();
@@ -330,7 +331,7 @@ class NFTProvider with ChangeNotifier {
 
       metadata = NFTMetadata.fromMap(data);
 
-      activities = activities.reversed.toList();
+      // activities = activities.reversed.toList();
 
       notifyListeners();
     } catch (e) {
