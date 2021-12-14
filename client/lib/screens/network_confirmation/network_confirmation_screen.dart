@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:nfts/core/animations/fade_animation.dart';
+import 'package:nfts/locator.dart';
 import 'package:nfts/provider/app_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -59,6 +60,9 @@ class _NetworkConfirmationScreenState extends State<NetworkConfirmationScreen> {
                 text: 'process transaction in background',
                 onPressed: () {
                   Navigation.pop(context);
+                  Timer(const Duration(seconds: 16), () {
+                    locator<AppProvider>().initialize();
+                  });
                 },
               ),
             ),
