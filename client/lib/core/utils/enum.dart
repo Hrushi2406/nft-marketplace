@@ -75,7 +75,9 @@ share(
 
     await Share.shareFiles(
       [path],
-      text: 'Look at this ' + title,
+      text: 'Have a look at' +
+          title +
+          ' on Mintit. Download here https://drive.google.com/drive/folders/1C5y4Tv5_5WRmpK1faeO1tOliHs31J_w1?usp=sharing',
       subject: description + link,
     );
   } catch (e) {

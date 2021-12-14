@@ -43,7 +43,7 @@ class _SearchTabState extends State<SearchTab> {
           CustomTextFormField(
             controller: _searchController,
             isAutoFocused: true,
-            labelText: 'Search',
+            labelText: 'Search Collection and Nfts',
             validator: validator,
             onChanged: _onChanged,
             suffix: Buttons.icon(

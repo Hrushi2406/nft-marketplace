@@ -153,7 +153,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
                         bottom: 0,
                         semanticLabel: 'Share',
                         onPressed: () => share(
-                          widget.collection.name,
+                          widget.collection.name + " collection",
                           widget.collection.image,
                           metaData.description,
                         ),

@@ -120,11 +120,18 @@ class _CreatorScreenState extends State<CreatorScreen>
                               ),
                             Buttons.icon(
                               context: context,
+                              icon: Iconsax.copy,
+                              right: rw(space2x),
+                              semanticLabel: 'Copy',
+                              onPressed: () => copy(provider.user.uAddress.hex),
+                            ),
+                            Buttons.icon(
+                              context: context,
                               icon: Iconsax.share,
                               right: rw(space2x),
                               semanticLabel: 'Share',
                               onPressed: () => share(
-                                provider.user.name,
+                                " Creator " + provider.user.uAddress.hex,
                                 provider.user.image,
                                 provider.user.uAddress.hex,
                               ),

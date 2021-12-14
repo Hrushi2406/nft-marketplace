@@ -21,65 +21,73 @@ class FavTab extends StatelessWidget {
             return CustomTabBar(
               titles: const ['Collections', 'NFTS'],
               tabs: [
-                //COLLECTION VIEW
-                ListView.separated(
-                  itemCount: favProvider.favCollections.length,
-                  padding: const EdgeInsets.only(
-                    left: space2x,
-                    right: space2x,
-                    bottom: space3x,
-                    top: space4x,
-                  ),
-                  separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(height: rh(space2x));
-                  },
-                  itemBuilder: (BuildContext context, int index) {
-                    final collection = favProvider.favCollections[index];
-                    return GestureDetector(
-                      onTap: () => Navigation.push(
-                        context,
-                        screen: CollectionScreen(collection: collection),
-                      ),
-                      child: CollectionListTile(
-                        image: collection.image,
-                        title: collection.name,
-                        subtitle: 'By ${formatAddress(collection.creator)}',
-                        isFav: favProvider.isFavCollection(collection),
-                        onFavPressed: () =>
-                            favProvider.setFavCollection(collection),
-                      ),
-                    );
-                  },
-                ),
+                if (favProvider.favCollections.isEmpty)
+                  const EmptyWidget(
+                    text: 'No Favorite collections',
+                  )
+                else
 
-                //NFT VIEW
-                ListView.separated(
-                  itemCount: favProvider.favNFT.length,
-                  padding: const EdgeInsets.only(
-                    left: space2x,
-                    right: space2x,
-                    bottom: space3x,
-                    top: space3x,
+                  //COLLECTION VIEW
+                  ListView.separated(
+                    itemCount: favProvider.favCollections.length,
+                    padding: const EdgeInsets.only(
+                      left: space2x,
+                      right: space2x,
+                      bottom: space3x,
+                      top: space4x,
+                    ),
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(height: rh(space2x));
+                    },
+                    itemBuilder: (BuildContext context, int index) {
+                      final collection = favProvider.favCollections[index];
+                      return GestureDetector(
+                        onTap: () => Navigation.push(
+                          context,
+                          screen: CollectionScreen(collection: collection),
+                        ),
+                        child: CollectionListTile(
+                          image: collection.image,
+                          title: collection.name,
+                          subtitle: 'By ${formatAddress(collection.creator)}',
+                          isFav: favProvider.isFavCollection(collection),
+                          onFavPressed: () =>
+                              favProvider.setFavCollection(collection),
+                        ),
+                      );
+                    },
                   ),
-                  separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(height: rh(space3x));
-                  },
-                  itemBuilder: (BuildContext context, int index) {
-                    final nft = favProvider.favNFT[index];
-                    return NFTCard(
-                      onTap: () => Navigation.push(
-                        context,
-                        screen: NFTScreen(nft: nft),
-                      ),
-                      heroTag: '${nft.cAddress}-${nft.tokenId}',
-                      image: nft.image,
-                      title: nft.name,
-                      subtitle: nft.cName,
-                      isFav: favProvider.isFavNFT(nft),
-                      onFavPressed: () => favProvider.setFavNFT(nft),
-                    );
-                  },
-                ),
+                if (favProvider.favNFT.isEmpty)
+                  const EmptyWidget(text: 'No Favorite NFTs')
+                else
+                  //NFT VIEW
+                  ListView.separated(
+                    itemCount: favProvider.favNFT.length,
+                    padding: const EdgeInsets.only(
+                      left: space2x,
+                      right: space2x,
+                      bottom: space3x,
+                      top: space3x,
+                    ),
+                    separatorBuilder: (BuildContext context, int index) {
+                      return SizedBox(height: rh(space3x));
+                    },
+                    itemBuilder: (BuildContext context, int index) {
+                      final nft = favProvider.favNFT[index];
+                      return NFTCard(
+                        onTap: () => Navigation.push(
+                          context,
+                          screen: NFTScreen(nft: nft),
+                        ),
+                        heroTag: '${nft.cAddress}-${nft.tokenId}',
+                        image: nft.image,
+                        title: nft.name,
+                        subtitle: nft.cName,
+                        isFav: favProvider.isFavNFT(nft),
+                        onFavPressed: () => favProvider.setFavNFT(nft),
+                      );
+                    },
+                  ),
               ],
             );
           }),

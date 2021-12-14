@@ -114,11 +114,12 @@ class AppTheme {
           letterSpacing: 0.96,
           color: Colors.black,
         ),
-        caption: GoogleFonts.inter(
+        caption: TextStyle(
           fontSize: rf(12),
+          fontFamily: 'Outfit',
           fontWeight: FontWeight.w400,
           height: 1.6,
-          letterSpacing: 0,
+          letterSpacing: 0.6,
           color: Colors.black,
         ),
         button: TextStyle(

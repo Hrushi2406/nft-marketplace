@@ -24,21 +24,25 @@ class ContractDetailsWidget extends StatelessWidget {
           value: nft.cAddress,
           icon: Iconsax.copy,
           onIconPressed: () => copy(nft.cAddress),
+          isValueBold: false,
         ),
         SizedBox(height: rh(space2x)),
         DataTile(
           label: 'Token id',
           value: nft.tokenId.toString(),
+          isValueBold: false,
         ),
         SizedBox(height: rh(space2x)),
         const DataTile(
           label: 'Token Standard',
           value: 'ERC 721',
+          isValueBold: false,
         ),
         SizedBox(height: rh(space2x)),
         const DataTile(
           label: 'Blockchain',
           value: 'Polygon',
+          isValueBold: false,
         ),
       ],
     );

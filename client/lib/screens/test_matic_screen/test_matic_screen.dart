@@ -17,6 +17,7 @@ class TestMaticScreen extends StatelessWidget {
   _openUrl(String url, BuildContext context) async {
     if (await canLaunch(url)) {
       await launch(url);
+      await Future.delayed(const Duration(seconds: 2));
       _skipForNow(context);
     }
   }

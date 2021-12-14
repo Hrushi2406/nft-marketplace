@@ -20,6 +20,7 @@ class CustomOutlinedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       minWidth: width,
+      padding: const EdgeInsets.all(0),
       height: rh(40),
       onPressed: onPressed,
       shape: RoundedRectangleBorder(

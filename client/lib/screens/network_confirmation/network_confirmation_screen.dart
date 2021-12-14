@@ -45,7 +45,7 @@ class _NetworkConfirmationScreenState extends State<NetworkConfirmationScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: space2x),
               child: UpperCaseText(
-                'we are confirmation your transaction \n Allow upto 20 seconds',
+                'we are Confirming your transaction \n Allow upto 20 seconds',
                 style:
                     Theme.of(context).textTheme.headline6!.copyWith(height: 2),
                 textAlign: TextAlign.center,
@@ -60,6 +60,7 @@ class _NetworkConfirmationScreenState extends State<NetworkConfirmationScreen> {
                 text: 'process transaction in background',
                 onPressed: () {
                   Navigation.pop(context);
+
                   Timer(const Duration(seconds: 16), () {
                     locator<AppProvider>().initialize();
                   });

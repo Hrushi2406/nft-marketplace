@@ -14,13 +14,14 @@ class HomeAppBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        // UpperCaseText(
-        //   'Caya',
-        //   style: Theme.of(context).textTheme.headline2!.copyWith(
-        //         letterSpacing: 2,
-        //         fontWeight: FontWeight.w400,
-        //       ),
-        // ),
+        UpperCaseText(
+          'Explore',
+          style: Theme.of(context).textTheme.headline2!.copyWith(
+                letterSpacing: 2,
+                fontWeight: FontWeight.w300,
+              ),
+        ),
+
         const Spacer(),
 
         ///WALLET

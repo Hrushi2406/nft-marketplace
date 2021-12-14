@@ -77,7 +77,7 @@ class _UserTabState extends State<UserTab>
               floating: true,
               snap: true,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              expandedHeight: rh(270),
+              expandedHeight: rh(284),
               toolbarHeight: 0,
               collapsedHeight: 0,
               flexibleSpace: FlexibleSpaceBar(
@@ -119,18 +119,26 @@ class _UserTabState extends State<UserTab>
                           if (provider.user.metadata.isNotEmpty)
                             Buttons.icon(
                               context: context,
-                              icon: Iconsax.global5,
+                              icon: Iconsax.copy,
                               right: rw(space2x),
                               semanticLabel: 'Website',
                               onPressed: () {},
                             ),
+
+                          Buttons.icon(
+                              context: context,
+                              icon: Iconsax.copy,
+                              right: rw(space2x),
+                              semanticLabel: 'Copy',
+                              onPressed: () =>
+                                  copy(provider.user.uAddress.hex)),
                           Buttons.icon(
                             context: context,
                             icon: Iconsax.share,
                             right: rw(space2x),
                             semanticLabel: 'Share',
                             onPressed: () => share(
-                              provider.user.name,
+                              " Creator " + provider.user.uAddress.hex,
                               provider.user.image,
                               provider.user.uAddress.hex,
                             ),

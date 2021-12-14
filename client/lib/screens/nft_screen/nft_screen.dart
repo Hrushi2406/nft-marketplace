@@ -194,7 +194,7 @@ class _NFTScreenState extends State<NFTScreen> {
                           bottom: 0,
                           semanticLabel: 'Share',
                           onPressed: () => share(
-                            widget.nft.name,
+                            widget.nft.name + ' NFT',
                             widget.nft.image,
                             widget.nft.cName,
                           ),
