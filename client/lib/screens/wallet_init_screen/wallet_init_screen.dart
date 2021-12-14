@@ -58,7 +58,7 @@ class _WalletInitScreenState extends State<WalletInitScreen> {
               SizedBox(height: rh(60)),
               Center(
                 child: UpperCaseText(
-                  'Welcome to NFT Platform',
+                  'Welcome to Mintit.',
                   style: Theme.of(context).textTheme.headline2,
                 ),
               ),

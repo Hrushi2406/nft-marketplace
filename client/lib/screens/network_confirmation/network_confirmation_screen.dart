@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:nfts/core/animations/fade_animation.dart';
+import 'package:nfts/provider/app_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/utils/utils.dart';
@@ -22,6 +23,7 @@ class _NetworkConfirmationScreenState extends State<NetworkConfirmationScreen> {
     return Scaffold(
       body: Consumer<WalletProvider>(builder: (context, provider, child) {
         if (provider.state == WalletState.success) {
+          Provider.of<AppProvider>(context, listen: false).initialize();
           scheduleMicrotask(() {
             Navigation.pop(context);
           });

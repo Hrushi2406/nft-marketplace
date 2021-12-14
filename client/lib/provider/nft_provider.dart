@@ -159,7 +159,7 @@ class NFTProvider with ChangeNotifier {
 
       _clearState();
 
-      _userProvider.fetchUserInfo();
+      // _userProvider.fetchUserInfo();
 
       _collectionProvider.fetchCollectionMeta(collection);
 

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
+import 'package:nfts/provider/app_provider.dart';
 import 'package:nfts/provider/user_provider.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -16,13 +17,14 @@ class WalletProvider with ChangeNotifier {
   final Web3Client _client;
   final GasPriceService _gasPriceService;
   final ContractService _contractService;
-  // final UserProvider _userProvider;
+  // final AppProvider _appProvider;
 
   WalletProvider(
     this._walletService,
     this._client,
     this._gasPriceService,
     this._contractService,
+    // this._appProvider,
     // this._userProvider,
   );
 

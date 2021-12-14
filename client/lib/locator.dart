@@ -24,8 +24,9 @@ import 'provider/wallet_provider.dart';
 final locator = GetIt.instance;
 
 Future<void> init() async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
   //PROVIDER
-  locator.registerLazySingleton(() => AppProvider(
+  locator.registerLazySingleton<AppProvider>(() => AppProvider(
         locator(),
         locator(),
         locator(),
@@ -33,28 +34,30 @@ Future<void> init() async {
         locator(),
       ));
 
-  locator.registerLazySingleton(() => FavProvider(locator()));
-  locator.registerLazySingleton(() => SearchProvider(locator()));
-  locator.registerLazySingleton(() => UserProvider(locator(), locator()));
+  locator.registerLazySingleton<FavProvider>(() => FavProvider(locator()));
+  locator
+      .registerLazySingleton<SearchProvider>(() => SearchProvider(locator()));
+  locator.registerLazySingleton<UserProvider>(
+      () => UserProvider(locator(), locator()));
 
-  locator.registerLazySingleton(() => WalletProvider(
-        locator(),
-        locator(),
-        locator(),
-        locator(),
-        // locator(),
-      ));
-  locator.registerLazySingleton(() => CreatorProvider(locator(), locator()));
-  locator.registerLazySingleton(() => NFTProvider(
-        locator(),
-        locator(),
-        locator(),
+  locator.registerLazySingleton<WalletProvider>(() => WalletProvider(
         locator(),
         locator(),
         locator(),
         locator(),
       ));
-  locator.registerLazySingleton(() => CollectionProvider(
+  locator.registerLazySingleton<CreatorProvider>(
+      () => CreatorProvider(locator(), locator()));
+  locator.registerLazySingleton<NFTProvider>(() => NFTProvider(
+        locator(),
+        locator(),
+        locator(),
+        locator(),
+        locator(),
+        locator(),
+        locator(),
+      ));
+  locator.registerLazySingleton<CollectionProvider>(() => CollectionProvider(
         locator(),
         locator(),
         locator(),
@@ -66,23 +69,25 @@ Future<void> init() async {
 
   //SERVICES
   locator.registerSingleton<ContractService>(ContractService());
-  locator.registerLazySingleton(() => WalletService(locator()));
-  locator.registerLazySingleton(() => NFTRepo(locator(), locator()));
-  locator.registerLazySingleton(() => GraphqlService(GraphQLClient(
-        link: HttpLink(graphqlURL),
-        cache: GraphQLCache(),
-      )));
-  locator.registerLazySingleton(() => IPFSService(locator()));
-  locator.registerLazySingleton(() => GasPriceService(locator(), locator()));
-  locator.registerLazySingleton(() => ImagePickerService());
+  locator.registerLazySingleton<WalletService>(() => WalletService(locator()));
+  locator.registerLazySingleton<NFTRepo>(() => NFTRepo(locator(), locator()));
+  locator
+      .registerLazySingleton<GraphqlService>(() => GraphqlService(GraphQLClient(
+            link: HttpLink(graphqlURL),
+            cache: GraphQLCache(),
+          )));
+  locator.registerLazySingleton<IPFSService>(() => IPFSService(locator()));
+  locator.registerLazySingleton<GasPriceService>(
+      () => GasPriceService(locator(), locator()));
+  locator.registerLazySingleton<ImagePickerService>(() => ImagePickerService());
 
   //CONFIG
-  locator.registerLazySingleton(() => http.Client());
+  locator.registerLazySingleton<http.Client>(() => http.Client());
 
-  locator.registerLazySingleton(() => Web3Client(rpcURL, locator()));
+  locator
+      .registerLazySingleton<Web3Client>(() => Web3Client(rpcURL, locator()));
 
   //PLUGINS
-  SharedPreferences _prefs = await SharedPreferences.getInstance();
 
   locator.registerLazySingleton<SharedPreferences>(() => _prefs);
 }

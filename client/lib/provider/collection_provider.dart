@@ -142,7 +142,7 @@ class CollectionProvider with ChangeNotifier {
 
       _clear();
 
-      _userProvider.fetchUserInfo();
+      // _userProvider.fetchUserInfo();
     } catch (e) {
       debugPrint('Error at CollectionProvider -> getTransactionFee: $e');
 

@@ -24,8 +24,11 @@ class FavProvider with ChangeNotifier {
       favCollections.contains(collection);
 
   fetchFav() {
-    final collections = jsonDecode(_prefs.getString(kFavCollection) ?? '[]');
-    final nfts = jsonDecode(_prefs.getString(kFavNFT) ?? '[]');
+    final key = _prefs.getString('user_private_key')!;
+
+    final collections =
+        jsonDecode(_prefs.getString(key + '-' + kFavCollection) ?? '[]');
+    final nfts = jsonDecode(_prefs.getString(key + '-' + kFavNFT) ?? '[]');
 
     favCollections =
         collections.map<Collection>((c) => Collection.fromJson(c)).toList();
@@ -36,18 +39,22 @@ class FavProvider with ChangeNotifier {
   }
 
   setFavCollection(Collection collection) async {
+    final key = _prefs.getString('user_private_key')!;
+
     if (isFavCollection(collection)) {
       favCollections.remove(collection);
     } else {
       favCollections.add(collection);
     }
     //Encode and save
-    await _prefs.setString(kFavCollection, jsonEncode(favCollections));
+    await _prefs.setString(
+        key + '-' + kFavCollection, jsonEncode(favCollections));
 
     notifyListeners();
   }
 
   setFavNFT(NFT nft) async {
+    final key = _prefs.getString('user_private_key')!;
     //Add
     if (isFavNFT(nft)) {
       favNFT.remove(nft);
@@ -55,7 +62,7 @@ class FavProvider with ChangeNotifier {
       favNFT.add(nft);
     }
     //Encode and save
-    await _prefs.setString(kFavNFT, jsonEncode(favNFT));
+    await _prefs.setString(key + '-' + kFavNFT, jsonEncode(favNFT));
 
     notifyListeners();
   }
