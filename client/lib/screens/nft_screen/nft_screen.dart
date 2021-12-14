@@ -403,7 +403,7 @@ class _NFTScreenState extends State<NFTScreen> {
                       icon: Iconsax.arrow_up_2,
                       onIconPressed: () => _openBids(_isOwner),
                       onButtonPressed: () =>
-                          hasUserBid ? _cancelBid() : _placeBid(),
+                          hasUserBid ? _cancelBid() : _placeBid(_bids[0].price),
                     );
                   }
                 }

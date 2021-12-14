@@ -91,7 +91,7 @@ class _PlaceBidScreenState extends State<PlaceBidScreen> {
             if (widget.highestBid != null)
               BidTile(
                 text: 'Current Highest Bid',
-                value: '${widget.highestBid}',
+                value: '${widget.highestBid} MAT',
               ),
 
             SizedBox(height: rh(space3x)),

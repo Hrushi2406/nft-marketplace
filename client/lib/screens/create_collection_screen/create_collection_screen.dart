@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:nfts/core/services/image_picker_service.dart';
@@ -119,7 +121,7 @@ class _CreateCollectionScreenState extends State<CreateCollectionScreen> {
                     image: _pickedImagePath == null
                         ? null
                         : DecorationImage(
-                            image: AssetImage(_pickedImagePath!),
+                            image: FileImage(File(_pickedImagePath!)),
                             fit: BoxFit.cover,
                           ),
                   ),

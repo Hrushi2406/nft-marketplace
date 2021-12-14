@@ -44,7 +44,7 @@ class VerifiedText extends StatelessWidget {
               maxLines: 1,
             ),
           ),
-        const SizedBox(width: (4)),
+        const SizedBox(width: (1)),
         if (isVerified)
           Icon(
             Iconsax.verify5,

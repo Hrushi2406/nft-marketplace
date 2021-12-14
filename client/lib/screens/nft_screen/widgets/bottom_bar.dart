@@ -37,7 +37,7 @@ class BottomBar extends StatelessWidget {
         top: space2x,
         left: space2x,
         right: space2x,
-        bottom: onlyText == null ? space4x : space5x,
+        bottom: onlyText == null ? space2x : space2x,
       ),
       color: Theme.of(context).colorScheme.surface,
       child: onlyText != null

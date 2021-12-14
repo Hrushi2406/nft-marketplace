@@ -147,6 +147,13 @@ class _CollectionScreenState extends State<CollectionScreen> {
                         ),
                       Buttons.icon(
                         context: context,
+                        icon: Iconsax.copy,
+                        right: rw(space2x),
+                        semanticLabel: 'Copy',
+                        onPressed: () => copy(widget.collection.cAddress),
+                      ),
+                      Buttons.icon(
+                        context: context,
                         icon: Iconsax.share,
                         right: rw(space2x),
                         top: 0,

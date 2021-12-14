@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
@@ -153,7 +155,7 @@ class _CreateNFTScreenState extends State<CreateNFTScreen> {
                       image: _pickedImagePath == null
                           ? null
                           : DecorationImage(
-                              image: AssetImage(_pickedImagePath!),
+                              image: FileImage(File(_pickedImagePath!)),
                               fit: BoxFit.cover,
                             ),
                     ),

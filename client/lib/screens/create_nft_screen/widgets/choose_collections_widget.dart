@@ -41,6 +41,10 @@ class _ChooseCollectionWidgetState extends State<ChooseCollectionWidget> {
           return const LoadingIndicator();
         }
 
+        if (provider.userCollections.isEmpty) {
+          return const EmptyWidget(text: 'No Collections Created');
+        }
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

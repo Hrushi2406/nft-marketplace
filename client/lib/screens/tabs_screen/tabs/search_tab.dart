@@ -42,7 +42,7 @@ class _SearchTabState extends State<SearchTab> {
           SizedBox(height: rh(60)),
           CustomTextFormField(
             controller: _searchController,
-            isAutoFocused: true,
+            // isAutoFocused: true,
             labelText: 'Search Collection and Nfts',
             validator: validator,
             onChanged: _onChanged,
