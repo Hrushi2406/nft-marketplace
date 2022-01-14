@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:web3dart/web3dart.dart';
 
 String enumToString(Object o) => o.toString().split('.').last;
@@ -83,5 +85,11 @@ share(
   } catch (e) {
     // ignore: avoid_print
     print('Error at share: $e');
+  }
+}
+
+openUrl(String url, BuildContext context) async {
+  if (await canLaunch(url)) {
+    await launch(url);
   }
 }
