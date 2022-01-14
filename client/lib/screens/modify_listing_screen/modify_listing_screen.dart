@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import '../../config/functions.dart';
 import '../../core/animations/fade_animation.dart';
 import '../../core/utils/utils.dart';
-import '../../core/widgets/app_bar/custom_app_bar.dart';
 import '../../core/widgets/custom_widgets.dart';
 import '../../models/nft.dart';
 import '../../provider/nft_provider.dart';

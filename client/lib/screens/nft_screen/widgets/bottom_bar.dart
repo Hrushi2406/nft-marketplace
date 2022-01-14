@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/core/animations/animations.dart';
-import 'package:nfts/core/animations/slide_animation.dart';
 
+import '../../../core/animations/animations.dart';
 import '../../../core/utils/utils.dart';
 import '../../../core/widgets/custom_widgets.dart';
 

@@ -1,4 +1,4 @@
-import 'package:nfts/core/utils/utils.dart';
+import '../core/utils/utils.dart';
 
 class ListingInfo {
   late bool forSale;

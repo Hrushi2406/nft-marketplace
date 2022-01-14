@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/utils/utils.dart';
 import '../../../core/widgets/custom_widgets.dart';
@@ -9,7 +8,6 @@ import '../../../provider/app_provider.dart';
 import '../../../provider/fav_provider.dart';
 import '../../../provider/user_provider.dart';
 import '../../collection_screen/collection_screen.dart';
-import '../../edit_user_info_screen/edit_user_info_screen.dart';
 import '../../nft_screen/nft_screen.dart';
 
 class UserTab extends StatefulWidget {
@@ -47,10 +45,6 @@ class _UserTabState extends State<UserTab>
       context,
       name: 'create_collection',
     );
-  }
-
-  _openUrl(String url) async {
-    if (!await launch(url)) {}
   }
 
   @override

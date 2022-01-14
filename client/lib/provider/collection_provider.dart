@@ -177,8 +177,6 @@ class CollectionProvider with ChangeNotifier {
     metadataCID = null;
   }
 
-  //TODO :Check colletion on opean sea 0x5ee04c97881eb4da8892b209c8baad55c3c17b30
-
   fetchCollectionMeta(Collection collection) async {
     try {
       state = CollectionState.loading;
@@ -206,14 +204,9 @@ class CollectionProvider with ChangeNotifier {
 
       _handleLoaded();
 
-      final stopWatch = Stopwatch();
-      stopWatch.start();
-
       final data = await _ipfs.getJson(collection.metadata);
 
       metaData = CollectionMetaData.fromMap(data);
-
-      print(stopWatch.elapsed);
 
       notifyListeners();
     } catch (e) {

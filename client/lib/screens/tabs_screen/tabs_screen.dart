@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/core/animations/animations.dart';
-import 'package:nfts/core/animations/slide_animation.dart';
-import 'package:nfts/screens/tabs_screen/tabs/search_tab.dart';
 
 import 'tabs/fav_tab.dart';
 import 'tabs/home_tab.dart';
+import 'tabs/search_tab.dart';
 import 'tabs/user_tab.dart';
 import 'widgets/bottom_nav_bar.dart';
 

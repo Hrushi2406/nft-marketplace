@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:nfts/config/gql_query.dart';
-import 'package:nfts/core/services/graphql_service.dart';
-import 'package:nfts/models/collection.dart';
-import 'package:nfts/models/nft.dart';
-import 'package:nfts/models/user.dart';
+import '../config/gql_query.dart';
+import '../core/services/graphql_service.dart';
+import '../models/collection.dart';
+import '../models/nft.dart';
+import '../models/user.dart';
 
 enum SearchState { empty, loading, loaded, success, error }
 

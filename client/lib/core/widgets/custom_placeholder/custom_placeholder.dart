@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/core/utils/ui_helper.dart';
+import '../../utils/ui_helper.dart';
 
 class CustomPlaceHolder extends StatelessWidget {
   const CustomPlaceHolder({

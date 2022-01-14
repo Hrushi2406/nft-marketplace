@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:nfts/config/config.dart';
-import 'package:nfts/models/collection.dart';
-import 'package:nfts/models/nft.dart';
+import '../config/config.dart';
+import '../models/collection.dart';
+import '../models/nft.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum FavState { empty, loading, loaded, success, error }

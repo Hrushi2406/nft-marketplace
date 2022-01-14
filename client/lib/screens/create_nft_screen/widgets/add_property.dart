@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
-import 'package:nfts/provider/nft_provider.dart';
-import 'package:provider/provider.dart';
+
+import '../../../core/utils/utils.dart';
+import '../../../core/widgets/custom_widgets.dart';
 
 class AddPropertyWidget extends StatefulWidget {
   const AddPropertyWidget({Key? key, required this.add}) : super(key: key);
@@ -14,8 +13,6 @@ class AddPropertyWidget extends StatefulWidget {
 }
 
 class _AddPropertyWidgetState extends State<AddPropertyWidget> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   final TextEditingController _typeController = TextEditingController();
   final TextEditingController _valueController = TextEditingController();
 

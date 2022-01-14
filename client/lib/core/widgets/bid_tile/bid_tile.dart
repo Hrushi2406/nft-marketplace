@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:nfts/core/animations/scale_animation.dart';
 
+import '../../animations/scale_animation.dart';
 import '../../utils/utils.dart';
 import '../custom_widgets.dart';
 

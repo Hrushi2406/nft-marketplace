@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/core/utils/debouncer.dart';
-import 'package:nfts/core/utils/enum.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
-import 'package:nfts/core/widgets/text_field/custom_text_form_field.dart';
-import 'package:nfts/models/collection.dart';
-import 'package:nfts/models/nft.dart';
-import 'package:nfts/provider/fav_provider.dart';
-import 'package:nfts/provider/search_provider.dart';
-import 'package:nfts/screens/collection_screen/collection_screen.dart';
-import 'package:nfts/screens/nft_screen/nft_screen.dart';
 import 'package:provider/provider.dart';
+
+import '../../../core/utils/debouncer.dart';
+import '../../../core/utils/utils.dart';
+import '../../../core/widgets/custom_widgets.dart';
+import '../../../models/collection.dart';
+import '../../../models/nft.dart';
+import '../../../provider/fav_provider.dart';
+import '../../../provider/search_provider.dart';
+import '../../collection_screen/collection_screen.dart';
+import '../../nft_screen/nft_screen.dart';
 
 class SearchTab extends StatefulWidget {
   const SearchTab({Key? key}) : super(key: key);

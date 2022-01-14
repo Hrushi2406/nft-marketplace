@@ -1,15 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:nfts/core/animations/animations.dart';
-import 'package:nfts/screens/test_matic_screen/test_matic_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/animations/animations.dart';
 import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_widgets.dart';
 import '../../provider/app_provider.dart';
 import '../create_wallet_screen/create_wallet_screen.dart';
-import '../tabs_screen/tabs_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

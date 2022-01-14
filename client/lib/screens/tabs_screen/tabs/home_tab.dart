@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/provider/fav_provider.dart';
+import '../../../provider/fav_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/utils/utils.dart';

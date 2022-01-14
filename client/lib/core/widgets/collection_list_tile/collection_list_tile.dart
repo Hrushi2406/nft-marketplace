@@ -1,12 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:nfts/screens/creator_screen/creator_screen.dart';
 
 import '../../utils/utils.dart';
 import '../custom_placeholder/custom_placeholder.dart';
 import '../custom_widgets.dart';
-import '../verified_text/verified_text.dart';
 
 class CollectionListTile extends StatelessWidget {
   const CollectionListTile({

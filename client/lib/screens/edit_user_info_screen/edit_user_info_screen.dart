@@ -3,9 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
-import 'package:web3dart/web3dart.dart';
 
-import '../../config.dart';
 import '../../core/services/image_picker_service.dart';
 import '../../core/utils/utils.dart';
 import '../../core/widgets/custom_widgets.dart';
@@ -76,7 +74,6 @@ class _EditUserInfoScreenState extends State<EditUserInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    init();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: space2x),

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/config/functions.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/app_bar/custom_app_bar.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
-import 'package:nfts/models/nft.dart';
-import 'package:nfts/provider/nft_provider.dart';
-import 'package:nfts/provider/wallet_provider.dart';
-import 'package:nfts/screens/confirmation_screen/confirmation_screen.dart';
-import 'package:nfts/screens/network_confirmation/network_confirmation_screen.dart';
+import '../../config/functions.dart';
+import '../../core/utils/utils.dart';
+import '../../core/widgets/custom_widgets.dart';
+import '../../models/nft.dart';
+import '../../provider/wallet_provider.dart';
+import '../confirmation_screen/confirmation_screen.dart';
+import '../network_confirmation/network_confirmation_screen.dart';
 import 'package:provider/provider.dart';
 
 class PlaceBidScreen extends StatefulWidget {

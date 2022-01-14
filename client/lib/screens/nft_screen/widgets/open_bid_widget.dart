@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
-import 'package:nfts/provider/nft_provider.dart';
-import 'package:nfts/provider/wallet_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../../../core/utils/utils.dart';
+import '../../../core/widgets/custom_widgets.dart';
+import '../../../provider/nft_provider.dart';
+import '../../../provider/wallet_provider.dart';
 
 class OpenBidWidget extends StatefulWidget {
   const OpenBidWidget(
@@ -29,8 +30,6 @@ class _OpenBidWidgetState extends State<OpenBidWidget> {
               .indexWhere((bid) => bid.from == walletProvider.address.hex);
 
           final hasUserBid = userBidIndex != -1;
-
-          print(nftProvider.selectedBid == nftProvider.bids[0]);
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -2,20 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:nfts/core/services/image_picker_service.dart';
-import 'package:nfts/core/services/ipfs_service.dart';
-import 'package:nfts/core/utils/debouncer.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
-import 'package:nfts/models/collection_metadata.dart';
-import 'package:nfts/provider/collection_provider.dart';
-import 'package:nfts/provider/wallet_provider.dart';
-import 'package:nfts/screens/confirmation_screen/confirmation_screen.dart';
-import 'package:nfts/screens/network_confirmation/network_confirmation_screen.dart';
-import 'package:nfts/screens/wallet_init_screen/wallet_init_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../../locator.dart';
+import '../../core/services/image_picker_service.dart';
+import '../../core/utils/debouncer.dart';
+import '../../core/utils/utils.dart';
+import '../../core/widgets/custom_widgets.dart';
+import '../../models/collection_metadata.dart';
+import '../../provider/collection_provider.dart';
+import '../../provider/wallet_provider.dart';
+import '../confirmation_screen/confirmation_screen.dart';
+import '../network_confirmation/network_confirmation_screen.dart';
 
 class CreateCollectionScreen extends StatefulWidget {
   const CreateCollectionScreen({Key? key}) : super(key: key);

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
-import 'package:nfts/models/nft.dart';
-import 'package:nfts/models/nft_metadata.dart';
+import '../../core/utils/utils.dart';
+import '../../core/widgets/custom_widgets.dart';
+import '../../models/nft.dart';
+import '../../models/nft_metadata.dart';
 
 class UpdateListingScreen extends StatefulWidget {
   const UpdateListingScreen({

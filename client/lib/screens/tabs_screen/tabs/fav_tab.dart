@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/provider/fav_provider.dart';
-import 'package:nfts/screens/collection_screen/collection_screen.dart';
-import 'package:nfts/screens/nft_screen/nft_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/utils/utils.dart';
 import '../../../core/widgets/custom_widgets.dart';
+import '../../../provider/fav_provider.dart';
+import '../../collection_screen/collection_screen.dart';
+import '../../nft_screen/nft_screen.dart';
 
 class FavTab extends StatelessWidget {
   const FavTab({Key? key}) : super(key: key);

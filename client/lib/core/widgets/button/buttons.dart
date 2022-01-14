@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_classes_with_only_static_members
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/utils.dart';

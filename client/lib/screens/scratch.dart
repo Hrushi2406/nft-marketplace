@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
+import '../core/utils/utils.dart';
+import '../core/widgets/custom_widgets.dart';
 
 class Scratch extends StatelessWidget {
   const Scratch({Key? key}) : super(key: key);

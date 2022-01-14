@@ -1,9 +1,9 @@
-import 'package:nfts/config/functions.dart';
-import 'package:nfts/config/gql_query.dart';
-import 'package:nfts/core/services/contract_service.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/models/listing_info.dart';
 import 'package:web3dart/web3dart.dart';
+
+import '../../config/functions.dart';
+import '../../models/listing_info.dart';
+import '../utils/utils.dart';
+import 'contract_service.dart';
 
 class NFTRepo {
   final Web3Client _client;

@@ -40,11 +40,6 @@ class _CreatorScreenState extends State<CreatorScreen>
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   void dispose() {
     _tabController.dispose();
     super.dispose();

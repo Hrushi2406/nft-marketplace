@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:nfts/provider/app_provider.dart';
-import 'package:nfts/provider/user_provider.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../core/services/contract_service.dart';

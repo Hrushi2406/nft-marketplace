@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/screens/network_confirmation/network_confirmation_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'core/theme/app_theme.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
+import '../../../core/utils/utils.dart';
+import '../../../core/widgets/custom_widgets.dart';
 import 'package:web3dart/web3dart.dart';
 
 class TransactionInfo extends StatelessWidget {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:nfts/core/animations/animations.dart';
-import 'package:nfts/core/animations/slide_animation.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
-import 'package:nfts/provider/nft_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../../../core/animations/animations.dart';
+import '../../../core/utils/utils.dart';
+import '../../../core/widgets/custom_widgets.dart';
+import '../../../provider/nft_provider.dart';
 
 class ActivityWidget extends StatelessWidget {
   const ActivityWidget({

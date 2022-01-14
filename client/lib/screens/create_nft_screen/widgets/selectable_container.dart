@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:nfts/core/animations/animations.dart';
-import 'package:nfts/core/animations/scale_animation.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
+
+import '../../../core/animations/animations.dart';
+import '../../../core/utils/utils.dart';
+import '../../../core/widgets/custom_widgets.dart';
 
 class SelectableContainer extends StatelessWidget {
   const SelectableContainer({

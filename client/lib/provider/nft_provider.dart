@@ -81,7 +81,6 @@ class NFTProvider with ChangeNotifier {
   //Upload image to ipfs and store cid
   uploadImage(String imgPath) async {
     try {
-      print('uploading image');
       //Add the request to que
       uploadImageQue.add(1);
 
@@ -105,7 +104,6 @@ class NFTProvider with ChangeNotifier {
   uploadMetadata(NFTMetadata metaDataWithoutImage,
       {bool isRecursive = false}) async {
     try {
-      print('Called uploadMetaData');
       //Add request to que
       if (!isRecursive) {
         nftToMint = metaDataWithoutImage;
@@ -120,8 +118,6 @@ class NFTProvider with ChangeNotifier {
         uploadMetadata(metaDataWithoutImage, isRecursive: true);
         return;
       }
-
-      print('Uploading MetaData');
 
       nftToMint = metaDataWithoutImage.copyWith(image: imageCID);
 
@@ -218,12 +214,8 @@ class NFTProvider with ChangeNotifier {
     try {
       final contract =
           await _contractService.loadCollectionContract(nft.cAddress);
-      print('Token ID ${nft.tokenId}');
 
-      final price = BigInt.from(biddingPrice * pow(10, 9));
-      print(price);
-
-      final data = ContractFunction(
+      final data = const ContractFunction(
         fplaceBid,
         [
           FunctionParameter('tokenId', UintType()),
@@ -266,12 +258,10 @@ class NFTProvider with ChangeNotifier {
       // );
 
       // print(transaction.value!.getInWei.toString().length);
-      print('async tx build');
 
       await _walletProvider.getTransactionFee(transaction);
       // await _walletProvider.sendTransaction(transaction);
 
-      print('successfyully executed everything');
     } catch (e) {
       debugPrint('Error at NFTProvider->placebid: $e');
 
@@ -310,8 +300,6 @@ class NFTProvider with ChangeNotifier {
 
       listingType = listingInfo!.listingType;
       nftCollection = Collection.fromMap(gData['collections'][0]);
-      print(nft.cAddress);
-      print(gData['bids']);
 
       ///NFT Activity of Buying selling
       activities = gData['nftevents']

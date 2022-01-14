@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:nfts/core/utils/utils.dart';
-import 'package:nfts/core/widgets/custom_widgets.dart';
-import 'package:nfts/models/nft.dart';
+import '../../../core/utils/utils.dart';
+import '../../../core/widgets/custom_widgets.dart';
+import '../../../models/nft.dart';
 
 class ContractDetailsWidget extends StatelessWidget {
   const ContractDetailsWidget({Key? key, required this.nft}) : super(key: key);
